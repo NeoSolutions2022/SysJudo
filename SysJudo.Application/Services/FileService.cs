@@ -4,6 +4,7 @@ using SysJudo.Application.Contracts;
 using SysJudo.Core.Enums;
 using SysJudo.Core.Extension;
 using SysJudo.Core.Settings;
+using Azure.Storage.Blobs;
 
 namespace SysJudo.Application.Services;
 
@@ -18,24 +19,37 @@ public class FileService : IFileService
         _uploadSettings = uploadSettings.Value;
     }
 
+    // public async Task<string> Upload(IFormFile arquivo, EUploadPath uploadPath,
+    //     EPathAccess pathAcess = EPathAccess.Private)
+    // {
+    //     var fileName = GenerateNewFileName(arquivo.FileName);
+    //     var filePath = MountFilePath(fileName, pathAcess, uploadPath);
+    //
+    //     try
+    //     {
+    //         await File.WriteAllBytesAsync(filePath, ConvertFileInByteArray(arquivo));
+    //     }
+    //     catch (DirectoryNotFoundException)
+    //     {
+    //         var file = new FileInfo(filePath);
+    //         file.Directory?.Create();
+    //         await File.WriteAllBytesAsync(filePath, ConvertFileInByteArray(arquivo));
+    //     }
+    //
+    //     return GetFileUrl(fileName, pathAcess, uploadPath);
+    // }
+
     public async Task<string> Upload(IFormFile arquivo, EUploadPath uploadPath,
         EPathAccess pathAcess = EPathAccess.Private)
     {
+        var connectionString = "DefaultEndpointsProtocol=https;AccountName=judostorages;AccountKey=I+Nq1dSNdwJUDW4iFxjio1DY/datoBdX/IUPe2zBWYT9TotqdT++eZQVuR7PmZ00PKMtMzNSkBBT+ASth6or6g==;EndpointSuffix=core.windows.net";
+        
         var fileName = GenerateNewFileName(arquivo.FileName);
-        var filePath = MountFilePath(fileName, pathAcess, uploadPath);
+        BlobContainerClient container = new BlobContainerClient(connectionString, "teste");
+        BlobClient blob = container.GetBlobClient(fileName);
+        await blob.UploadAsync(arquivo.OpenReadStream());
 
-        try
-        {
-            await File.WriteAllBytesAsync(filePath, ConvertFileInByteArray(arquivo));
-        }
-        catch (DirectoryNotFoundException)
-        {
-            var file = new FileInfo(filePath);
-            file.Directory?.Create();
-            await File.WriteAllBytesAsync(filePath, ConvertFileInByteArray(arquivo));
-        }
-
-        return GetFileUrl(fileName, pathAcess, uploadPath);
+        return blob.Uri.AbsoluteUri;
     }
 
     public bool Apagar(Uri uri)
