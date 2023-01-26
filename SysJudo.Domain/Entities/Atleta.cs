@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using SysJudo.Domain.Contracts;
+using SysJudo.Domain.Entities.EntitiesFiltros;
 using SysJudo.Domain.Validation;
 
 namespace SysJudo.Domain.Entities;
@@ -49,6 +50,7 @@ public class Atleta : Entity, IAggregateRoot, ITenant
     public virtual Estado Estado { get; set; } = null!;
     public virtual Pais Pais { get; set; } = null!;
     public virtual Agremiacao Agremiacao { get; set; } = null!;
+    public virtual List<AgremiacaoFiltro> AgremiacoesFiltro { get; set; } = new();
     public virtual Cliente Cliente { get; set; } = null!;
 
     public override bool Validar(out ValidationResult validationResult)

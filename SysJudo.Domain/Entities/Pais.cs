@@ -1,5 +1,6 @@
 using FluentValidation.Results;
 using SysJudo.Domain.Contracts;
+using SysJudo.Domain.Entities.EntitiesFiltros;
 using SysJudo.Domain.Validation;
 
 namespace SysJudo.Domain.Entities;
@@ -15,6 +16,7 @@ public class Pais : Entity, IAggregateRoot, ITenant
 
      public virtual Cliente Cliente { get; set; } = null!;
      public virtual List<Agremiacao> Agremiacoes { get; set; } = new();
+     public virtual List<AgremiacaoFiltro> AgremiacoesFiltro { get; set; } = new();
      public virtual List<Estado> Estados { get; set; } = new();
      public virtual List<Cidade> Cidades { get; set; } = new();
      public virtual List<Regiao> Regioes { get; set; } = new();

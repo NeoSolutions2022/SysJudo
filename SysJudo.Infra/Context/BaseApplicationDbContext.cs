@@ -5,6 +5,7 @@ using SysJudo.Core.Authorization;
 using SysJudo.Core.Exeptions;
 using SysJudo.Domain.Contracts;
 using SysJudo.Domain.Entities;
+using SysJudo.Domain.Entities.EntitiesFiltros;
 using SysJudo.Infra.Converters;
 using SysJudo.Infra.Extensions;
 
@@ -19,6 +20,7 @@ public abstract class BaseApplicationDbContext : DbContext, IUnitOfWork
     }
     
     public DbSet<Agremiacao> Agremiacoes { get; set; } = null!;
+    public DbSet<AgremiacaoFiltro> AgremiacoesFiltro { get; set; } = null!;
     public DbSet<Sistema> Sistemas { get; set; } = null!;
     public DbSet<Cliente> Clientes { get; set; } = null!;
     public DbSet<Faixa> Faixas { get; set; } = null!;

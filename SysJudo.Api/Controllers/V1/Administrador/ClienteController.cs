@@ -39,17 +39,6 @@ public class ClienteController : MainController
         return OkResponse(cliente);
     }
     
-    [HttpPost("filtrar/cliente")]
-    [SwaggerOperation(Summary = "Filtrar Cliente.", Tags = new [] { "Administrador - Cliente" })]
-    [ProducesResponseType(typeof(ClienteDto), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> Filtragem([FromBody] List<FiltragemDto> dtos)
-    {
-        var clienteLista = await _clienteService.Filtrar(dtos);
-        return OkResponse(clienteLista);
-    }
-    
     [HttpPost]
     [SwaggerOperation(Summary = "Cadastrar Cliente.", Tags = new [] { "Administrador - Cliente" })]
     [ProducesResponseType(typeof(ClienteDto), StatusCodes.Status201Created)]

@@ -1,9 +1,10 @@
 ﻿using SysJudo.Application.Dto.Base;
 using SysJudo.Core.Extension;
+using SysJudo.Domain.Entities.EntitiesFiltros;
 
 namespace SysJudo.Application.Dto.Agremiacao;
 
-public class BuscarAgremiacaoDto : BuscaPaginadaDto<Domain.Entities.Agremiacao>
+public class BuscarAgremiacaoDto : BuscaPaginadaFiltroDto<AgremiacaoFiltro>
 {
     public string? Sigla { get; set; }
     public string? Nome { get; set; }
@@ -15,7 +16,7 @@ public class BuscarAgremiacaoDto : BuscaPaginadaDto<Domain.Entities.Agremiacao>
     public string? Telefone { get; set; } = null!;
     public string? Email { get; set; } = null!;
     public string? Cnpj { get; set; } = null!;
-    
+
     public string? Representante { get; set; } = null!;
     public string? Anotacoes { get; set; }
     public int? IdPais { get; set; }
@@ -23,85 +24,85 @@ public class BuscarAgremiacaoDto : BuscaPaginadaDto<Domain.Entities.Agremiacao>
     public int? IdEstado { get; set; }
     public int? IdRegiao { get; set; }
 
-    public override void AplicarFiltro(ref IQueryable<Domain.Entities.Agremiacao> query)
+    public override void AplicarFiltro(ref IQueryable<AgremiacaoFiltro> query)
     {
         var expression = MontarExpressao();
-        
+
         if (!string.IsNullOrWhiteSpace(Sigla))
         {
             query = query.Where(a => a.Sigla.Contains(Sigla));
         }
-        
+
         if (IdCidade.HasValue)
         {
             query = query.Where(s => s.IdCidade == IdCidade);
         }
-        
+
         if (IdEstado.HasValue)
         {
             query = query.Where(s => s.IdEstado == IdEstado);
         }
-        
+
         if (IdPais.HasValue)
         {
             query = query.Where(s => s.IdPais == IdPais);
         }
-        
+
         if (IdRegiao.HasValue)
         {
             query = query.Where(s => s.IdPais == IdPais);
         }
-        
+
         if (!string.IsNullOrWhiteSpace(Representante))
         {
             query = query.Where(a => a.Representante.Contains(Representante));
         }
-        
+
         if (!string.IsNullOrWhiteSpace(Anotacoes))
         {
             query = query.Where(a => a.Anotacoes.Contains(Anotacoes));
         }
-        
+
         if (!string.IsNullOrWhiteSpace(Nome))
         {
             query = query.Where(a => a.Nome.Contains(Nome));
         }
-        
+
         if (!string.IsNullOrWhiteSpace(Responsavel))
         {
             query = query.Where(a => a.Responsavel.Contains(Responsavel));
         }
-        
+
         if (!string.IsNullOrWhiteSpace(Cep))
         {
             query = query.Where(a => a.Cep.Contains(Cep));
         }
-        
+
         if (!string.IsNullOrWhiteSpace(Endereco))
         {
             query = query.Where(a => a.Endereco.Contains(Endereco));
         }
-        
+
         if (!string.IsNullOrWhiteSpace(Bairro))
         {
             query = query.Where(a => a.Bairro.Contains(Bairro));
         }
-        
+
         if (!string.IsNullOrWhiteSpace(Complemento))
         {
             query = query.Where(a => a.Complemento.Contains(Complemento));
         }
-        
+
         if (!string.IsNullOrWhiteSpace(Telefone))
         {
             query = query.Where(a => a.Telefone.Contains(Telefone));
         }
-        
+
         if (!string.IsNullOrWhiteSpace(Email))
         {
             query = query.Where(a => a.Email.Contains(Email));
         }
-        
+
         if (!string.IsNullOrWhiteSpace(Cnpj))
         {
             query = query.Where(a => a.Cnpj.Contains(Cnpj));
@@ -110,7 +111,7 @@ public class BuscarAgremiacaoDto : BuscaPaginadaDto<Domain.Entities.Agremiacao>
         query = query.Where(expression);
     }
 
-    public override void AplicarOrdenacao(ref IQueryable<Domain.Entities.Agremiacao> query)
+    public override void AplicarOrdenacao(ref IQueryable<AgremiacaoFiltro> query)
     {
         if (DirecaoOrdenacao.EqualsIgnoreCase("asc"))
         {
@@ -136,7 +137,7 @@ public class BuscarAgremiacaoDto : BuscaPaginadaDto<Domain.Entities.Agremiacao>
             };
             return;
         }
-        
+
         query = OrdenarPor.ToLower() switch
         {
             "id" => query.OrderByDescending(c => c.Id),

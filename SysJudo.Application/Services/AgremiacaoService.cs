@@ -7,20 +7,24 @@ using SysJudo.Application.Dto.Base;
 using SysJudo.Application.Notifications;
 using SysJudo.Core.Enums;
 using SysJudo.Domain.Contracts.Repositories;
+using SysJudo.Domain.Contracts.Repositories.RepositoriesFiltros;
 using SysJudo.Domain.Entities;
+using SysJudo.Domain.Entities.EntitiesFiltros;
 
 namespace SysJudo.Application.Services;
 
 public class AgremiacaoService : BaseService, IAgremiacaoService
 {
     private readonly IAgremiacaoRepository _agremiacaoRepository;
+    private readonly IAgremiacaoFiltroRepository _filtroRepository;
     private readonly IFileService _fileService;
 
     public AgremiacaoService(IMapper mapper, INotificator notificator, IAgremiacaoRepository agremiacaoRepository,
-        IFileService fileService) : base(mapper, notificator)
+        IFileService fileService, IAgremiacaoFiltroRepository filtroRepository) : base(mapper, notificator)
     {
         _agremiacaoRepository = agremiacaoRepository;
         _fileService = fileService;
+        _filtroRepository = filtroRepository;
     }
 
     public async Task<List<AgremiacaoDto?>> Filtrar(List<FiltragemAgremiacaoDto> dto,
@@ -1626,7 +1630,20 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             #endregion
         }
 
-        return Mapper.Map<List<AgremiacaoDto?>>(agremiacoes);
+        var agremiacoesFiltro = Mapper.Map<List<AgremiacaoFiltro>>(agremiacoes);
+        await _filtroRepository.RemoverTodos();
+        foreach (var agremiacao in agremiacoesFiltro)
+        {
+            _filtroRepository.Cadastrar(agremiacao);
+        }
+        
+        if (await _filtroRepository.UnitOfWork.Commit())
+        {
+            return Mapper.Map<List<AgremiacaoDto?>>(agremiacoesFiltro);
+        }
+        
+        Notificator.Handle("Não foi possível salvar as agremiações filtradas!");
+        return null;
     }
 
     public async Task<AgremiacaoDto?> Cadastrar(CadastrarAgremiacaoDto dto)
@@ -1785,13 +1802,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
         workbook.SaveAs("planilhaAgremiacoes.xlsx");
         return workbook;
-    }    
-    
+    }
 
     #endregion
+
     public async Task<PagedDto<AgremiacaoDto>> Buscar(BuscarAgremiacaoDto dto)
     {
-        var agremiacao = await _agremiacaoRepository.Buscar(dto);
+        var agremiacao = await _filtroRepository.Buscar(dto);
         return Mapper.Map<PagedDto<AgremiacaoDto>>(agremiacao);
     }
 
@@ -1924,7 +1941,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
     }
 
     #endregion
-    
+
     private bool ValidarAnexos(CadastrarAgremiacaoDto dto)
     {
         if (dto.AlvaraLocacao?.Length > 10000000)
@@ -1972,9 +1989,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             Notificator.Handle("Foto deve ter no máximo 10Mb");
         }
 
-        if (dto.Foto == null && (dto.Foto.FileName.Split(".").Last() != "(jfif)" ||
-                                 dto.Foto.FileName.Split(".").Last() != "(png)" ||
-                                 dto.Foto.FileName.Split(".").Last() != "(jpg)"))
+        if (dto.Foto != null && dto.Foto.FileName.Split(".").Last() != "jfif" &&
+            dto.Foto.FileName.Split(".").Last() != "png" && dto.Foto.FileName.Split(".").Last() != "jpg")
         {
             Notificator.Handle("Foto deve do tipo png, jfif ou jpg");
         }

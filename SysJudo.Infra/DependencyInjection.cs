@@ -6,8 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using SysJudo.Core.Authorization;
 using SysJudo.Core.Extension;
 using SysJudo.Domain.Contracts.Repositories;
+using SysJudo.Domain.Contracts.Repositories.RepositoriesFiltros;
 using SysJudo.Infra.Context;
 using SysJudo.Infra.Repositories;
+using SysJudo.Infra.Repositories.RepositoriesFiltros;
 
 namespace SysJudo.Infra;
 
@@ -67,6 +69,12 @@ public static class DependencyInjection
         services.AddScoped<IEmissoresIdentidadeRepository, EmissoresIdentidadeRepository>();
         services.AddScoped<INacionalidadeRepositoty, NacionalidadeRepository>();
         services.AddScoped<IProfissaoRepository, ProfissaoRepository>();
+
+        #region Filtro
+
+        services.AddScoped<IAgremiacaoFiltroRepository, AgremiacaoFiltroRepository>();
+
+        #endregion
     }
 
     public static void UseMigrations(this IApplicationBuilder app, IServiceProvider services)

@@ -16,3 +16,9 @@ public abstract class BaseEntity : IEntity
 {
     public int Id { get; set; }
 }
+
+public abstract class EntityFiltro : IEntityFiltro
+{
+    public int Identificador { get; set; }
+    public int Id { get; set; }
+}

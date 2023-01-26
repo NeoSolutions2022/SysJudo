@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SysJudo.Domain.Entities;
 using SysJudo.Application.Dto.Base;
+using SysJudo.Domain.Entities.EntitiesFiltros;
 using SysJudo.Domain.Paginacao;
 
 namespace SysJudo.Application.Configuration;
@@ -95,7 +96,6 @@ public class AutoMapperProfile : Profile
         CreateMap<Agremiacao, SysJudo.Application.Dto.Agremiacao.CadastrarAgremiacaoDto>().ReverseMap();
         CreateMap<Agremiacao, SysJudo.Application.Dto.Agremiacao.AlterarAgremiacaoDto>().ReverseMap();
         CreateMap<ResultadoPaginado<Agremiacao>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>>().ReverseMap();
-        //CreateMap<List<Agremiacao>, List<SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>>().ReverseMap();
 
         #endregion
 
@@ -132,6 +132,17 @@ public class AutoMapperProfile : Profile
         CreateMap<Profissao, SysJudo.Application.Dto.Profissao.CreateProfissaoDto>().ReverseMap();
         CreateMap<Profissao, SysJudo.Application.Dto.Profissao.UpdateProfissaoDto>().ReverseMap();
         CreateMap<ResultadoPaginado<Profissao>, PagedDto<SysJudo.Application.Dto.Profissao.ProfissaoDto>>().ReverseMap();
+
+        #endregion
+        
+        /* **** Filtros **** */
+
+        #region Agremiacao
+
+        CreateMap<Agremiacao, AgremiacaoFiltro>().ReverseMap();
+        CreateMap<AgremiacaoFiltro, SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<AgremiacaoFiltro>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>>().ReverseMap();
+
 
         #endregion
     }

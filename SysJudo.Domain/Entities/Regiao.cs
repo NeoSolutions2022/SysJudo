@@ -1,4 +1,5 @@
 using SysJudo.Domain.Contracts;
+using SysJudo.Domain.Entities.EntitiesFiltros;
 
 namespace SysJudo.Domain.Entities;
 
@@ -21,6 +22,7 @@ public class Regiao : Entity, IAggregateRoot, ITenant
     public int IdPais { get; set; }
     
     public virtual List<Agremiacao> Agremiacoes { get; set; } = new();
+    public virtual List<AgremiacaoFiltro> AgremiacoesFiltro { get; set; } = new();
     public virtual Pais Pais { get; set; } = null!;
     public virtual Estado Estado { get; set; } = null!;
     public virtual Cidade Cidade { get; set; } = null!;
