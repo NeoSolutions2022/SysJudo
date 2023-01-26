@@ -28,7 +28,7 @@ public class AtletaRepository : Repository<Atleta>, IAtletaRepository
         return await Context.Atletas.FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task<IResultadoPaginado<Atleta?>> Buscar(IBuscaPaginada<Atleta> filtro)
+    public async Task<IResultadoPaginado<Atleta>> Buscar(IBuscaPaginada<Atleta> filtro)
     {
         var query = Context.Atletas.AsQueryable();
         return await base.Buscar(query, filtro);

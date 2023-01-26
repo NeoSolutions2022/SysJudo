@@ -17,6 +17,11 @@ public class AgremiacaoFiltroRepository : RepositoryFiltro<AgremiacaoFiltro>, IA
         Context.AgremiacoesFiltro.Add(agremiacao);
     }
 
+    public async Task<List<AgremiacaoFiltro>> Listar()
+    {
+        return await Context.AgremiacoesFiltro.ToListAsync();
+    }
+
     public async Task RemoverTodos()
     {
         var todos = await Context.AgremiacoesFiltro.AsNoTracking().ToListAsync();

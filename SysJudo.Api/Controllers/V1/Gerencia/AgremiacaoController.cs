@@ -57,9 +57,9 @@ public class AgremiacaoController : MainController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Exportar(List<AgremiacaoDto> dtos)
+    public async Task<IActionResult> Exportar()
     {
-        var agremiacao = await _service.Exportar(dtos);
+        var agremiacao = await _service.Exportar();
         return OkResponse(agremiacao);
     }
     

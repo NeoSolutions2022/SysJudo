@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Agremiacao;
 using SysJudo.Application.Dto.Base;
+using SysJudo.Application.Dto.Filtros;
 using SysJudo.Application.Notifications;
 using SysJudo.Core.Enums;
 using SysJudo.Domain.Contracts.Repositories;
@@ -1630,7 +1631,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             #endregion
         }
 
-        var buscarAgremiacaoDto = new BuscarAgremiacaoDto();
         var agremiacoesFiltro = Mapper.Map<List<AgremiacaoFiltro>>(agremiacoes);
         await _filtroRepository.RemoverTodos();
         foreach (var agremiacao in agremiacoesFiltro)
@@ -1640,7 +1640,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         
         if (await _filtroRepository.UnitOfWork.Commit())
         {
-            var filtro = await _filtroRepository.Buscar(buscarAgremiacaoDto);
+            var filtro = await _filtroRepository.Buscar(new BuscarAgremiacaoFiltroDto());
             return Mapper.Map<PagedDto<AgremiacaoDto>>(filtro);
         }
         
@@ -1757,9 +1757,9 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
     #region Exportar
 
-    public async Task<XLWorkbook> Exportar(List<AgremiacaoDto> agremiacoes)
+    public async Task<XLWorkbook> Exportar()
     {
-        // var agremiacoes = await _agremiacaoRepository.Listar();
+        var agremiacoes = await _filtroRepository.Listar();
         var workbook = new XLWorkbook();
         workbook.AddWorksheet("planilhaAgremiacoes");
         var ws = workbook.Worksheet("planilhaAgremiacoes");
@@ -1811,7 +1811,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
     public async Task<PagedDto<AgremiacaoDto>> Buscar(BuscarAgremiacaoDto dto)
     {
-        var agremiacao = await _filtroRepository.Buscar(dto);
+        var agremiacao = await _agremiacaoRepository.Buscar(dto);
         return Mapper.Map<PagedDto<AgremiacaoDto>>(agremiacao);
     }
 
@@ -1882,11 +1882,11 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
     private async Task<bool> ManterFoto(IFormFile foto, Agremiacao agremiacao)
     {
-        if (!string.IsNullOrWhiteSpace(agremiacao.Foto) && !_fileService.Apagar(new Uri(agremiacao.Foto)))
-        {
-            Notificator.Handle("Não foi possível remover a foto anterior.");
-            return false;
-        }
+        // if (!string.IsNullOrWhiteSpace(agremiacao.Foto) && !_fileService.Apagar(new Uri(agremiacao.Foto)))
+        // {
+        //     Notificator.Handle("Não foi possível remover a foto anterior.");
+        //     return false;
+        // }
 
         agremiacao.Foto = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
         return true;

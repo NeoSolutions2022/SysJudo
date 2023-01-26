@@ -1,9 +1,10 @@
-﻿using SysJudo.Application.Dto.Base;
+using SysJudo.Application.Dto.Base;
 using SysJudo.Core.Extension;
+using SysJudo.Domain.Entities.EntitiesFiltros;
 
-namespace SysJudo.Application.Dto.Agremiacao;
+namespace SysJudo.Application.Dto.Filtros;
 
-public class BuscarAgremiacaoDto : BuscaPaginadaDto<Domain.Entities.Agremiacao>
+public class BuscarAgremiacaoFiltroDto : BuscaPaginadaFiltroDto<AgremiacaoFiltro>
 {
     public string? Sigla { get; set; }
     public string? Nome { get; set; }
@@ -23,7 +24,7 @@ public class BuscarAgremiacaoDto : BuscaPaginadaDto<Domain.Entities.Agremiacao>
     public int? IdEstado { get; set; }
     public int? IdRegiao { get; set; }
 
-    public override void AplicarFiltro(ref IQueryable<Domain.Entities.Agremiacao> query)
+    public override void AplicarFiltro(ref IQueryable<AgremiacaoFiltro> query)
     {
         var expression = MontarExpressao();
 
@@ -110,7 +111,7 @@ public class BuscarAgremiacaoDto : BuscaPaginadaDto<Domain.Entities.Agremiacao>
         query = query.Where(expression);
     }
 
-    public override void AplicarOrdenacao(ref IQueryable<Domain.Entities.Agremiacao> query)
+    public override void AplicarOrdenacao(ref IQueryable<AgremiacaoFiltro> query)
     {
         if (DirecaoOrdenacao.EqualsIgnoreCase("asc"))
         {

@@ -1,6 +1,6 @@
 ﻿namespace SysJudo.Application.Dto.Atleta;
 
-public class AtletaDto
+public class AtletaDto 
 {
     public int Id { get; set; }
     public string? Foto { get; set; }

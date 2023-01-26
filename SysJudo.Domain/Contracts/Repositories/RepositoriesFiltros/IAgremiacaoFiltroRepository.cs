@@ -5,5 +5,6 @@ namespace SysJudo.Domain.Contracts.Repositories.RepositoriesFiltros;
 public interface IAgremiacaoFiltroRepository : IRepositoryFiltro<AgremiacaoFiltro>
 {
     void Cadastrar(AgremiacaoFiltro agremiacao);
+    Task<List<AgremiacaoFiltro>> Listar();
     Task RemoverTodos();
 }
