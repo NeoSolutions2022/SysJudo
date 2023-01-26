@@ -27,7 +27,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         _filtroRepository = filtroRepository;
     }
 
-    public async Task<List<AgremiacaoDto?>> Filtrar(List<FiltragemAgremiacaoDto> dto,
+    public async Task<PagedDto<AgremiacaoDto>> Filtrar(List<FiltragemAgremiacaoDto> dto,
         List<Agremiacao> agremiacoes = null, int tamanho = 0, int aux = 0)
     {
         tamanho = dto.Count;
@@ -1630,6 +1630,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             #endregion
         }
 
+        var buscarAgremiacaoDto = new BuscarAgremiacaoDto();
         var agremiacoesFiltro = Mapper.Map<List<AgremiacaoFiltro>>(agremiacoes);
         await _filtroRepository.RemoverTodos();
         foreach (var agremiacao in agremiacoesFiltro)
@@ -1639,7 +1640,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         
         if (await _filtroRepository.UnitOfWork.Commit())
         {
-            return Mapper.Map<List<AgremiacaoDto?>>(agremiacoesFiltro);
+            var filtro = await _filtroRepository.Buscar(buscarAgremiacaoDto);
+            return Mapper.Map<PagedDto<AgremiacaoDto>>(filtro);
         }
         
         Notificator.Handle("Não foi possível salvar as agremiações filtradas!");
@@ -1743,6 +1745,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         }
 
         _agremiacaoRepository.Alterar(agremiacao);
+        
         if (await _agremiacaoRepository.UnitOfWork.Commit())
         {
             return Mapper.Map<AgremiacaoDto>(agremiacao);
