@@ -60,6 +60,7 @@ public class AgremiacaoController : MainController
     public async Task<IActionResult> Exportar()
     {
         var agremiacao = await _service.Exportar();
+        
         return OkResponse(agremiacao);
     }
     
