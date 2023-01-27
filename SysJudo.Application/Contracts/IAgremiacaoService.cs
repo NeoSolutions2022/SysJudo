@@ -13,6 +13,6 @@ public interface IAgremiacaoService
     Task<PagedDto<AgremiacaoDto>> Buscar(BuscarAgremiacaoDto dto);
     Task<AgremiacaoDto?> ObterPorId(int id);
     Task Deletar(int id);
-    Task<XLWorkbook> Exportar();
+    Task<string> Exportar();
     Task Anotar(int id, AnotarAgremiacaoDto anotacao);
 }
