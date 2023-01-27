@@ -1757,7 +1757,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
     #region Exportar
 
-    public async Task<MemoryStream> Exportar()
+    public async Task<string> Exportar()
     {
         var agremiacoes = await _filtroRepository.Listar();
         var workbook = new XLWorkbook();
@@ -1803,9 +1803,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             ws.Cell(linha, 18).Value = agremiacoes[linha].Cnpj;
         }
 
-        var ms = new MemoryStream();
-        workbook.SaveAs(ms);
-        return workbook;
+        
+        return await _fileService.UploadExcel(workbook, EUploadPath.FotosAgremiacao);
     }
 
     #endregion

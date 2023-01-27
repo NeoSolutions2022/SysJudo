@@ -5,6 +5,7 @@ using SysJudo.Core.Enums;
 using SysJudo.Core.Extension;
 using SysJudo.Core.Settings;
 using Azure.Storage.Blobs;
+using ClosedXML.Excel;
 
 namespace SysJudo.Application.Services;
 
@@ -48,6 +49,20 @@ public class FileService : IFileService
         BlobContainerClient container = new BlobContainerClient(connectionString, "teste");
         BlobClient blob = container.GetBlobClient(fileName);
         await blob.UploadAsync(arquivo.OpenReadStream());
+
+        return blob.Uri.AbsoluteUri;
+    }
+    
+    public async Task<string> UploadExcel(XLWorkbook arquivo, EUploadPath uploadPath,
+        EPathAccess pathAcess = EPathAccess.Private)
+    {
+        var connectionString = "DefaultEndpointsProtocol=https;AccountName=judostorages;AccountKey=I+Nq1dSNdwJUDW4iFxjio1DY/datoBdX/IUPe2zBWYT9TotqdT++eZQVuR7PmZ00PKMtMzNSkBBT+ASth6or6g==;EndpointSuffix=core.windows.net";
+        var ms = new MemoryStream();
+        arquivo.SaveAs(ms);
+        var fileName = GenerateNewFileName("AgremiacaoPlanilha");
+        BlobContainerClient container = new BlobContainerClient(connectionString, "teste");
+        BlobClient blob = container.GetBlobClient(fileName);
+        await blob.UploadAsync(ms);
 
         return blob.Uri.AbsoluteUri;
     }
