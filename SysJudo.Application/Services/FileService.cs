@@ -5,6 +5,7 @@ using SysJudo.Core.Enums;
 using SysJudo.Core.Extension;
 using SysJudo.Core.Settings;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using ClosedXML.Excel;
 
 namespace SysJudo.Application.Services;
@@ -59,11 +60,14 @@ public class FileService : IFileService
         var connectionString = "DefaultEndpointsProtocol=https;AccountName=judostorages;AccountKey=I+Nq1dSNdwJUDW4iFxjio1DY/datoBdX/IUPe2zBWYT9TotqdT++eZQVuR7PmZ00PKMtMzNSkBBT+ASth6or6g==;EndpointSuffix=core.windows.net";
         var ms = new MemoryStream();
         arquivo.SaveAs(ms);
-        var fileName = GenerateNewFileName("AgremiacaoPlanilha");
+        var fileName = GenerateNewFileName("AgremiacaoPlanilha.xlsx");
         BlobContainerClient container = new BlobContainerClient(connectionString, "teste");
         BlobClient blob = container.GetBlobClient(fileName);
+        var blobHttpHeader = new BlobHttpHeaders();
+
+        blobHttpHeader.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         ms.Position = 0;
-        await blob.UploadAsync(ms);
+        await blob.UploadAsync(ms, blobHttpHeader);
 
         return blob.Uri.AbsoluteUri;
     }
