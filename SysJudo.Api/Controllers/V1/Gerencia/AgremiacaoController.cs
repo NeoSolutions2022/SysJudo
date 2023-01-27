@@ -53,7 +53,6 @@ public class AgremiacaoController : MainController
     
     [HttpGet("exportar")]
     [SwaggerOperation(Summary = "Exportar Agremiação.", Tags = new [] { "Gerencia - Agremiação" })]
-    [ProducesResponseType(typeof(XLWorkbook), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
