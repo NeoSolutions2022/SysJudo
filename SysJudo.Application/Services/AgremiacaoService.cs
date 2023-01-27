@@ -1762,7 +1762,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         var agremiacoes = await _filtroRepository.Listar();
         var workbook = new XLWorkbook();
         workbook.AddWorksheet("planilhaAgremiacoes");
-        var ws = workbook.Worksheet("planilhaAgremiacoes");
+        var ws = workbook.Worksheets.Add("planilhaAgremiacoes");
         ws.Cell(1, 1).Value = "Nome";
         ws.Cell(1, 2).Value = "Sigla";
         ws.Cell(1, 3).Value = "Fantasia";
@@ -1788,8 +1788,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             ws.Cell(linha, 3).Value = agremiacoes[linha].Fantasia;
             ws.Cell(linha, 4).Value = agremiacoes[linha].Responsavel;
             ws.Cell(linha, 5).Value = agremiacoes[linha].Representante;
-            ws.Cell(linha, 6).Value = agremiacoes[linha].DataFiliacao.ToString("dd/mm/yyyy");
-            ws.Cell(linha, 7).Value = agremiacoes[linha].DataNascimento.ToString("dd/mm/yyyy");
+            ws.Cell(linha, 6).Value = agremiacoes[linha].DataFiliacao.ToString;
+            ws.Cell(linha, 7).Value = agremiacoes[linha].DataNascimento.ToString;
             ws.Cell(linha, 8).Value = agremiacoes[linha].Cep;
             ws.Cell(linha, 9).Value = agremiacoes[linha].Endereco;
             ws.Cell(linha, 10).Value = agremiacoes[linha].Bairro;
