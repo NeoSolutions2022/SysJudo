@@ -62,6 +62,7 @@ public class FileService : IFileService
         var fileName = GenerateNewFileName("AgremiacaoPlanilha");
         BlobContainerClient container = new BlobContainerClient(connectionString, "teste");
         BlobClient blob = container.GetBlobClient(fileName);
+        ms.Position = 0;
         await blob.UploadAsync(ms);
 
         return blob.Uri.AbsoluteUri;
