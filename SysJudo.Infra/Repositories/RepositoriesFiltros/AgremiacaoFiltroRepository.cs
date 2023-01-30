@@ -19,7 +19,9 @@ public class AgremiacaoFiltroRepository : RepositoryFiltro<AgremiacaoFiltro>, IA
 
     public async Task<List<AgremiacaoFiltro>> Listar()
     {
-        return await Context.AgremiacoesFiltro.ToListAsync();
+        return await Context.AgremiacoesFiltro
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task RemoverTodos()

@@ -1757,12 +1757,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
     #region Exportar
 
-    public async Task<XLWorkbook> Exportar()
+    public async Task<string> Exportar()
     {
         var agremiacoes = await _filtroRepository.Listar();
         var workbook = new XLWorkbook();
         workbook.AddWorksheet("planilhaAgremiacoes");
-        var ws = workbook.Worksheet("planilhaAgremiacoes");
+        var ws = workbook.Worksheets.Add("planilhaAgremiacoes");
         ws.Cell(1, 1).Value = "Nome";
         ws.Cell(1, 2).Value = "Sigla";
         ws.Cell(1, 3).Value = "Fantasia";
@@ -1781,30 +1781,30 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         ws.Cell(1, 16).Value = "Telefone";
         ws.Cell(1, 17).Value = "Email";
         ws.Cell(1, 18).Value = "Cnpj";
-        for (int linha = 1; linha < agremiacoes.Count; linha++)
+        for (int linha = 2; linha < agremiacoes.Count; linha++)
         {
-            ws.Cell(linha, 1).Value = agremiacoes[linha].Nome;
-            ws.Cell(linha, 2).Value = agremiacoes[linha].Sigla;
-            ws.Cell(linha, 3).Value = agremiacoes[linha].Fantasia;
-            ws.Cell(linha, 4).Value = agremiacoes[linha].Responsavel;
-            ws.Cell(linha, 5).Value = agremiacoes[linha].Representante;
-            ws.Cell(linha, 6).Value = agremiacoes[linha].DataFiliacao.ToString("dd/mm/yyyy");
-            ws.Cell(linha, 7).Value = agremiacoes[linha].DataNascimento.ToString("dd/mm/yyyy");
-            ws.Cell(linha, 8).Value = agremiacoes[linha].Cep;
-            ws.Cell(linha, 9).Value = agremiacoes[linha].Endereco;
-            ws.Cell(linha, 10).Value = agremiacoes[linha].Bairro;
-            ws.Cell(linha, 11).Value = agremiacoes[linha].Complemento;
-            ws.Cell(linha, 12).Value = agremiacoes[linha].IdCidade.ToString();
-            ws.Cell(linha, 13).Value = agremiacoes[linha].IdEstado.ToString();
-            ws.Cell(linha, 14).Value = agremiacoes[linha].IdRegiao.ToString();
-            ws.Cell(linha, 15).Value = agremiacoes[linha].IdPais.ToString();
-            ws.Cell(linha, 16).Value = agremiacoes[linha].Telefone;
-            ws.Cell(linha, 17).Value = agremiacoes[linha].Email;
-            ws.Cell(linha, 18).Value = agremiacoes[linha].Cnpj;
+            ws.Cell(linha, 1).Value = agremiacoes[linha - 1].Nome;
+            ws.Cell(linha, 2).Value = agremiacoes[linha - 1].Sigla;
+            ws.Cell(linha, 3).Value = agremiacoes[linha - 1].Fantasia;
+            ws.Cell(linha, 4).Value = agremiacoes[linha - 1].Responsavel;
+            ws.Cell(linha, 5).Value = agremiacoes[linha - 1].Representante;
+            ws.Cell(linha, 6).Value = agremiacoes[linha - 1].DataFiliacao.ToString();
+            ws.Cell(linha, 7).Value = agremiacoes[linha - 1].DataNascimento.ToString();
+            ws.Cell(linha, 8).Value = agremiacoes[linha - 1].Cep;
+            ws.Cell(linha, 9).Value = agremiacoes[linha - 1].Endereco;
+            ws.Cell(linha, 10).Value = agremiacoes[linha - 1].Bairro;
+            ws.Cell(linha, 11).Value = agremiacoes[linha - 1].Complemento;
+            ws.Cell(linha, 12).Value = agremiacoes[linha - 1].IdCidade.ToString();
+            ws.Cell(linha, 13).Value = agremiacoes[linha - 1].IdEstado.ToString();
+            ws.Cell(linha, 14).Value = agremiacoes[linha - 1].IdRegiao.ToString();
+            ws.Cell(linha, 15).Value = agremiacoes[linha - 1].IdPais.ToString();
+            ws.Cell(linha, 16).Value = agremiacoes[linha - 1].Telefone;
+            ws.Cell(linha, 17).Value = agremiacoes[linha - 1].Email;
+            ws.Cell(linha, 18).Value = agremiacoes[linha - 1].Cnpj;
         }
 
-        workbook.SaveAs("planilhaAgremiacoes.xlsx");
-        return workbook;
+        
+        return await _fileService.UploadExcel(workbook, EUploadPath.FotosAgremiacao);
     }
 
     #endregion

@@ -51,15 +51,15 @@ public class AgremiacaoController : MainController
         return OkResponse(agremiacao);
     }
     
-    [HttpPost("exportar")]
+    [HttpGet("exportar")]
     [SwaggerOperation(Summary = "Exportar Agremiação.", Tags = new [] { "Gerencia - Agremiação" })]
-    [ProducesResponseType(typeof(XLWorkbook), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Exportar()
     {
         var agremiacao = await _service.Exportar();
+        
         return OkResponse(agremiacao);
     }
     
