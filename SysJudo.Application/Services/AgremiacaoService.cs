@@ -1662,26 +1662,26 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return null;
         }
 
-        if (dto.AlvaraLocacao is { Length: > 0 })
-        {
-            agremiacao.AlvaraLocacao = await _fileService.Upload(dto.AlvaraLocacao, EUploadPath.FotosAgremiacao);
-        }
-
-        if (dto.Estatuto is { Length: > 0 })
-        {
-            agremiacao.Estatuto = await _fileService.Upload(dto.Estatuto, EUploadPath.FotosAgremiacao);
-        }
-
-        if (dto.ContratoSocial is { Length: > 0 })
-        {
-            agremiacao.ContratoSocial = await _fileService.Upload(dto.ContratoSocial, EUploadPath.FotosAgremiacao);
-        }
-
-        if (dto.DocumentacaoAtualizada is { Length: > 0 })
-        {
-            agremiacao.DocumentacaoAtualizada =
-                await _fileService.Upload(dto.DocumentacaoAtualizada, EUploadPath.FotosAgremiacao);
-        }
+        // if (dto.AlvaraLocacao is { Length: > 0 })
+        // {
+        //     agremiacao.AlvaraLocacao = await _fileService.Upload(dto.AlvaraLocacao, EUploadPath.FotosAgremiacao);
+        // }
+        //
+        // if (dto.Estatuto is { Length: > 0 })
+        // {
+        //     agremiacao.Estatuto = await _fileService.Upload(dto.Estatuto, EUploadPath.FotosAgremiacao);
+        // }
+        //
+        // if (dto.ContratoSocial is { Length: > 0 })
+        // {
+        //     agremiacao.ContratoSocial = await _fileService.Upload(dto.ContratoSocial, EUploadPath.FotosAgremiacao);
+        // }
+        //
+        // if (dto.DocumentacaoAtualizada is { Length: > 0 })
+        // {
+        //     agremiacao.DocumentacaoAtualizada =
+        //         await _fileService.Upload(dto.DocumentacaoAtualizada, EUploadPath.FotosAgremiacao);
+        // }
 
         if (dto.Foto is { Length: > 0 })
         {
