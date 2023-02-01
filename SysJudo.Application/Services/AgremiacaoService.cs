@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Agremiacao;
@@ -1757,51 +1758,166 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
     #region Exportar
 
-    public async Task<string> Exportar()
+    public async Task<string> Exportar(ExportarAgremiacaoDto dto)
     {
+        var linha = 2;
         var agremiacoes = await _filtroRepository.Listar();
         var workbook = new XLWorkbook();
-        workbook.AddWorksheet("planilhaAgremiacoes");
+        //workbook.AddWorksheet("planilhaAgremiacoes");
         var ws = workbook.Worksheets.Add("planilhaAgremiacoes");
-        ws.Cell(1, 1).Value = "Nome";
-        ws.Cell(1, 2).Value = "Sigla";
-        ws.Cell(1, 3).Value = "Fantasia";
-        ws.Cell(1, 4).Value = "Responsavel";
-        ws.Cell(1, 5).Value = "Representante";
-        ws.Cell(1, 6).Value = "DataFiliacao";
-        ws.Cell(1, 7).Value = "DataNascimento";
-        ws.Cell(1, 8).Value = "Cep";
-        ws.Cell(1, 9).Value = "Endereco";
-        ws.Cell(1, 10).Value = "Bairro";
-        ws.Cell(1, 11).Value = "Complemento";
-        ws.Cell(1, 12).Value = "IdCidade";
-        ws.Cell(1, 13).Value = "IdEstado";
-        ws.Cell(1, 14).Value = "IdRegiao";
-        ws.Cell(1, 15).Value = "IdPais";
-        ws.Cell(1, 16).Value = "Telefone";
-        ws.Cell(1, 17).Value = "Email";
-        ws.Cell(1, 18).Value = "Cnpj";
-        for (int linha = 2; linha < agremiacoes.Count; linha++)
+
+        foreach (var agremiacao in agremiacoes)
         {
-            ws.Cell(linha, 1).Value = agremiacoes[linha - 1].Nome;
-            ws.Cell(linha, 2).Value = agremiacoes[linha - 1].Sigla;
-            ws.Cell(linha, 3).Value = agremiacoes[linha - 1].Fantasia;
-            ws.Cell(linha, 4).Value = agremiacoes[linha - 1].Responsavel;
-            ws.Cell(linha, 5).Value = agremiacoes[linha - 1].Representante;
-            ws.Cell(linha, 6).Value = agremiacoes[linha - 1].DataFiliacao.ToString();
-            ws.Cell(linha, 7).Value = agremiacoes[linha - 1].DataNascimento.ToString();
-            ws.Cell(linha, 8).Value = agremiacoes[linha - 1].Cep;
-            ws.Cell(linha, 9).Value = agremiacoes[linha - 1].Endereco;
-            ws.Cell(linha, 10).Value = agremiacoes[linha - 1].Bairro;
-            ws.Cell(linha, 11).Value = agremiacoes[linha - 1].Complemento;
-            ws.Cell(linha, 12).Value = agremiacoes[linha - 1].IdCidade.ToString();
-            ws.Cell(linha, 13).Value = agremiacoes[linha - 1].IdEstado.ToString();
-            ws.Cell(linha, 14).Value = agremiacoes[linha - 1].IdRegiao.ToString();
-            ws.Cell(linha, 15).Value = agremiacoes[linha - 1].IdPais.ToString();
-            ws.Cell(linha, 16).Value = agremiacoes[linha - 1].Telefone;
-            ws.Cell(linha, 17).Value = agremiacoes[linha - 1].Email;
-            ws.Cell(linha, 18).Value = agremiacoes[linha - 1].Cnpj;
+            var contador = 1;
+            if (dto.Nome)
+            {
+                ws.Cell(1, contador).Value = "Nome";
+                ws.Cell(linha, contador).Value = agremiacao.Nome;
+                contador++;
+            }
+            
+            if (dto.Sigla)
+            {
+                ws.Cell(1, contador).Value = "Sigla";
+                ws.Cell(linha, contador).Value = agremiacao.Sigla;
+                contador++;
+            }
+            
+            if (dto.Fantasia)
+            {
+                ws.Cell(1, contador).Value = "Fantasia";
+                ws.Cell(linha, contador).Value = agremiacao.Fantasia;
+                contador++;
+            }
+            
+            if (dto.Responsavel)
+            {
+                ws.Cell(1, contador).Value = "Responsavel";
+                ws.Cell(linha, contador).Value = agremiacao.Responsavel;
+                contador++;
+            }
+            
+            if (dto.Representante)
+            {
+                ws.Cell(1, contador).Value = "Representante";
+                ws.Cell(linha, contador).Value = agremiacao.Representante;
+                contador++;
+            }
+            
+            if (dto.DataFiliacao)
+            {
+                ws.Cell(1, contador).Value = "DataFiliacao";
+                ws.Cell(linha, contador).Value = agremiacao.DataFiliacao.ToString();
+                contador++;
+            }
+            
+            if (dto.DataNascimento)
+            {
+                ws.Cell(1, contador).Value = "DataNascimento";
+                ws.Cell(linha, contador).Value = agremiacao.DataNascimento.ToString();
+                contador++;
+            }
+            
+            if (dto.Cep)
+            {
+                ws.Cell(1, contador).Value = "Cep";
+                ws.Cell(linha, contador).Value = agremiacao.Cep;
+                contador++;
+            }
+            
+            if (dto.Endereco)
+            {
+                ws.Cell(1, contador).Value = "Endereco";
+                ws.Cell(linha, contador).Value = agremiacao.Endereco;
+                contador++;
+            }
+            
+            if (dto.Endereco)
+            {
+                ws.Cell(1, contador).Value = "Bairro";
+                ws.Cell(linha, contador).Value = agremiacao.Endereco;
+                contador++;
+            }
+            
+            if (dto.Complemento)
+            {
+                ws.Cell(1, contador).Value = "Complemento";
+                ws.Cell(linha, contador).Value = agremiacao.Complemento;
+                contador++;
+            }
+            
+            if (dto.IdCidade)
+            {
+                ws.Cell(1, contador).Value = "IdCidade";
+                ws.Cell(linha, contador).Value = agremiacao.IdCidade;
+                contador++;
+            }
+            
+            if (dto.IdEstado)
+            {
+                ws.Cell(1, contador).Value = "IdEstado";
+                ws.Cell(linha, contador).Value = agremiacao.IdEstado;
+                contador++;
+            }
+            
+            if (dto.IdRegiao)
+            {
+                ws.Cell(1, contador).Value = "IdRegiao";
+                ws.Cell(linha, contador).Value = agremiacao.IdRegiao;
+                contador++;
+            }
+            
+            if (dto.IdPais)
+            {
+                ws.Cell(1, contador).Value = "IdPais";
+                ws.Cell(linha, contador).Value = agremiacao.IdPais;
+                contador++;
+            }
+            
+            if (dto.Telefone)
+            {
+                ws.Cell(1, contador).Value = "Telefone";
+                ws.Cell(linha, contador).Value = agremiacao.Telefone;
+                contador++;
+            }
+            
+            if (dto.Email)
+            {
+                ws.Cell(1, contador).Value = "Email";
+                ws.Cell(linha, contador).Value = agremiacao.Email;
+                contador++;
+            }
+            
+            if (dto.Cnpj)
+            {
+                ws.Cell(1, contador).Value = "Cnpj";
+                ws.Cell(linha, contador).Value = agremiacao.Cnpj;
+            }
+
+            linha++;
         }
+
+        // for (int linha = 2; linha < agremiacoes.Count; linha++)
+        // {
+        //     ws.Cell(linha, 1).Value = agremiacoes[linha - 1].Nome;
+        //     ws.Cell(linha, 2).Value = agremiacoes[linha - 1].Sigla;
+        //     ws.Cell(linha, 3).Value = agremiacoes[linha - 1].Fantasia;
+        //     ws.Cell(linha, 4).Value = agremiacoes[linha - 1].Responsavel;
+        //     ws.Cell(linha, 5).Value = agremiacoes[linha - 1].Representante;
+        //     ws.Cell(linha, 6).Value = agremiacoes[linha - 1].DataFiliacao.ToString();
+        //     ws.Cell(linha, 7).Value = agremiacoes[linha - 1].DataNascimento.ToString();
+        //     ws.Cell(linha, 8).Value = agremiacoes[linha - 1].Cep;
+        //     ws.Cell(linha, 9).Value = agremiacoes[linha - 1].Endereco;
+        //     ws.Cell(linha, 10).Value = agremiacoes[linha - 1].Bairro;
+        //     ws.Cell(linha, 11).Value = agremiacoes[linha - 1].Complemento;
+        //     ws.Cell(linha, 12).Value = agremiacoes[linha - 1].IdCidade.ToString();
+        //     ws.Cell(linha, 13).Value = agremiacoes[linha - 1].IdEstado.ToString();
+        //     ws.Cell(linha, 14).Value = agremiacoes[linha - 1].IdRegiao.ToString();
+        //     ws.Cell(linha, 15).Value = agremiacoes[linha - 1].IdPais.ToString();
+        //     ws.Cell(linha, 16).Value = agremiacoes[linha - 1].Telefone;
+        //     ws.Cell(linha, 17).Value = agremiacoes[linha - 1].Email;
+        //     ws.Cell(linha, 18).Value = agremiacoes[linha - 1].Cnpj;
+        // }
 
         
         return await _fileService.UploadExcel(workbook, EUploadPath.FotosAgremiacao);
