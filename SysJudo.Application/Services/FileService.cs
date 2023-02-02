@@ -58,7 +58,7 @@ public class FileService : IFileService
         EPathAccess pathAcess = EPathAccess.Private)
     {
         var connectionString = "DefaultEndpointsProtocol=https;AccountName=judostorages;AccountKey=I+Nq1dSNdwJUDW4iFxjio1DY/datoBdX/IUPe2zBWYT9TotqdT++eZQVuR7PmZ00PKMtMzNSkBBT+ASth6or6g==;EndpointSuffix=core.windows.net";
-        var ms = new MemoryStream();
+        using var ms = new MemoryStream();
         arquivo.SaveAs(ms);
         var fileName = GenerateNewFileName("AgremiacaoPlanilha.xlsx");
         BlobContainerClient container = new BlobContainerClient(connectionString, "teste");
