@@ -1668,6 +1668,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 agremiacao.DocumentosUri = "&" + await _fileService.Upload(documento, EUploadPath.FotosAgremiacao);
             }
+            
         }
         // if (dto.AlvaraLocacao is { Length: > 0 })
         // {
