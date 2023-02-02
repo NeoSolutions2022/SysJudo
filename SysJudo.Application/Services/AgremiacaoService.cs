@@ -1662,6 +1662,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return null;
         }
 
+        foreach (var documento in dto.Documentos)
+        {
+            if (documento is { Length: > 0 })
+            {
+                agremiacao.DocumentosUri = "&" + await _fileService.Upload(documento, EUploadPath.FotosAgremiacao);
+            }
+        }
         // if (dto.AlvaraLocacao is { Length: > 0 })
         // {
         //     agremiacao.AlvaraLocacao = await _fileService.Upload(dto.AlvaraLocacao, EUploadPath.FotosAgremiacao);
@@ -1724,26 +1731,26 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return null;
         }
 
-        if (dto.AlvaraLocacao is { Length: > 0 } && !await ManterAlvararLocacao(dto.AlvaraLocacao, agremiacao))
-        {
-            return null;
-        }
-
-        if (dto.Estatuto is { Length: > 0 } && !await ManterEstatuto(dto.Estatuto, agremiacao))
-        {
-            return null;
-        }
-
-        if (dto.ContratoSocial is { Length: > 0 } && !await ManterContratoSocial(dto.ContratoSocial, agremiacao))
-        {
-            return null;
-        }
-
-        if (dto.DocumentacaoAtualizada is { Length: > 0 } &&
-            !await ManterDocumentacao(dto.DocumentacaoAtualizada, agremiacao))
-        {
-            return null;
-        }
+        // if (dto.AlvaraLocacao is { Length: > 0 } && !await ManterAlvararLocacao(dto.AlvaraLocacao, agremiacao))
+        // {
+        //     return null;
+        // }
+        //
+        // if (dto.Estatuto is { Length: > 0 } && !await ManterEstatuto(dto.Estatuto, agremiacao))
+        // {
+        //     return null;
+        // }
+        //
+        // if (dto.ContratoSocial is { Length: > 0 } && !await ManterContratoSocial(dto.ContratoSocial, agremiacao))
+        // {
+        //     return null;
+        // }
+        //
+        // if (dto.DocumentacaoAtualizada is { Length: > 0 } &&
+        //     !await ManterDocumentacao(dto.DocumentacaoAtualizada, agremiacao))
+        // {
+        //     return null;
+        // }
 
         _agremiacaoRepository.Alterar(agremiacao);
         
@@ -2008,100 +2015,100 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         return true;
     }
 
-    private async Task<bool> ManterAlvararLocacao(IFormFile foto, Agremiacao agremiacao)
-    {
-        if (!string.IsNullOrWhiteSpace(agremiacao.AlvaraLocacao) &&
-            !_fileService.Apagar(new Uri(agremiacao.AlvaraLocacao)))
-        {
-            Notificator.Handle("Não foi possível remover o AlvaraLocacao anterior.");
-            return false;
-        }
-
-        agremiacao.AlvaraLocacao = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
-        return true;
-    }
-
-    private async Task<bool> ManterEstatuto(IFormFile foto, Agremiacao agremiacao)
-    {
-        if (!string.IsNullOrWhiteSpace(agremiacao.Estatuto) && !_fileService.Apagar(new Uri(agremiacao.Estatuto)))
-        {
-            Notificator.Handle("Não foi possível remover o Estatuto anterior.");
-            return false;
-        }
-
-        agremiacao.Estatuto = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
-        return true;
-    }
-
-    private async Task<bool> ManterContratoSocial(IFormFile foto, Agremiacao agremiacao)
-    {
-        if (!string.IsNullOrWhiteSpace(agremiacao.ContratoSocial) &&
-            !_fileService.Apagar(new Uri(agremiacao.ContratoSocial)))
-        {
-            Notificator.Handle("Não foi possível remover o ContratoSocial anterior.");
-            return false;
-        }
-
-        agremiacao.ContratoSocial = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
-        return true;
-    }
-
-    private async Task<bool> ManterDocumentacao(IFormFile foto, Agremiacao agremiacao)
-    {
-        if (!string.IsNullOrWhiteSpace(agremiacao.DocumentacaoAtualizada) &&
-            !_fileService.Apagar(new Uri(agremiacao.DocumentacaoAtualizada)))
-        {
-            Notificator.Handle("Não foi possível remover a DocumentacaoAtualizada anterior.");
-            return false;
-        }
-
-        agremiacao.DocumentacaoAtualizada = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
-        return true;
-    }
+    // private async Task<bool> ManterAlvararLocacao(IFormFile foto, Agremiacao agremiacao)
+    // {
+    //     if (!string.IsNullOrWhiteSpace(agremiacao.AlvaraLocacao) &&
+    //         !_fileService.Apagar(new Uri(agremiacao.AlvaraLocacao)))
+    //     {
+    //         Notificator.Handle("Não foi possível remover o AlvaraLocacao anterior.");
+    //         return false;
+    //     }
+    //
+    //     agremiacao.AlvaraLocacao = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
+    //     return true;
+    // }
+    //
+    // private async Task<bool> ManterEstatuto(IFormFile foto, Agremiacao agremiacao)
+    // {
+    //     if (!string.IsNullOrWhiteSpace(agremiacao.Estatuto) && !_fileService.Apagar(new Uri(agremiacao.Estatuto)))
+    //     {
+    //         Notificator.Handle("Não foi possível remover o Estatuto anterior.");
+    //         return false;
+    //     }
+    //
+    //     agremiacao.Estatuto = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
+    //     return true;
+    // }
+    //
+    // private async Task<bool> ManterContratoSocial(IFormFile foto, Agremiacao agremiacao)
+    // {
+    //     if (!string.IsNullOrWhiteSpace(agremiacao.ContratoSocial) &&
+    //         !_fileService.Apagar(new Uri(agremiacao.ContratoSocial)))
+    //     {
+    //         Notificator.Handle("Não foi possível remover o ContratoSocial anterior.");
+    //         return false;
+    //     }
+    //
+    //     agremiacao.ContratoSocial = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
+    //     return true;
+    // }
+    //
+    // private async Task<bool> ManterDocumentacao(IFormFile foto, Agremiacao agremiacao)
+    // {
+    //     if (!string.IsNullOrWhiteSpace(agremiacao.DocumentacaoAtualizada) &&
+    //         !_fileService.Apagar(new Uri(agremiacao.DocumentacaoAtualizada)))
+    //     {
+    //         Notificator.Handle("Não foi possível remover a DocumentacaoAtualizada anterior.");
+    //         return false;
+    //     }
+    //
+    //     agremiacao.DocumentacaoAtualizada = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
+    //     return true;
+    // }
 
     #endregion
 
     private bool ValidarAnexos(CadastrarAgremiacaoDto dto)
     {
-        if (dto.AlvaraLocacao?.Length > 10000000)
-        {
-            Notificator.Handle("AlvaraLocacao deve ter no máximo 10Mb");
-        }
-
-        if (dto.AlvaraLocacao != null && dto.AlvaraLocacao.FileName.Split(".").Last() != "pdf")
-        {
-            Notificator.Handle("AlvaraLocacao deve do tipo pdf");
-        }
-
-        if (dto.Estatuto?.Length > 10000000)
-        {
-            Notificator.Handle("Estatuto deve ter no máximo 10Mb");
-        }
-
-        if (dto.Estatuto != null && dto.Estatuto.FileName.Split(".").Last() != "pdf")
-        {
-            Notificator.Handle("Estatuto deve do tipo pdf");
-        }
-
-        if (dto.ContratoSocial?.Length > 10000000)
-        {
-            Notificator.Handle("ContratoSocial deve ter no máximo 10Mb");
-        }
-
-        if (dto.ContratoSocial != null && dto.ContratoSocial.FileName.Split(".").Last() != "pdf")
-        {
-            Notificator.Handle("ContratoSocial deve do tipo pdf");
-        }
-
-        if (dto.DocumentacaoAtualizada?.Length > 10000000)
-        {
-            Notificator.Handle("DocumentacaoAtualizada deve ter no máximo 10Mb");
-        }
-
-        if (dto.DocumentacaoAtualizada != null && dto.DocumentacaoAtualizada.FileName.Split(".").Last() != "pdf")
-        {
-            Notificator.Handle("DocumentacaoAtualizada deve do tipo pdf");
-        }
+        // if (dto.AlvaraLocacao?.Length > 10000000)
+        // {
+        //     Notificator.Handle("AlvaraLocacao deve ter no máximo 10Mb");
+        // }
+        //
+        // if (dto.AlvaraLocacao != null && dto.AlvaraLocacao.FileName.Split(".").Last() != "pdf")
+        // {
+        //     Notificator.Handle("AlvaraLocacao deve do tipo pdf");
+        // }
+        //
+        // if (dto.Estatuto?.Length > 10000000)
+        // {
+        //     Notificator.Handle("Estatuto deve ter no máximo 10Mb");
+        // }
+        //
+        // if (dto.Estatuto != null && dto.Estatuto.FileName.Split(".").Last() != "pdf")
+        // {
+        //     Notificator.Handle("Estatuto deve do tipo pdf");
+        // }
+        //
+        // if (dto.ContratoSocial?.Length > 10000000)
+        // {
+        //     Notificator.Handle("ContratoSocial deve ter no máximo 10Mb");
+        // }
+        //
+        // if (dto.ContratoSocial != null && dto.ContratoSocial.FileName.Split(".").Last() != "pdf")
+        // {
+        //     Notificator.Handle("ContratoSocial deve do tipo pdf");
+        // }
+        //
+        // if (dto.DocumentacaoAtualizada?.Length > 10000000)
+        // {
+        //     Notificator.Handle("DocumentacaoAtualizada deve ter no máximo 10Mb");
+        // }
+        //
+        // if (dto.DocumentacaoAtualizada != null && dto.DocumentacaoAtualizada.FileName.Split(".").Last() != "pdf")
+        // {
+        //     Notificator.Handle("DocumentacaoAtualizada deve do tipo pdf");
+        // }
 
         if (dto.Foto?.Length > 10000000)
         {
