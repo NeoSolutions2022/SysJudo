@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 .idea
 .idea/**
+SysJudo.Api/appsettings.Development.json
