@@ -2,7 +2,6 @@
 
 public class ExportarAgremiacaoDto
 {
-    public string ParametroNome = "Nome";
     public bool Nome { get; set; }
     public bool Sigla { get; set; }
     public bool Fantasia { get; set; }
@@ -22,4 +21,3 @@ public class ExportarAgremiacaoDto
     public bool Email { get; set; }
     public bool Cnpj { get; set; }
 }
-
