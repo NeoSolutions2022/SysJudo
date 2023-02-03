@@ -10,8 +10,7 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
     {
         builder.Property(e => e.AlvaraLocacao)
             .IsRequired(false)
-            .HasMaxLength(255)
-            .IsFixedLength();
+            .HasDefaultValue(false);
 
         builder.Property(e => e.Anotacoes)
             .IsRequired(false)
@@ -37,8 +36,7 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
 
         builder.Property(e => e.ContratoSocial)
             .IsRequired(false)
-            .HasMaxLength(255)
-            .IsFixedLength();
+            .HasDefaultValue(false);
 
         builder.Property(e => e.DataCnpj)
             .IsRequired(false);
@@ -48,8 +46,7 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
 
         builder.Property(e => e.DocumentacaoAtualizada)
             .IsRequired(false)
-            .HasMaxLength(255)
-            .IsFixedLength();
+            .HasDefaultValue(false);
 
         builder.Property(e => e.Email)
             .IsRequired()
@@ -61,8 +58,7 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
 
         builder.Property(e => e.Estatuto)
             .IsRequired(false)
-            .HasMaxLength(255)
-            .IsFixedLength();
+            .HasDefaultValue(false);
 
         builder.Property(e => e.Fantasia)
             .IsRequired(false)
