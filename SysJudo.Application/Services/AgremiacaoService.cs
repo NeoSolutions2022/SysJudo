@@ -1732,6 +1732,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return null;
         }
 
+        foreach (var documento in dto.Documentos)
+        {
+            if (documento is { Length: > 0 })
+            {
+                agremiacao.DocumentosUri = "&" + await _fileService.Upload(documento, EUploadPath.FotosAgremiacao);
+            }
+            
+        }
         // if (dto.AlvaraLocacao is { Length: > 0 } && !await ManterAlvararLocacao(dto.AlvaraLocacao, agremiacao))
         // {
         //     return null;

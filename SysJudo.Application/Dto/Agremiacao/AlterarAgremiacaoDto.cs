@@ -27,10 +27,11 @@ public class AlterarAgremiacaoDto
     public DateOnly? DataCnpj { get; set; }
     public DateOnly? DataAta { get; set; }
     public IFormFile? Foto { get; set; }
-    public IFormFile? AlvaraLocacao { get; set; }
-    public IFormFile? Estatuto { get; set; }
-    public IFormFile? ContratoSocial { get; set; }
-    public IFormFile? DocumentacaoAtualizada { get; set; }
+    public List<IFormFile> Documentos { get; set; }
+    public bool AlvaraLocacao { get; set; }
+    public bool Estatuto { get; set; }
+    public bool ContratoSocial { get; set; }
+    public bool DocumentacaoAtualizada { get; set; }
     public int IdRegiao { get; set; }
     public string? Anotacoes { get; set; }
 }
