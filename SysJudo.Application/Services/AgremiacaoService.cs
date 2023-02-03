@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Text;
+using AutoMapper;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http;
@@ -1662,14 +1663,18 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return null;
         }
 
+        StringBuilder links = new StringBuilder();
         foreach (var documento in dto.Documentos)
         {
             if (documento is { Length: > 0 })
             {
-                agremiacao.DocumentosUri = "&" + await _fileService.Upload(documento, EUploadPath.FotosAgremiacao);
+                links.Append(agremiacao.DocumentosUri + "&" +
+                             await _fileService.Upload(documento, EUploadPath.FotosAgremiacao));
             }
             
         }
+
+        agremiacao.DocumentosUri = links.ToString();
         // if (dto.AlvaraLocacao is { Length: > 0 })
         // {
         //     agremiacao.AlvaraLocacao = await _fileService.Upload(dto.AlvaraLocacao, EUploadPath.FotosAgremiacao);
