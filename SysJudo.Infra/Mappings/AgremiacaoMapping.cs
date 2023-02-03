@@ -9,7 +9,7 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
     public void Configure(EntityTypeBuilder<Agremiacao> builder)
     {
         builder.Property(e => e.AlvaraLocacao)
-            .IsRequired(false)
+            .IsRequired()
             .HasDefaultValue(false);
 
         builder.Property(e => e.Anotacoes)
@@ -35,7 +35,7 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
             .IsRequired(false);
 
         builder.Property(e => e.ContratoSocial)
-            .IsRequired(false)
+            .IsRequired()
             .HasDefaultValue(false);
 
         builder.Property(e => e.DataCnpj)
@@ -45,7 +45,7 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
             .IsRequired(false);
 
         builder.Property(e => e.DocumentacaoAtualizada)
-            .IsRequired(false)
+            .IsRequired()
             .HasDefaultValue(false);
 
         builder.Property(e => e.Email)
