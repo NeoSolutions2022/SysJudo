@@ -7,11 +7,19 @@ public class AgremiacaoValidation: AbstractValidator<Agremiacao>
 {
     public AgremiacaoValidation()
     {
+        RuleFor(c => c.AlvaraLocacao)
+            .NotNull()
+            .WithMessage("AlvaraLocacao não pode ser nulo!");
+        
         RuleFor(c => c.Bairro)
             .NotEmpty()
             .WithMessage("Bairro não pode ser vazio!")
             .MaximumLength(30)
             .WithMessage("Bairro deve ter no máximo 30 caracteres");
+        
+        RuleFor(c => c.ContratoSocial)
+            .NotNull()
+            .WithMessage("ContratoSocial não pode ser nulo!");
         
         RuleFor(c => c.Cep)
             .NotEmpty()
@@ -44,6 +52,10 @@ public class AgremiacaoValidation: AbstractValidator<Agremiacao>
             .NotNull()
             .WithMessage("DataNascimento não pode ser nulo!");
         
+        RuleFor(c => c.DocumentacaoAtualizada)
+            .NotNull()
+            .WithMessage("DocumentacaoAtualizada não pode ser nulo!");
+        
         RuleFor(c => c.Email)
             .NotEmpty()
             .WithMessage("Email não pode ser vazio!")
@@ -57,6 +69,10 @@ public class AgremiacaoValidation: AbstractValidator<Agremiacao>
             .WithMessage("Endereco não pode ser vazio!")
             .MaximumLength(60)
             .WithMessage("Endereco deve ter no máximo 60 caracteres");
+        
+        RuleFor(c => c.Estatuto)
+            .NotNull()
+            .WithMessage("Estatuto não pode ser nulo!");
         
         RuleFor(c => c.Fantasia)
             .MaximumLength(60)

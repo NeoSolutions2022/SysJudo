@@ -26,10 +26,10 @@ public class AgremiacaoFiltro : EntityFiltro, IAggregateRoot, ITenant
     public DateOnly? DataCnpj { get; set; }
     public DateOnly? DataAta { get; set; }
     public string? Foto { get; set; }
-    public string? AlvaraLocacao { get; set; }
-    public string? Estatuto { get; set; }
-    public string? ContratoSocial { get; set; }
-    public string? DocumentacaoAtualizada { get; set; }
+    public bool AlvaraLocacao { get; set; }
+    public bool Estatuto { get; set; }
+    public bool ContratoSocial { get; set; }
+    public bool DocumentacaoAtualizada { get; set; }
     public string Anotacoes { get; set; } = " ";
 
     public int IdPais { get; set; }

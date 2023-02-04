@@ -9,7 +9,6 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
     public void Configure(EntityTypeBuilder<Agremiacao> builder)
     {
         builder.Property(e => e.AlvaraLocacao)
-            .IsRequired(false)
             .HasDefaultValue(false);
 
         builder.Property(e => e.Anotacoes)
@@ -35,7 +34,6 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
             .IsRequired(false);
 
         builder.Property(e => e.ContratoSocial)
-            .IsRequired(false)
             .HasDefaultValue(false);
 
         builder.Property(e => e.DataCnpj)
@@ -45,7 +43,6 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
             .IsRequired(false);
 
         builder.Property(e => e.DocumentacaoAtualizada)
-            .IsRequired(false)
             .HasDefaultValue(false);
 
         builder.Property(e => e.Email)
@@ -57,7 +54,6 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
             .HasMaxLength(60);
 
         builder.Property(e => e.Estatuto)
-            .IsRequired(false)
             .HasDefaultValue(false);
 
         builder.Property(e => e.Fantasia)
@@ -66,11 +62,11 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
 
         builder.Property(e => e.InscricaoEstadual)
             .IsRequired(false)
-            .HasMaxLength(11);
+            .HasMaxLength(60);
 
         builder.Property(e => e.InscricaoMunicipal)
             .IsRequired(false)
-            .HasMaxLength(11);
+            .HasMaxLength(60);
 
         builder.Property(e => e.Foto)
             .IsRequired(false);

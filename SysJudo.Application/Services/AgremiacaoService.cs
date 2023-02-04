@@ -1662,14 +1662,18 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return null;
         }
 
-        foreach (var documento in dto.Documentos)
+        if (dto.Documentos != null)
         {
-            if (documento is { Length: > 0 })
+            foreach (var documento in dto.Documentos)
             {
-                agremiacao.DocumentosUri = "&" + await _fileService.Upload(documento, EUploadPath.FotosAgremiacao);
-            }
+                if (documento is { Length: > 0 })
+                {
+                    agremiacao.DocumentosUri = "&" + await _fileService.Upload(documento, EUploadPath.FotosAgremiacao);
+                }
             
+            }
         }
+        
         // if (dto.AlvaraLocacao is { Length: > 0 })
         // {
         //     agremiacao.AlvaraLocacao = await _fileService.Upload(dto.AlvaraLocacao, EUploadPath.FotosAgremiacao);
