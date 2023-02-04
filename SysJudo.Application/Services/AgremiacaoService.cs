@@ -1,5 +1,4 @@
-﻿using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http;
@@ -1662,39 +1661,22 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         {
             return null;
         }
-
-        StringBuilder links = new StringBuilder();
-        foreach (var documento in dto.Documentos)
+        
+        if (dto.Documentos != null)
         {
-            if (documento is { Length: > 0 })
+            StringBuilder links = new StringBuilder();
+            foreach (var documento in dto.Documentos)
             {
-                links.Append(agremiacao.DocumentosUri + "&" +
-                             await _fileService.Upload(documento, EUploadPath.FotosAgremiacao));
-            }
+                if (documento is { Length: > 0 })
+                {
+                    links.Append(agremiacao.DocumentosUri + "&" +
+                                 await _fileService.Upload(documento, EUploadPath.FotosAgremiacao));
+                }
             
+            }
         }
 
         agremiacao.DocumentosUri = links.ToString();
-        // if (dto.AlvaraLocacao is { Length: > 0 })
-        // {
-        //     agremiacao.AlvaraLocacao = await _fileService.Upload(dto.AlvaraLocacao, EUploadPath.FotosAgremiacao);
-        // }
-        //
-        // if (dto.Estatuto is { Length: > 0 })
-        // {
-        //     agremiacao.Estatuto = await _fileService.Upload(dto.Estatuto, EUploadPath.FotosAgremiacao);
-        // }
-        //
-        // if (dto.ContratoSocial is { Length: > 0 })
-        // {
-        //     agremiacao.ContratoSocial = await _fileService.Upload(dto.ContratoSocial, EUploadPath.FotosAgremiacao);
-        // }
-        //
-        // if (dto.DocumentacaoAtualizada is { Length: > 0 })
-        // {
-        //     agremiacao.DocumentacaoAtualizada =
-        //         await _fileService.Upload(dto.DocumentacaoAtualizada, EUploadPath.FotosAgremiacao);
-        // }
 
         if (dto.Foto is { Length: > 0 })
         {
@@ -1918,29 +1900,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             linha++;
         }
 
-        // for (int linha = 2; linha < agremiacoes.Count; linha++)
-        // {
-        //     ws.Cell(linha, 1).Value = agremiacoes[linha - 1].Nome;
-        //     ws.Cell(linha, 2).Value = agremiacoes[linha - 1].Sigla;
-        //     ws.Cell(linha, 3).Value = agremiacoes[linha - 1].Fantasia;
-        //     ws.Cell(linha, 4).Value = agremiacoes[linha - 1].Responsavel;
-        //     ws.Cell(linha, 5).Value = agremiacoes[linha - 1].Representante;
-        //     ws.Cell(linha, 6).Value = agremiacoes[linha - 1].DataFiliacao.ToString();
-        //     ws.Cell(linha, 7).Value = agremiacoes[linha - 1].DataNascimento.ToString();
-        //     ws.Cell(linha, 8).Value = agremiacoes[linha - 1].Cep;
-        //     ws.Cell(linha, 9).Value = agremiacoes[linha - 1].Endereco;
-        //     ws.Cell(linha, 10).Value = agremiacoes[linha - 1].Bairro;
-        //     ws.Cell(linha, 11).Value = agremiacoes[linha - 1].Complemento;
-        //     ws.Cell(linha, 12).Value = agremiacoes[linha - 1].IdCidade.ToString();
-        //     ws.Cell(linha, 13).Value = agremiacoes[linha - 1].IdEstado.ToString();
-        //     ws.Cell(linha, 14).Value = agremiacoes[linha - 1].IdRegiao.ToString();
-        //     ws.Cell(linha, 15).Value = agremiacoes[linha - 1].IdPais.ToString();
-        //     ws.Cell(linha, 16).Value = agremiacoes[linha - 1].Telefone;
-        //     ws.Cell(linha, 17).Value = agremiacoes[linha - 1].Email;
-        //     ws.Cell(linha, 18).Value = agremiacoes[linha - 1].Cnpj;
-        // }
-
-        
         return await _fileService.UploadExcel(workbook, EUploadPath.FotosAgremiacao);
     }
 
@@ -2019,111 +1978,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
     private async Task<bool> ManterFoto(IFormFile foto, Agremiacao agremiacao)
     {
-        // if (!string.IsNullOrWhiteSpace(agremiacao.Foto) && !_fileService.Apagar(new Uri(agremiacao.Foto)))
-        // {
-        //     Notificator.Handle("Não foi possível remover a foto anterior.");
-        //     return false;
-        // }
-
         agremiacao.Foto = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
         return true;
     }
-
-    // private async Task<bool> ManterAlvararLocacao(IFormFile foto, Agremiacao agremiacao)
-    // {
-    //     if (!string.IsNullOrWhiteSpace(agremiacao.AlvaraLocacao) &&
-    //         !_fileService.Apagar(new Uri(agremiacao.AlvaraLocacao)))
-    //     {
-    //         Notificator.Handle("Não foi possível remover o AlvaraLocacao anterior.");
-    //         return false;
-    //     }
-    //
-    //     agremiacao.AlvaraLocacao = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
-    //     return true;
-    // }
-    //
-    // private async Task<bool> ManterEstatuto(IFormFile foto, Agremiacao agremiacao)
-    // {
-    //     if (!string.IsNullOrWhiteSpace(agremiacao.Estatuto) && !_fileService.Apagar(new Uri(agremiacao.Estatuto)))
-    //     {
-    //         Notificator.Handle("Não foi possível remover o Estatuto anterior.");
-    //         return false;
-    //     }
-    //
-    //     agremiacao.Estatuto = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
-    //     return true;
-    // }
-    //
-    // private async Task<bool> ManterContratoSocial(IFormFile foto, Agremiacao agremiacao)
-    // {
-    //     if (!string.IsNullOrWhiteSpace(agremiacao.ContratoSocial) &&
-    //         !_fileService.Apagar(new Uri(agremiacao.ContratoSocial)))
-    //     {
-    //         Notificator.Handle("Não foi possível remover o ContratoSocial anterior.");
-    //         return false;
-    //     }
-    //
-    //     agremiacao.ContratoSocial = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
-    //     return true;
-    // }
-    //
-    // private async Task<bool> ManterDocumentacao(IFormFile foto, Agremiacao agremiacao)
-    // {
-    //     if (!string.IsNullOrWhiteSpace(agremiacao.DocumentacaoAtualizada) &&
-    //         !_fileService.Apagar(new Uri(agremiacao.DocumentacaoAtualizada)))
-    //     {
-    //         Notificator.Handle("Não foi possível remover a DocumentacaoAtualizada anterior.");
-    //         return false;
-    //     }
-    //
-    //     agremiacao.DocumentacaoAtualizada = await _fileService.Upload(foto, EUploadPath.FotosAgremiacao);
-    //     return true;
-    // }
 
     #endregion
 
     private bool ValidarAnexos(CadastrarAgremiacaoDto dto)
     {
-        // if (dto.AlvaraLocacao?.Length > 10000000)
-        // {
-        //     Notificator.Handle("AlvaraLocacao deve ter no máximo 10Mb");
-        // }
-        //
-        // if (dto.AlvaraLocacao != null && dto.AlvaraLocacao.FileName.Split(".").Last() != "pdf")
-        // {
-        //     Notificator.Handle("AlvaraLocacao deve do tipo pdf");
-        // }
-        //
-        // if (dto.Estatuto?.Length > 10000000)
-        // {
-        //     Notificator.Handle("Estatuto deve ter no máximo 10Mb");
-        // }
-        //
-        // if (dto.Estatuto != null && dto.Estatuto.FileName.Split(".").Last() != "pdf")
-        // {
-        //     Notificator.Handle("Estatuto deve do tipo pdf");
-        // }
-        //
-        // if (dto.ContratoSocial?.Length > 10000000)
-        // {
-        //     Notificator.Handle("ContratoSocial deve ter no máximo 10Mb");
-        // }
-        //
-        // if (dto.ContratoSocial != null && dto.ContratoSocial.FileName.Split(".").Last() != "pdf")
-        // {
-        //     Notificator.Handle("ContratoSocial deve do tipo pdf");
-        // }
-        //
-        // if (dto.DocumentacaoAtualizada?.Length > 10000000)
-        // {
-        //     Notificator.Handle("DocumentacaoAtualizada deve ter no máximo 10Mb");
-        // }
-        //
-        // if (dto.DocumentacaoAtualizada != null && dto.DocumentacaoAtualizada.FileName.Split(".").Last() != "pdf")
-        // {
-        //     Notificator.Handle("DocumentacaoAtualizada deve do tipo pdf");
-        // }
-
         if (dto.Foto?.Length > 10000000)
         {
             Notificator.Handle("Foto deve ter no máximo 10Mb");
