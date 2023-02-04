@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Text;
+using AutoMapper;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http;
@@ -1662,9 +1663,9 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return null;
         }
         
+        StringBuilder links = new StringBuilder();
         if (dto.Documentos != null)
         {
-            StringBuilder links = new StringBuilder();
             foreach (var documento in dto.Documentos)
             {
                 if (documento is { Length: > 0 })
