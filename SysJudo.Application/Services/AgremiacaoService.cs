@@ -1957,6 +1957,33 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         }
     }
 
+    public async Task EnviarDocumentos(int id, EnviarDocumentosDto dto)
+    {
+        var agremiacao = await _agremiacaoRepository.Obter(id);
+        if (agremiacao == null)
+        {
+            Notificator.HandleNotFoundResource();
+            return;
+        }
+
+        StringBuilder links = new StringBuilder();
+        foreach (var documento in dto.Documentos)
+        {
+            if (documento is { Length: > 0 })
+            {
+                links.Append(links + "&" +
+                             await _fileService.Upload(documento, EUploadPath.FotosAgremiacao));
+            }
+            
+        }
+
+        agremiacao.DocumentosUri = links.ToString();
+        _agremiacaoRepository.Alterar(agremiacao);
+        if (!await _agremiacaoRepository.UnitOfWork.Commit())
+        {
+            Notificator.Handle("Não foi possível alterar anotação");
+        }
+    }
 
     private async Task<bool> Validar(Agremiacao agremiacao)
     {
