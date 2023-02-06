@@ -11,9 +11,7 @@ public class AgremiacaoFiltroMapping : IEntityTypeConfiguration<AgremiacaoFiltro
         builder.HasKey(c => c.Identificador);
         
         builder.Property(e => e.AlvaraLocacao)
-            .IsRequired(false)
-            .HasMaxLength(255)
-            .IsFixedLength();
+            .HasDefaultValue(false);
 
         builder.Property(e => e.Anotacoes)
             .IsRequired(false)
@@ -31,16 +29,14 @@ public class AgremiacaoFiltroMapping : IEntityTypeConfiguration<AgremiacaoFiltro
             .HasMaxLength(14);
 
         builder.Property(e => e.Complemento)
-            .IsRequired(false)
+            .IsRequired()
             .HasMaxLength(60);
 
         builder.Property(e => e.Conteudo)
             .IsRequired(false);
 
         builder.Property(e => e.ContratoSocial)
-            .IsRequired(false)
-            .HasMaxLength(255)
-            .IsFixedLength();
+            .HasDefaultValue(false);
 
         builder.Property(e => e.DataCnpj)
             .IsRequired(false);
@@ -49,9 +45,7 @@ public class AgremiacaoFiltroMapping : IEntityTypeConfiguration<AgremiacaoFiltro
             .IsRequired(false);
 
         builder.Property(e => e.DocumentacaoAtualizada)
-            .IsRequired(false)
-            .HasMaxLength(255)
-            .IsFixedLength();
+            .HasDefaultValue(false);
 
         builder.Property(e => e.Email)
             .IsRequired()
@@ -62,9 +56,7 @@ public class AgremiacaoFiltroMapping : IEntityTypeConfiguration<AgremiacaoFiltro
             .HasMaxLength(60);
 
         builder.Property(e => e.Estatuto)
-            .IsRequired(false)
-            .HasMaxLength(255)
-            .IsFixedLength();
+            .HasDefaultValue(false);
 
         builder.Property(e => e.Fantasia)
             .IsRequired(false)
@@ -72,11 +64,11 @@ public class AgremiacaoFiltroMapping : IEntityTypeConfiguration<AgremiacaoFiltro
 
         builder.Property(e => e.InscricaoEstadual)
             .IsRequired(false)
-            .HasMaxLength(11);
+            .HasMaxLength(60);
 
         builder.Property(e => e.InscricaoMunicipal)
             .IsRequired(false)
-            .HasMaxLength(11);
+            .HasMaxLength(60);
 
         builder.Property(e => e.Foto)
             .IsRequired(false);

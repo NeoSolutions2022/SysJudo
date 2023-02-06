@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SysJudo.Infra.Context;
 
@@ -11,9 +12,10 @@ using SysJudo.Infra.Context;
 namespace SysJudo.Infra.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230203234949_AjusteAgremiacao")]
+    partial class AjusteAgremiacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -476,10 +478,10 @@ namespace SysJudo.Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Identificador"), 1L, 1);
 
-                    b.Property<bool>("AlvaraLocacao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                    b.Property<string>("AlvaraLocacao")
+                        .HasMaxLength(255)
+                        .HasColumnType("nchar(255)")
+                        .IsFixedLength();
 
                     b.Property<string>("Anotacoes")
                         .HasMaxLength(1200)
@@ -504,17 +506,16 @@ namespace SysJudo.Infra.Migrations
                         .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("Complemento")
-                        .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
                     b.Property<byte[]>("Conteudo")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<bool>("ContratoSocial")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                    b.Property<string>("ContratoSocial")
+                        .HasMaxLength(255)
+                        .HasColumnType("nchar(255)")
+                        .IsFixedLength();
 
                     b.Property<DateTime?>("DataAta")
                         .HasColumnType("DATE");
@@ -528,10 +529,10 @@ namespace SysJudo.Infra.Migrations
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("DATE");
 
-                    b.Property<bool>("DocumentacaoAtualizada")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                    b.Property<string>("DocumentacaoAtualizada")
+                        .HasMaxLength(255)
+                        .HasColumnType("nchar(255)")
+                        .IsFixedLength();
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -543,10 +544,10 @@ namespace SysJudo.Infra.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<bool>("Estatuto")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                    b.Property<string>("Estatuto")
+                        .HasMaxLength(255)
+                        .HasColumnType("nchar(255)")
+                        .IsFixedLength();
 
                     b.Property<string>("Fantasia")
                         .HasMaxLength(60)
@@ -571,12 +572,12 @@ namespace SysJudo.Infra.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("InscricaoEstadual")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("InscricaoMunicipal")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("Nome")
                         .IsRequired()

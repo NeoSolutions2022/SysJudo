@@ -35,7 +35,7 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
     {
         var info = new OpenApiInfo
         {
-            Title = "SysRA API",
+            Title = "Judo API",
             Version = description.ApiVersion.ToString(),
             //Description = "",
             //Contact = new OpenApiContact { Name = "", Url = new Uri("") },

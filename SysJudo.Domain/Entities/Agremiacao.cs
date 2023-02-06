@@ -13,7 +13,7 @@ public class Agremiacao : Entity, IAggregateRoot, ITenant
     public string Representante { get; set; } = null!;
     
     public byte[]? Conteudo { get; set; }
-    public string DocumentosUri { get; set; } = null!;
+    public string? DocumentosUri { get; set; }
     public DateOnly DataFiliacao { get; set; }
     public DateOnly DataNascimento { get; set; }
     public string Cep { get; set; } = null!;
