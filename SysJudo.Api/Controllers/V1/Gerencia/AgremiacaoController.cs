@@ -1,4 +1,3 @@
-using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using SysJudo.Application.Contracts;
@@ -90,9 +89,20 @@ public class AgremiacaoController : MainController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> Remover(int id,[FromBody] AnotarAgremiacaoDto dto)
+    public async Task<IActionResult> Anotar(int id,[FromBody] AnotarAgremiacaoDto dto)
     {
         await _service.Anotar(id, dto);
+        return NoContentResponse();
+    }
+    
+    [HttpPatch("{id}")]
+    [SwaggerOperation(Summary = "Anotações Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> EnviarDocumentos(int id,[FromBody] EnviarDocumentosDto dto)
+    {
+        await _service.EnviarDocumentos(id, dto);
         return NoContentResponse();
     }
     
