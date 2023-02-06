@@ -95,8 +95,8 @@ public class AgremiacaoController : MainController
         return NoContentResponse();
     }
     
-    [HttpPatch("{id}")]
-    [SwaggerOperation(Summary = "Anotações Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
+    [HttpPatch("{id}/EnviarDocumentos")]
+    [SwaggerOperation(Summary = "Enviar documentos Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
