@@ -1720,34 +1720,20 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return null;
         }
 
-        foreach (var documento in dto.Documentos)
+        StringBuilder links = new StringBuilder();
+        if (dto.Documentos != null)
         {
-            if (documento is { Length: > 0 })
+            foreach (var documento in dto.Documentos)
             {
-                agremiacao.DocumentosUri = "&" + await _fileService.Upload(documento, EUploadPath.FotosAgremiacao);
+                if (documento is { Length: > 0 })
+                {
+                    links.Append(agremiacao.DocumentosUri + "&" +
+                                 await _fileService.Upload(documento, EUploadPath.FotosAgremiacao));
+                }
             }
-            
         }
-        // if (dto.AlvaraLocacao is { Length: > 0 } && !await ManterAlvararLocacao(dto.AlvaraLocacao, agremiacao))
-        // {
-        //     return null;
-        // }
-        //
-        // if (dto.Estatuto is { Length: > 0 } && !await ManterEstatuto(dto.Estatuto, agremiacao))
-        // {
-        //     return null;
-        // }
-        //
-        // if (dto.ContratoSocial is { Length: > 0 } && !await ManterContratoSocial(dto.ContratoSocial, agremiacao))
-        // {
-        //     return null;
-        // }
-        //
-        // if (dto.DocumentacaoAtualizada is { Length: > 0 } &&
-        //     !await ManterDocumentacao(dto.DocumentacaoAtualizada, agremiacao))
-        // {
-        //     return null;
-        // }
+
+        agremiacao.DocumentosUri = links.ToString();
 
         _agremiacaoRepository.Alterar(agremiacao);
         
