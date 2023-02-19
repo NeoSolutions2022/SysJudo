@@ -1967,7 +1967,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         _agremiacaoRepository.Alterar(agremiacao);
         if (!await _agremiacaoRepository.UnitOfWork.Commit())
         {
-            Notificator.Handle("Não foi possível alterar anotação");
+            Notificator.Handle("Não foi possível enviar documentos.");
         }
     }
 
