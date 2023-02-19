@@ -36,7 +36,12 @@ public class AgremiacaoRepository : Repository<Agremiacao>,IAgremiacaoRepository
 
     public async Task<IResultadoPaginado<Agremiacao>> Buscar(IBuscaPaginada<Agremiacao> filtro)
     {
-        var query = Context.Agremiacoes.AsQueryable();
+        var query = Context.Agremiacoes
+                .Include(c => c.Cidade)
+                .Include(c => c.Estado)
+                .Include(c => c.Pais)
+                .Include(c => c.Regiao).AsQueryable()
+            ;
         return await base.Buscar(query, filtro);
     }
 
