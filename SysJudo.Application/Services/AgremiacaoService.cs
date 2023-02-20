@@ -1957,17 +1957,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         {
             if (documento is { Length: > 0 })
             {
-                links.Append(links + "&" +
+                links.Append("&" +
                              await _fileService.Upload(documento, EUploadPath.FotosAgremiacao));
             }
             
         }
 
-        agremiacao.DocumentosUri = links.ToString();
+        agremiacao.DocumentosUri += links.ToString();
         _agremiacaoRepository.Alterar(agremiacao);
         if (!await _agremiacaoRepository.UnitOfWork.Commit())
         {
-            Notificator.Handle("Não foi possível alterar anotação");
+            Notificator.Handle("Não foi possível enviar documentos.");
         }
     }
 

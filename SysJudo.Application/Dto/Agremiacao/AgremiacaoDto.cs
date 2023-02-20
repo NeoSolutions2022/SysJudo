@@ -1,3 +1,9 @@
+using SysJudo.Application.Dto.Cidade;
+using SysJudo.Application.Dto.Cliente;
+using SysJudo.Application.Dto.Estado;
+using SysJudo.Application.Dto.Pais;
+using SysJudo.Application.Dto.Regiao;
+
 namespace SysJudo.Application.Dto.Agremiacao;
 
 public class AgremiacaoDto
@@ -22,6 +28,7 @@ public class AgremiacaoDto
     public string Cnpj { get; set; } = null!;
     public string? InscricaoMunicipal { get; set; }
     public string? InscricaoEstadual { get; set; }
+    public string? DocumentosUri { get; set; }
     public DateOnly? DataCnpj { get; set; }
     public DateOnly? DataAta { get; set; }
     public string? Foto { get; set; }
@@ -31,4 +38,10 @@ public class AgremiacaoDto
     public bool DocumentacaoAtualizada { get; set; }
     public int IdRegiao { get; set; }
     public string? Anotacoes { get; set; }
+    
+    public virtual PaisDto Pais { get; set; } = null!;
+    public virtual EstadoDto Estado { get; set; } = null!;
+    public virtual CidadeDto Cidade { get; set; } = null!;
+    public virtual RegiaoDto Regiao { get; set; } = null!;
+    public virtual ClienteDto Cliente { get; set; } = null!;
 }
