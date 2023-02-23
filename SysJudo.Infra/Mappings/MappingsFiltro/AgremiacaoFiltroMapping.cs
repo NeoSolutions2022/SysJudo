@@ -9,7 +9,7 @@ public class AgremiacaoFiltroMapping : IEntityTypeConfiguration<AgremiacaoFiltro
     public void Configure(EntityTypeBuilder<AgremiacaoFiltro> builder)
     {
         builder.HasKey(c => c.Identificador);
-        
+
         builder.Property(e => e.AlvaraLocacao)
             .HasDefaultValue(false);
 
@@ -112,30 +112,5 @@ public class AgremiacaoFiltroMapping : IEntityTypeConfiguration<AgremiacaoFiltro
         builder.Property(e => e.Telefone)
             .IsRequired()
             .HasMaxLength(60);
-            
-        builder.HasOne(d => d.Pais)
-            .WithMany(p => p.AgremiacoesFiltro)
-            .HasForeignKey(d => d.IdPais)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(d => d.Cidade)
-            .WithMany(p => p.AgremiacoesFiltro)
-            .HasForeignKey(d => d.IdCidade)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(d => d.Estado)
-            .WithMany(p => p.AgremiacoesFiltro)
-            .HasForeignKey(d => d.IdEstado)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(d => d.Regiao)
-            .WithMany(p => p.AgremiacoesFiltro)
-            .HasForeignKey(d => d.IdRegiao)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(d => d.Cliente)
-            .WithMany(p => p.AgremiacoesFiltro)
-            .HasForeignKey(d => d.ClienteId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }
