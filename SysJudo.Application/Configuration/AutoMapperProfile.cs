@@ -141,8 +141,9 @@ public class AutoMapperProfile : Profile
 
         CreateMap<Agremiacao, AgremiacaoFiltro>().ReverseMap();
         CreateMap<AgremiacaoFiltro, SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>().ReverseMap();
+        CreateMap<AgremiacaoFiltro, SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>().ReverseMap();
         CreateMap<ResultadoPaginado<AgremiacaoFiltro>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>>().ReverseMap();
-
+        CreateMap<ResultadoPaginado<AgremiacaoFiltro>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>>().ReverseMap();
 
         #endregion
     }
