@@ -44,7 +44,7 @@ public class FileService : IFileService
     public async Task<string> Upload(IFormFile arquivo, EUploadPath uploadPath,
         EPathAccess pathAcess = EPathAccess.Private)
     {
-        var connectionString = "DefaultEndpointsProtocol=https;AccountName=judostorages;AccountKey=I+Nq1dSNdwJUDW4iFxjio1DY/datoBdX/IUPe2zBWYT9TotqdT++eZQVuR7PmZ00PKMtMzNSkBBT+ASth6or6g==;EndpointSuffix=core.windows.net";
+        var connectionString = "DefaultEndpointsProtocol=https;AccountName=judostoragess;AccountKey=St90rU0TjMVJ0rm99w14CgjL8vqUoQd+HD/xR15nL+yia0d0tKUDPfp/dH+5d+2FtbEayltX9tDw+AStgTpyzQ==;EndpointSuffix=core.windows.net";
         
         var fileName = GenerateNewFileName(arquivo.FileName);
         BlobContainerClient container = new BlobContainerClient(connectionString, "teste");
