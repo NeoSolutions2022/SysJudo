@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using AutoMapper;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Agremiacao;
@@ -30,7 +29,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         _filtroRepository = filtroRepository;
     }
 
-    public async Task<PagedDto<AgremiacaoDto>> Filtrar(List<FiltragemAgremiacaoDto> dto,
+    public async Task<PagedDto<AgremiacaoFiltroDto>> Filtrar(List<FiltragemAgremiacaoDto> dto,
         List<Agremiacao> agremiacoes = null, int tamanho = 0, int aux = 0)
     {
         tamanho = dto.Count;
@@ -1312,13 +1311,18 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         await _filtroRepository.RemoverTodos();
         foreach (var agremiacao in agremiacoesFiltro)
         {
+            agremiacao.PaisNome = agremiacoes.FirstOrDefault(c => c.IdPais == agremiacao.IdPais)!.Pais.Descricao;
+            agremiacao.EstadoNome = agremiacoes.FirstOrDefault(c => c.IdEstado == agremiacao.IdEstado)!.Estado.Descricao;
+            agremiacao.CidadeNome = agremiacoes.FirstOrDefault(c => c.IdCidade == agremiacao.IdCidade)!.Cidade.Descricao;
+            agremiacao.RegiaoNome = agremiacoes.FirstOrDefault(c => c.IdRegiao == agremiacao.IdRegiao)!.Regiao.Descricao;
+            
             _filtroRepository.Cadastrar(agremiacao);
         }
 
         if (await _filtroRepository.UnitOfWork.Commit())
         {
             var filtro = await _filtroRepository.Buscar(new BuscarAgremiacaoFiltroDto());
-            return Mapper.Map<PagedDto<AgremiacaoDto>>(filtro);
+            return Mapper.Map<PagedDto<AgremiacaoFiltroDto>>(filtro);
         }
 
         Notificator.Handle("Não foi possível salvar as agremiações filtradas!");

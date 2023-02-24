@@ -35,5 +35,5 @@ public class AgremiacaoFiltroDto
     public string CidadeNome { get; set; } = null!;
     public string EstadoNome { get; set; } = null!;
     public string RegiaoNome { get; set; } = null!;
-    public string PaisNome { get; set; } = null!;
+    public string PaisNome { get; set; } = null!;
 }
