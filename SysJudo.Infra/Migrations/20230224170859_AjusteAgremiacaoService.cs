@@ -4,7 +4,7 @@
 
 namespace SysJudo.Infra.Migrations
 {
-    public partial class ChangedFilter : Migration
+    public partial class AjusteAgremiacaoService : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
