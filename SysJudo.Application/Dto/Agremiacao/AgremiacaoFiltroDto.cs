@@ -1,28 +1,28 @@
-﻿using SysJudo.Domain.Contracts;
+namespace SysJudo.Application.Dto.Agremiacao;
 
-namespace SysJudo.Domain.Entities.EntitiesFiltros;
-
-public class AgremiacaoFiltro : EntityFiltro, IAggregateRoot, ITenant
+public class AgremiacaoFiltroDto
 {
-    public int Identificador { get; set; }
+    public int Id { get; set; }
     public string Sigla { get; set; } = null!;
     public string Nome { get; set; } = null!;
     public string? Fantasia { get; set; }
     public string Responsavel { get; set; } = null!;
     public string Representante { get; set; } = null!;
-
-    public byte[]? Conteudo { get; set; }
     public DateOnly DataFiliacao { get; set; }
     public DateOnly DataNascimento { get; set; }
     public string Cep { get; set; } = null!;
     public string Endereco { get; set; } = null!;
     public string Bairro { get; set; } = null!;
-    public string? Complemento { get; set; }
+    public string Complemento { get; set; } = null!;
+    public int IdCidade { get; set; }
+    public int IdEstado { get; set; }
+    public int IdPais { get; set; }
     public string Telefone { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string Cnpj { get; set; } = null!;
     public string? InscricaoMunicipal { get; set; }
     public string? InscricaoEstadual { get; set; }
+    public string? DocumentosUri { get; set; }
     public DateOnly? DataCnpj { get; set; }
     public DateOnly? DataAta { get; set; }
     public string? Foto { get; set; }
@@ -30,14 +30,10 @@ public class AgremiacaoFiltro : EntityFiltro, IAggregateRoot, ITenant
     public bool Estatuto { get; set; }
     public bool ContratoSocial { get; set; }
     public bool DocumentacaoAtualizada { get; set; }
-    public string Anotacoes { get;set;}= " ";public string CidadeNome { get; set; } = null!;
+    public int IdRegiao { get; set; }
+    public string? Anotacoes { get; set; }
+    public string CidadeNome { get; set; } = null!;
     public string EstadoNome { get; set; } = null!;
     public string RegiaoNome { get; set; } = null!;
-    public string PaisNome { get; set; } = null!;
-
-    public int IdPais { get; set; }
-    public int IdCidade { get; set; }
-    public int IdEstado { get; set; }
-    public int IdRegiao { get; set; }
-    public int ClienteId{ get; set; }
+    public string PaisNome { get; set; } = null!;
 }

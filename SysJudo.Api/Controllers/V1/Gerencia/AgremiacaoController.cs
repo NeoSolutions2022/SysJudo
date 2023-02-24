@@ -100,7 +100,7 @@ public class AgremiacaoController : MainController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> EnviarDocumentos(int id,[FromBody] EnviarDocumentosDto dto)
+    public async Task<IActionResult> EnviarDocumentos(int id,[FromForm] EnviarDocumentosDto dto)
     {
         await _service.EnviarDocumentos(id, dto);
         return NoContentResponse();
