@@ -1140,7 +1140,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
         var agremiacoesFiltro = Mapper.Map<List<AgremiacaoFiltro>>(agremiacoes);
         await _filtroRepository.RemoverTodos();
-        foreach (var agremiacao in agremiacoesFiltro)
+        foreach (var agremiacao in agremiacoesFiltro.DistinctBy(c => c.Id))
         {
             agremiacao.PaisNome = agremiacoes.FirstOrDefault(c => c.IdPais == agremiacao.IdPais)!.Pais.Descricao;
             agremiacao.EstadoNome =
