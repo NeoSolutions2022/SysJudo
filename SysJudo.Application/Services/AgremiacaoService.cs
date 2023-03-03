@@ -40,11 +40,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Sigla")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => c.Sigla.Contains(dto[aux].ValorString!));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => c.Sigla.Contains(dto[aux].ValorString!));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => c.Sigla.Contains(dto[aux].ValorString!));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -55,17 +76,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Sigla == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Sigla == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Sigla == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -76,7 +97,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Sigla != dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
@@ -84,6 +105,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Sigla != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                    
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -97,11 +228,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Nome")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Nome));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Nome));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Nome));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -112,17 +264,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Nome == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Nome == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Nome == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -133,7 +285,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Nome != dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
@@ -141,6 +293,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Nome != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                    
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -154,11 +416,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Responsavel")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => c.Responsavel.Contains(dto[aux].ValorString!));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => c.Responsavel.Contains(dto[aux].ValorString!));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => c.Responsavel.Contains(dto[aux].ValorString!));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -169,17 +452,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Responsavel == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Responsavel == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Responsavel == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -190,7 +473,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Responsavel != dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
@@ -198,6 +481,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Responsavel != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                    
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -211,11 +604,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Cep")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => c.Cep.Contains(dto[aux].ValorString!));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => c.Cep.Contains(dto[aux].ValorString!));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => c.Cep.Contains(dto[aux].ValorString!));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -226,17 +640,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Cep == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Cep == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Cep == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -247,7 +661,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Cep != dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
@@ -255,6 +669,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Cep != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                    
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -268,11 +792,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Endereco")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => c.Endereco.Contains(dto[aux].ValorString!));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => c.Endereco.Contains(dto[aux].ValorString!));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => c.Endereco.Contains(dto[aux].ValorString!));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -283,17 +828,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Endereco == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Endereco == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Endereco == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -304,7 +849,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Endereco != dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
@@ -312,6 +857,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Endereco != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                    
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -325,11 +980,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Bairro")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => c.Bairro.Contains(dto[aux].ValorString!));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => c.Bairro.Contains(dto[aux].ValorString!));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => c.Bairro.Contains(dto[aux].ValorString!));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -340,17 +1016,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Bairro == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Bairro == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Bairro == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -361,7 +1037,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Bairro != dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
@@ -369,6 +1045,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Bairro != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                    
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -382,11 +1168,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Complemento")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Complemento));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Complemento));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Complemento));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -397,17 +1204,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Complemento == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Complemento == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Complemento == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -426,6 +1233,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Complemento != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                    
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -439,11 +1356,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Telefone")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Telefone));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Telefone));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Telefone));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -454,17 +1392,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Telefone == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Telefone == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Telefone == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -483,6 +1421,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Telefone != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                    
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -496,11 +1544,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Email")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Email));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Email));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Email));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -511,17 +1580,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Email == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Email == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Email == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -540,6 +1609,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Email != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                    
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -553,11 +1732,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Cnpj")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Cnpj));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Cnpj));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Cnpj));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -568,17 +1768,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Cnpj == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Cnpj == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Cnpj == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -597,6 +1797,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Cnpj != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                        
+                        //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -610,11 +1920,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Representante")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Representante));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Representante));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Representante));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -625,17 +1956,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Representante == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Representante == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Representante == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //  Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -654,6 +1985,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Representante != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                    
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -667,11 +2108,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Pais")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Pais.Descricao));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Pais.Descricao));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Pais.Descricao));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -682,17 +2144,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Pais.Descricao == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Pais.Descricao == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Pais.Descricao == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -711,6 +2173,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Pais.Descricao != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                        
+                        //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -724,11 +2296,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Cidade")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Cidade.Descricao));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Cidade.Descricao));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Cidade.Descricao));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -739,17 +2332,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Cidade.Descricao == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Cidade.Descricao == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Cidade.Descricao == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -768,6 +2361,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Cidade.Descricao != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                    
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -781,11 +2484,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Estado")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Estado.Descricao));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Estado.Descricao));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Estado.Descricao));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -796,17 +2520,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Estado.Descricao == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Estado.Descricao == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Estado.Descricao == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -826,6 +2550,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         var filtroDiferente = agremiacoes.FindAll(c => c.Estado.Descricao != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
 
+                    //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -838,11 +2672,32 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Regiao")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
                     case 1:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Regiao.Descricao));
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Regiao.Descricao));
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Regiao.Descricao));
+                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                    
+                    //Igual
+                    case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -853,17 +2708,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.Regiao.Descricao == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Regiao.Descricao == dto[aux].ValorString);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Regiao.Descricao == dto[aux].ValorString);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
-                    case 2:
+                    case 3:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
@@ -882,6 +2737,116 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Regiao.Descricao != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+                        
+                        //MenorQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+
+                    //MenorIgualQue
+                    case 5:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
+
+                    //MaiorQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList();
+                        return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 7:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
+
+                    //Entre
+                    case 8:
+                        if (dto[aux].ValorString2 == null)
+                        {
+                            Notificator.Handle("ValorSting2 precisa ser informado!");
+                        }
+                        
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroEntre = agremiacoes.Take(GetIndex(agremiacoes, dto[aux].ValorString!)).ToList().Skip(GetIndex(agremiacoes, dto[aux].ValorString!) + 1).ToList();
+                        return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
                         Notificator.Handle("Operação inválida");
@@ -895,10 +2860,10 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "DataFiliacao")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
-                    //contains
+                    //Igual
                     case 1:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
@@ -910,14 +2875,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.DataFiliacao == dto[aux].DataInicial);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.DataFiliacao == dto[aux].DataInicial);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.DataFiliacao == dto[aux].DataInicial);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
                     case 2:
@@ -931,7 +2896,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.DataFiliacao != dto[aux].DataInicial);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
@@ -952,7 +2917,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.DataFiliacao < dto[aux].DataInicial);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
@@ -960,9 +2925,30 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroMenorQue = agremiacoes.FindAll(c => c.DataFiliacao < dto[aux].DataInicial);
                         return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+                    
+                    //MenorIgualQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.FindAll(c => c.DataFiliacao <= dto[aux].DataInicial);
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => c.DataFiliacao <= dto[aux].DataInicial);
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.FindAll(c => c.DataFiliacao <= dto[aux].DataInicial);
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
 
                     //MaiorQue
-                    case 4:
+                    case 5:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1 && dto[aux].OperacoesMatematicas)
                         {
@@ -981,9 +2967,30 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroMaiorQue = agremiacoes.FindAll(c => c.DataFiliacao > dto[aux].DataInicial);
                         return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => c.DataFiliacao >= dto[aux].DataInicial);
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => c.DataFiliacao >= dto[aux].DataInicial);
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.FindAll(c => c.DataFiliacao >= dto[aux].DataInicial);
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
                     //Entre
-                    case 5:
+                    case 7:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1 && dto[aux].OperacoesMatematicas)
                         {
@@ -995,15 +3002,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c =>
                                 c.DataFiliacao < dto[aux].DataFinal && c.DataFiliacao > dto[aux].DataInicial);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroEntre = agremiacoes.FindAll(c =>
-                            c.DataFiliacao < dto[aux].DataFinal && c.DataFiliacao > dto[aux].DataInicial);
+                        var filtroEntre = agremiacoes.FindAll(c => c.DataFiliacao < dto[aux].DataFinal && c.DataFiliacao > dto[aux].DataInicial);
                         return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
@@ -1018,10 +3024,10 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "DataNascimento")
             {
-                agremiacoes = await HasAgremiacao(agremiacoes);
+                agremiacoes = await PossuiAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
-                    //contains
+                    //Igual
                     case 1:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
@@ -1033,14 +3039,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.DataNascimento == dto[aux].DataInicial);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.DataNascimento == dto[aux].DataInicial);
-                        return await Filtrar(dto, filtroContains, tamanho, ++aux);
+                        var filtroIgual = agremiacoes.FindAll(c => c.DataNascimento == dto[aux].DataInicial);
+                        return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
                     case 2:
@@ -1054,7 +3060,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.DataNascimento != dto[aux].DataInicial);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
@@ -1075,7 +3081,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c => c.DataNascimento < dto[aux].DataInicial);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
@@ -1083,9 +3089,30 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroMenorQue = agremiacoes.FindAll(c => c.DataNascimento < dto[aux].DataInicial);
                         return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
+                    
+                    //MenorIgualQue
+                    case 4:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var menor = agremiacoes.FindAll(c => c.DataNascimento <= dto[aux].DataInicial);
+                            return await Filtrar(dto, menor, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => c.DataNascimento <= dto[aux].DataInicial);
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMenorIgualQue = agremiacoes.FindAll(c => c.DataNascimento <= dto[aux].DataInicial);
+                        return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
 
                     //MaiorQue
-                    case 4:
+                    case 5:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1 && dto[aux].OperacoesMatematicas)
                         {
@@ -1104,9 +3131,30 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroMaiorQue = agremiacoes.FindAll(c => c.DataNascimento > dto[aux].DataInicial);
                         return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
+                    
+                    //MaiorIgualQue
+                    case 6:
+                        //And
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
+                        {
+                            var and = agremiacoes.FindAll(c => c.DataNascimento >= dto[aux].DataInicial);
+                            return await Filtrar(dto, and, tamanho, ++aux);
+                        }
+
+                        //Or
+                        if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
+                        {
+                            var agremiacaoLista = await PossuiAgremiacao();
+                            var or = agremiacaoLista.FindAll(c => c.DataNascimento >= dto[aux].DataInicial);
+                            agremiacoes.AddRange(or);
+                            return await Filtrar(dto, agremiacoes, tamanho, ++aux);
+                        }
+
+                        var filtroMaiorIgualQue = agremiacoes.FindAll(c => c.DataNascimento >= dto[aux].DataInicial);
+                        return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
                     //Entre
-                    case 5:
+                    case 7:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1 && dto[aux].OperacoesMatematicas)
                         {
@@ -1118,15 +3166,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
-                            var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
+                            var agremiacaoLista = await PossuiAgremiacao();
                             var or = agremiacaoLista.FindAll(c =>
                                 c.DataNascimento < dto[aux].DataFinal && c.DataNascimento > dto[aux].DataInicial);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroEntre = agremiacoes.FindAll(c =>
-                            c.DataNascimento < dto[aux].DataFinal && c.DataNascimento > dto[aux].DataInicial);
+                        var filtroEntre = agremiacoes.FindAll(c => c.DataNascimento < dto[aux].DataFinal && c.DataNascimento > dto[aux].DataInicial);
                         return await Filtrar(dto, filtroEntre, tamanho, ++aux);
 
                     default:
@@ -1481,14 +3528,19 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         }
     }
 
-    private async Task<List<Agremiacao>> HasAgremiacao(List<Agremiacao>? agremiacoes)
+    private async Task<List<Agremiacao>> PossuiAgremiacao(List<Agremiacao>? agremiacoes = null)
     {
         if (agremiacoes == null)
         {
             agremiacoes = await _agremiacaoRepository.ObterTodos();
         }
 
-        return agremiacoes;
+        return agremiacoes.OrderBy(c => c).ToList();
+    }
+
+    private int GetIndex(List<Agremiacao>? agremiacoes, string nome)
+    {
+        return agremiacoes!.FindIndex(c => c.Nome == nome);
     }
 
     private async Task<bool> Validar(Agremiacao agremiacao)
