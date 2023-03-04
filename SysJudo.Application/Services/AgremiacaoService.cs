@@ -1512,29 +1512,29 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.IdCidade)
             {
-                ws.Cell(1, contador).Value = "IdCidade";
-                ws.Cell(linha, contador).Value = agremiacao.IdCidade;
+                ws.Cell(1, contador).Value = "Cidade";
+                ws.Cell(linha, contador).Value = agremiacao.CidadeNome;
                 contador++;
             }
 
             if (dto.IdEstado)
             {
-                ws.Cell(1, contador).Value = "IdEstado";
-                ws.Cell(linha, contador).Value = agremiacao.IdEstado;
+                ws.Cell(1, contador).Value = "Estado";
+                ws.Cell(linha, contador).Value = agremiacao.EstadoNome;
                 contador++;
             }
 
             if (dto.IdRegiao)
             {
-                ws.Cell(1, contador).Value = "IdRegiao";
-                ws.Cell(linha, contador).Value = agremiacao.IdRegiao;
+                ws.Cell(1, contador).Value = "Regiao";
+                ws.Cell(linha, contador).Value = agremiacao.RegiaoNome;
                 contador++;
             }
 
             if (dto.IdPais)
             {
-                ws.Cell(1, contador).Value = "IdPais";
-                ws.Cell(linha, contador).Value = agremiacao.IdPais;
+                ws.Cell(1, contador).Value = "Pais";
+                ws.Cell(linha, contador).Value = agremiacao.PaisNome;
                 contador++;
             }
 

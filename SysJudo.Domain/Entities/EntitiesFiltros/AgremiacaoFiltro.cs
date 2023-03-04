@@ -30,7 +30,8 @@ public class AgremiacaoFiltro : EntityFiltro, IAggregateRoot, ITenant
     public bool Estatuto { get; set; }
     public bool ContratoSocial { get; set; }
     public bool DocumentacaoAtualizada { get; set; }
-    public string Anotacoes { get;set;}= " ";public string CidadeNome { get; set; } = null!;
+    public string Anotacoes { get;set;}= " ";
+    public string CidadeNome { get; set; } = null!;
     public string EstadoNome { get; set; } = null!;
     public string RegiaoNome { get; set; } = null!;
     public string PaisNome { get; set; } = null!;
