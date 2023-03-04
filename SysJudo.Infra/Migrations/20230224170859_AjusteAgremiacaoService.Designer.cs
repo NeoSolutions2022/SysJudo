@@ -12,8 +12,8 @@ using SysJudo.Infra.Context;
 namespace SysJudo.Infra.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230223031946_ChangedFilter")]
-    partial class ChangedFilter
+    [Migration("20230224170859_AjusteAgremiacaoService")]
+    partial class AjusteAgremiacaoService
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

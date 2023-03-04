@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using AutoMapper;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Agremiacao;
@@ -30,14 +29,10 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         _filtroRepository = filtroRepository;
     }
 
-    public async Task<PagedDto<AgremiacaoDto>> Filtrar(List<FiltragemAgremiacaoDto> dto,
-        List<Agremiacao> agremiacoes = null, int tamanho = 0, int aux = 0)
+    public async Task<PagedDto<AgremiacaoFiltroDto>> Filtrar(List<FiltragemAgremiacaoDto> dto,
+        List<Agremiacao> agremiacoes = null!, int tamanho = 0, int aux = 0)
     {
         tamanho = dto.Count;
-        if (agremiacoes == null)
-        {
-            agremiacoes = await _agremiacaoRepository.ObterTodos();
-        }
 
         if (aux < tamanho)
         {
@@ -45,6 +40,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Sigla")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -66,11 +62,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Sigla == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -92,12 +83,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Sigla != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -110,6 +97,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Nome")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -131,11 +119,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Nome == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -157,12 +140,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Nome != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -175,6 +154,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Responsavel")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -196,11 +176,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Responsavel == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -222,12 +197,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Responsavel != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -240,6 +211,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Cep")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -261,11 +233,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Cep == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -287,12 +254,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Cep != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -305,6 +268,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Endereco")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -326,11 +290,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Endereco == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -352,12 +311,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Endereco != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -370,6 +325,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Bairro")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -391,11 +347,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Bairro == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -417,12 +368,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Bairro != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -435,6 +382,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Complemento")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -456,11 +404,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Complemento == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -482,12 +425,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Complemento != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -500,6 +439,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Telefone")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -521,11 +461,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Telefone == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -547,12 +482,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Telefone != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -565,6 +496,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Email")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -586,11 +518,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Email == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -612,12 +539,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Email != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -630,6 +553,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Cnpj")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -651,11 +575,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Cnpj == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -677,12 +596,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Cnpj != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -695,6 +610,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Representante")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -716,14 +632,9 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Representante == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
-                    //Diferente
+                    //  Diferente
                     case 2:
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
@@ -742,12 +653,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Representante != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -760,6 +667,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Pais")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -781,11 +689,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Pais.Descricao == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -807,12 +710,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Pais.Descricao != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -825,6 +724,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Cidade")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -846,11 +746,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Cidade.Descricao == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -872,12 +767,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Cidade.Descricao != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -890,6 +781,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "Estado")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -911,11 +803,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Estado.Descricao == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -937,12 +824,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Estado.Descricao != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -950,11 +833,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             }
 
             #endregion
-            
+
             #region Regiao
 
             if (dto[aux].NomeParametro == "Regiao")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -976,11 +860,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.Regiao.Descricao == dto[aux].ValorString);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -1002,23 +881,21 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.Regiao.Descricao != dto[aux].ValorString);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
                 }
             }
+
             #endregion
-            
+
             #region DataFiliacao
 
             if (dto[aux].NomeParametro == "DataFiliacao")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -1040,11 +917,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.DataFiliacao == dto[aux].DataInicial);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -1066,11 +938,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.DataFiliacao != dto[aux].DataInicial);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
 
                     //MenorQue
@@ -1092,11 +959,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroMenorQue = agremiacoes.FindAll(c => c.DataFiliacao < dto[aux].DataInicial);
-                        if (filtroMenorQue.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
 
                     //MaiorQue
@@ -1118,11 +980,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroMaiorQue = agremiacoes.FindAll(c => c.DataFiliacao > dto[aux].DataInicial);
-                        if (filtroMaiorQue.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
 
                     //Entre
@@ -1147,12 +1004,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroEntre = agremiacoes.FindAll(c =>
                             c.DataFiliacao < dto[aux].DataFinal && c.DataFiliacao > dto[aux].DataInicial);
-                        if (filtroEntre.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroEntre, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -1165,6 +1018,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto[aux].NomeParametro == "DataNascimento")
             {
+                agremiacoes = await HasAgremiacao(agremiacoes);
                 switch (dto[aux].OperacaoId)
                 {
                     //contains
@@ -1186,11 +1040,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroContains = agremiacoes.FindAll(c => c.DataNascimento == dto[aux].DataInicial);
-                        if (filtroContains.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Diferente
@@ -1212,11 +1061,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroDiferente = agremiacoes.FindAll(c => c.DataNascimento != dto[aux].DataInicial);
-                        if (filtroDiferente.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
 
                     //MenorQue
@@ -1238,11 +1082,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroMenorQue = agremiacoes.FindAll(c => c.DataNascimento < dto[aux].DataInicial);
-                        if (filtroMenorQue.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroMenorQue, tamanho, ++aux);
 
                     //MaiorQue
@@ -1264,11 +1103,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         }
 
                         var filtroMaiorQue = agremiacoes.FindAll(c => c.DataNascimento > dto[aux].DataInicial);
-                        if (filtroMaiorQue.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
 
                     //Entre
@@ -1293,12 +1127,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                         var filtroEntre = agremiacoes.FindAll(c =>
                             c.DataNascimento < dto[aux].DataFinal && c.DataNascimento > dto[aux].DataInicial);
-                        if (filtroEntre.Count == 0)
-                        {
-                            break;
-                        }
-
                         return await Filtrar(dto, filtroEntre, tamanho, ++aux);
+
                     default:
                         Notificator.Handle("Operação inválida");
                         break;
@@ -1310,19 +1140,27 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
         var agremiacoesFiltro = Mapper.Map<List<AgremiacaoFiltro>>(agremiacoes);
         await _filtroRepository.RemoverTodos();
-        foreach (var agremiacao in agremiacoesFiltro)
+        foreach (var agremiacao in agremiacoesFiltro.DistinctBy(c => c.Id))
         {
+            agremiacao.PaisNome = agremiacoes.FirstOrDefault(c => c.IdPais == agremiacao.IdPais)!.Pais.Descricao;
+            agremiacao.EstadoNome =
+                agremiacoes.FirstOrDefault(c => c.IdEstado == agremiacao.IdEstado)!.Estado.Descricao;
+            agremiacao.CidadeNome =
+                agremiacoes.FirstOrDefault(c => c.IdCidade == agremiacao.IdCidade)!.Cidade.Descricao;
+            agremiacao.RegiaoNome =
+                agremiacoes.FirstOrDefault(c => c.IdRegiao == agremiacao.IdRegiao)!.Regiao.Descricao;
+
             _filtroRepository.Cadastrar(agremiacao);
         }
 
         if (await _filtroRepository.UnitOfWork.Commit())
         {
-            var filtro = await _filtroRepository.Buscar(new BuscarAgremiacaoFiltroDto());
-            return Mapper.Map<PagedDto<AgremiacaoDto>>(filtro);
+            return Mapper.Map<PagedDto<AgremiacaoFiltroDto>>(
+                await _filtroRepository.Buscar(new BuscarAgremiacaoFiltroDto()));
         }
 
-        Notificator.Handle("Não foi possível salvar as agremiações filtradas!");
-        return null;
+        return Mapper.Map<PagedDto<AgremiacaoFiltroDto>>(
+            await _filtroRepository.Buscar(new BuscarAgremiacaoFiltroDto()));
     }
 
     public async Task<AgremiacaoDto?> Cadastrar(CadastrarAgremiacaoDto dto)
@@ -1427,7 +1265,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         var linha = 2;
         var agremiacoes = await _filtroRepository.Listar();
         var workbook = new XLWorkbook();
-        //workbook.AddWorksheet("planilhaAgremiacoes");
         var ws = workbook.Worksheets.Add("planilhaAgremiacoes");
 
         foreach (var agremiacao in agremiacoes)
@@ -1642,6 +1479,16 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         {
             Notificator.Handle("Não foi possível enviar documentos.");
         }
+    }
+
+    private async Task<List<Agremiacao>> HasAgremiacao(List<Agremiacao>? agremiacoes)
+    {
+        if (agremiacoes == null)
+        {
+            agremiacoes = await _agremiacaoRepository.ObterTodos();
+        }
+
+        return agremiacoes;
     }
 
     private async Task<bool> Validar(Agremiacao agremiacao)
