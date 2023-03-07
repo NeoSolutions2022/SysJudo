@@ -407,7 +407,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
-
+                        
                         //Or
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
