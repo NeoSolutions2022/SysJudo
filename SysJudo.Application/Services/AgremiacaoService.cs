@@ -187,7 +187,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) - 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -197,14 +197,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) - 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) - 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -379,7 +379,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -388,13 +388,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorQue = agremiacoes
-                            .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                            .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                         return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
 
                     //MaiorIgualQue
@@ -403,7 +403,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -413,14 +413,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -594,7 +594,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -603,13 +603,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorQue = agremiacoes
-                            .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                            .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                         return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
 
                     //MaiorIgualQue
@@ -618,7 +618,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -628,14 +628,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -810,7 +810,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -819,13 +819,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorQue = agremiacoes
-                            .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                            .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                         return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
 
                     //MaiorIgualQue
@@ -834,7 +834,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -844,14 +844,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -998,7 +998,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var menor = agremiacoes
-                                .Take(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Take(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, menor, tamanho, ++aux);
                         }
@@ -1008,14 +1008,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Take(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Take(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMenorIgualQue =
-                            agremiacoes.Take(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Take(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMenorIgualQue, tamanho, ++aux);
 
@@ -1025,7 +1025,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -1034,13 +1034,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorQue = agremiacoes
-                            .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!)).ToList();
+                            .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1).ToList();
                         return await Filtrar(dto, filtroMaiorQue, tamanho, ++aux);
 
                     //MaiorIgualQue
@@ -1049,7 +1049,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -1059,14 +1059,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -1263,7 +1263,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -1273,14 +1273,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -1477,7 +1477,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -1487,14 +1487,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -1691,7 +1691,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -1701,14 +1701,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -1905,7 +1905,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -1915,14 +1915,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -2119,7 +2119,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -2129,14 +2129,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -2333,7 +2333,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -2343,14 +2343,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -2547,7 +2547,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -2557,14 +2557,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -2761,7 +2761,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -2771,14 +2771,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -2975,7 +2975,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -2985,14 +2985,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -3189,7 +3189,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) - 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -3199,14 +3199,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) - 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) - 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -3405,7 +3405,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -3415,14 +3415,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -3620,7 +3620,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -3630,14 +3630,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -3835,7 +3835,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
                             var and = agremiacoes
-                                .Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
@@ -3845,14 +3845,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista
-                                .Skip(GetLastIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                                .Skip(GetIndex(agremiacaoLista, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroMaiorIgualQue =
-                            agremiacoes.Skip(GetLastIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!) + 1)
+                            agremiacoes.Skip(GetIndex(agremiacoes, dto[aux].NomeParametro, dto[aux].ValorString!))
                                 .ToList();
                         return await Filtrar(dto, filtroMaiorIgualQue, tamanho, ++aux);
 
@@ -4228,7 +4228,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             #endregion
             
-            #region DataNascimento
+            #region DataCnpj
 
             if (dto[aux].NomeParametro == "DataCnpj")
             {
@@ -4393,7 +4393,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             #endregion
             
-            #region DataNascimento
+            #region DataAta
 
             if (dto[aux].NomeParametro == "DataAta")
             {
