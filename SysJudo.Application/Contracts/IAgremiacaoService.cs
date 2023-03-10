@@ -11,6 +11,7 @@ public interface IAgremiacaoService
     Task<AgremiacaoDto?> Alterar(int id, AlterarAgremiacaoDto dto);
     Task<PagedDto<AgremiacaoDto>> Buscar(BuscarAgremiacaoDto dto);
     Task<AgremiacaoDto?> ObterPorId(int id);
+    Task LimparFiltro();
     Task Deletar(int id);
     Task<string> Exportar(ExportarAgremiacaoDto dto);
     Task Anotar(int id, AnotarAgremiacaoDto anotacao);
