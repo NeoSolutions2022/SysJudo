@@ -17,11 +17,24 @@ public class AgremiacaoFiltroRepository : RepositoryFiltro<AgremiacaoFiltro>, IA
         Context.AgremiacoesFiltro.Add(agremiacao);
     }
 
+    public void CadastrarTodos(List<AgremiacaoFiltro> agremiacoesFiltros)
+    {
+        Context.AgremiacoesFiltro.AddRange(agremiacoesFiltros);
+    }
+
     public async Task<List<AgremiacaoFiltro>> Listar()
     {
         return await Context.AgremiacoesFiltro
             .AsNoTracking()
             .ToListAsync();
+    }
+    
+    public void LimparFiltro()
+    {
+        if (Context.AgremiacoesFiltro.Any())
+        {
+            Context.AgremiacoesFiltro.RemoveRange(Context.AgremiacoesFiltro);
+        }
     }
 
     public async Task RemoverTodos()
