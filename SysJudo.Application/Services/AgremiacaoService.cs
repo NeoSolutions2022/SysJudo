@@ -3360,7 +3360,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         }
 
         StringBuilder links = new StringBuilder();
-        if (dto.Documentos != null)
+        if (dto.Documentos.Count != 0)
         {
             foreach (var documento in dto.Documentos)
             {
@@ -3525,6 +3525,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             linha++;
         }
 
+        ws.Columns().AdjustToContents();
         return await _fileService.UploadExcel(workbook, EUploadPath.FotosAgremiacao);
     }
 
@@ -3539,13 +3540,28 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
     public async Task<AgremiacaoDto?> ObterPorId(int id)
     {
         var agremiacao = await _agremiacaoRepository.Obter(id);
-        if (agremiacao != null)
+        
+       
+        
+        if (agremiacao == null)
         {
-            return Mapper.Map<AgremiacaoDto>(agremiacao);
+            Notificator.HandleNotFoundResource();
+            return null;
+        }
+        
+        var agremiacaoDto = Mapper.Map<AgremiacaoDto>(agremiacao);
+        var documentos = agremiacao.DocumentosUri.Split('&').ToList();
+        foreach (var documento in documentos)
+        {
+            agremiacaoDto.Documentos.Add(new DocumentosDto
+            {
+                Nome = "Documento",
+                Link = documento
+            });
         }
 
-        Notificator.HandleNotFoundResource();
-        return null;
+
+        return agremiacaoDto;
     }
 
     public async Task Deletar(int id)
@@ -3658,7 +3674,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         }
 
         if (dto.Foto != null && dto.Foto.FileName.Split(".").Last() != "jfif" &&
-            dto.Foto.FileName.Split(".").Last() != "png" && dto.Foto.FileName.Split(".").Last() != "jpg")
+            dto.Foto.FileName.Split(".").Last() != "png" && dto.Foto.FileName.Split(".").Last() != "jpg" 
+            && dto.Foto.FileName.Split(".").Last() != "jpeg")
         {
             Notificator.Handle("Foto deve do tipo png, jfif ou jpg");
         }
