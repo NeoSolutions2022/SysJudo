@@ -6,7 +6,7 @@ namespace SysJudo.Application.Contracts;
 
 public interface IAgremiacaoService
 {
-    Task<PagedDto<AgremiacaoFiltroDto>> Filtrar(List<FiltragemAgremiacaoDto> dto, List<Agremiacao> agremiacoes = null, int tamanho = 0, int aux = 0);
+    Task<List<AgremiacaoFiltroDto>> Filtrar(List<FiltragemAgremiacaoDto> dto, List<Agremiacao> agremiacoes = null, int tamanho = 0, int aux = 0);
     Task<AgremiacaoDto?> Cadastrar(CadastrarAgremiacaoDto dto);
     Task<AgremiacaoDto?> Alterar(int id, AlterarAgremiacaoDto dto);
     Task<PagedDto<AgremiacaoDto>> Buscar(BuscarAgremiacaoDto dto);
