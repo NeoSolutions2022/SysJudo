@@ -1,3 +1,4 @@
+using Org.BouncyCastle.Utilities.Collections;
 using SysJudo.Application.Dto.Cidade;
 using SysJudo.Application.Dto.Cliente;
 using SysJudo.Application.Dto.Estado;
@@ -28,7 +29,8 @@ public class AgremiacaoDto
     public string Cnpj { get; set; } = null!;
     public string? InscricaoMunicipal { get; set; }
     public string? InscricaoEstadual { get; set; }
-    public string? DocumentosUri { get; set; }
+    public List<DocumentosDto> Documentos { get; set; } = new();
+    public string DocumentosUri { get; set; } = null!;
     public DateOnly? DataCnpj { get; set; }
     public DateOnly? DataAta { get; set; }
     public string? Foto { get; set; }
