@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Agremiacao;
 using SysJudo.Application.Dto.Base;
-using SysJudo.Application.Dto.Filtros;
 using SysJudo.Application.Notifications;
 using SysJudo.Core.Enums;
 using SysJudo.Domain.Contracts.Repositories;
@@ -29,7 +28,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         _filtroRepository = filtroRepository;
     }
 
-    public async Task<PagedDto<AgremiacaoFiltroDto>> Filtrar(List<FiltragemAgremiacaoDto> dto,
+    public async Task<List<AgremiacaoFiltroDto>> Filtrar(List<FiltragemAgremiacaoDto> dto,
         List<Agremiacao> agremiacoes = null!, int tamanho = 0, int aux = 0)
     {
         tamanho = dto.Count;
@@ -491,7 +490,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.Fantasia!.Contains(dto[aux].ValorString!));
+                            var and = agremiacoes.FindAll(c => c.Fantasia != null && c.Fantasia.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -499,12 +498,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => c.Fantasia!.Contains(dto[aux].ValorString!));
+                            var or = agremiacaoLista.FindAll(c => c.Fantasia != null && c.Fantasia.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Fantasia!.Contains(dto[aux].ValorString!));
+                        var filtroContains = agremiacoes.FindAll(c => c.Fantasia != null && c.Fantasia.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -712,7 +711,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.InscricaoMunicipal!.Contains(dto[aux].ValorString!));
+                            var and = agremiacoes.FindAll(c => c.InscricaoMunicipal != null && c.InscricaoMunicipal.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -720,14 +719,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c =>
-                                c.InscricaoMunicipal!.Contains(dto[aux].ValorString!));
+                            var or = agremiacaoLista.FindAll(c => c.InscricaoMunicipal != null &&
+                                c.InscricaoMunicipal.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroContains =
-                            agremiacoes.FindAll(c => c.InscricaoMunicipal!.Contains(dto[aux].ValorString!));
+                            agremiacoes.FindAll(c => c.InscricaoMunicipal != null && c.InscricaoMunicipal.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -2036,7 +2035,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Complemento));
+                            var and = agremiacoes.FindAll(c => c.Complemento.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -2044,12 +2043,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
-                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Complemento));
+                            var or = agremiacaoLista.FindAll(c => c.Complemento.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Complemento));
+                        var filtroContains = agremiacoes.FindAll(c => c.Complemento.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -2256,7 +2255,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Telefone));
+                            var and = agremiacoes.FindAll(c => c.Telefone.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -2264,12 +2263,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Telefone));
+                            var or = agremiacaoLista.FindAll(c => c.Telefone.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Telefone));
+                        var filtroContains = agremiacoes.FindAll(c => c.Telefone.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -2476,7 +2475,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Email));
+                            var and = agremiacoes.FindAll(c => c.Email.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -2484,12 +2483,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Email));
+                            var or = agremiacaoLista.FindAll(c => c.Email.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Email));
+                        var filtroContains = agremiacoes.FindAll(c => c.Email.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -2696,7 +2695,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Cnpj));
+                            var and = agremiacoes.FindAll(c => c.Cnpj.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -2704,12 +2703,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Cnpj));
+                            var or = agremiacaoLista.FindAll(c => c.Cnpj.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Cnpj));
+                        var filtroContains = agremiacoes.FindAll(c => c.Cnpj.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -2916,7 +2915,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Representante));
+                            var and = agremiacoes.FindAll(c => c.Representante.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -2924,12 +2923,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Representante));
+                            var or = agremiacaoLista.FindAll(c => c.Representante.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Representante));
+                        var filtroContains = agremiacoes.FindAll(c => c.Representante.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -3136,7 +3135,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Pais.Descricao));
+                            var and = agremiacoes.FindAll(c => c.Pais.Descricao.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3144,12 +3143,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Pais.Descricao));
+                            var or = agremiacaoLista.FindAll(c => c.Pais.Descricao.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Pais.Descricao));
+                        var filtroContains = agremiacoes.FindAll(c => c.Pais.Descricao.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -3359,7 +3358,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Cidade.Descricao));
+                            var and = agremiacoes.FindAll(c => c.Cidade.Descricao.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3367,13 +3366,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Cidade.Descricao));
+                            var or = agremiacaoLista.FindAll(c => c.Cidade.Descricao.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroContains =
-                            agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Cidade.Descricao));
+                            agremiacoes.FindAll(c => c.Cidade.Descricao.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -3580,7 +3579,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Estado.Descricao));
+                            var and = agremiacoes.FindAll(c => c.Estado.Descricao.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3588,13 +3587,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Estado.Descricao));
+                            var or = agremiacaoLista.FindAll(c => c.Estado.Descricao.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroContains =
-                            agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Estado.Descricao));
+                            agremiacoes.FindAll(c => c.Estado.Descricao.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -3801,7 +3800,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Regiao.Descricao));
+                            var and = agremiacoes.FindAll(c => c.Regiao.Descricao.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3809,13 +3808,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => dto[aux].ValorString!.Contains(c.Regiao.Descricao));
+                            var or = agremiacaoLista.FindAll(c => c.Regiao.Descricao.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroContains =
-                            agremiacoes.FindAll(c => dto[aux].ValorString!.Contains(c.Regiao.Descricao));
+                            agremiacoes.FindAll(c => c.Regiao.Descricao.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -4688,12 +4687,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
         if (await _filtroRepository.UnitOfWork.Commit())
         {
-            return Mapper.Map<PagedDto<AgremiacaoFiltroDto>>(
-                await _filtroRepository.Buscar(new BuscarAgremiacaoFiltroDto()));
+            return Mapper.Map<List<AgremiacaoFiltroDto>>(
+                await _filtroRepository.Listar());
         }
 
-        return Mapper.Map<PagedDto<AgremiacaoFiltroDto>>(
-            await _filtroRepository.Buscar(new BuscarAgremiacaoFiltroDto()));
+        return Mapper.Map<List<AgremiacaoFiltroDto>>(
+            await _filtroRepository.Listar());
     }
 
     public async Task<AgremiacaoDto?> Cadastrar(CadastrarAgremiacaoDto dto)
@@ -5100,25 +5099,196 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
     {
         switch (nomeParametro)
         {
-            case "Sigla": return agremiacoes!.FindLastIndex(c => c.Sigla == nome);
-            case "Nome": return agremiacoes!.FindLastIndex(c => c.Nome == nome);
-            case "Fantasia": return agremiacoes!.FindLastIndex(c => c.Fantasia == nome);
-            case "Responsavel": return agremiacoes!.FindLastIndex(c => c.Responsavel == nome);
-            case "Representante": return agremiacoes!.FindLastIndex(c => c.Representante == nome);
-            case "Cep": return agremiacoes!.FindLastIndex(c => c.Cep == nome);
-            case "Endereco": return agremiacoes!.FindLastIndex(c => c.Endereco == nome);
-            case "Bairro": return agremiacoes!.FindLastIndex(c => c.Bairro == nome);
-            case "Complemento": return agremiacoes!.FindLastIndex(c => c.Complemento == nome);
-            case "Telefone": return agremiacoes!.FindLastIndex(c => c.Telefone == nome);
-            case "Email": return agremiacoes!.FindLastIndex(c => c.Email == nome);
-            case "Cnpj": return agremiacoes!.FindLastIndex(c => c.Cnpj == nome);
-            case "InscricaoMunicipal": return agremiacoes!.FindLastIndex(c => c.InscricaoMunicipal == nome);
-            case "InscricaoEstadual": return agremiacoes!.FindLastIndex(c => c.InscricaoEstadual == nome);
-            case "Pais": return agremiacoes!.FindLastIndex(c => c.Pais.Descricao == nome);
-            case "Estado": return agremiacoes!.FindLastIndex(c => c.Estado.Descricao == nome);
-            case "Cidade": return agremiacoes!.FindLastIndex(c => c.Cidade.Descricao == nome);
-            case "Regiao": return agremiacoes!.FindLastIndex(c => c.Regiao.Descricao == nome);
-            default: return agremiacoes!.FindLastIndex(c => c.Nome == nome);
+            case "Sigla":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Sigla == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Nome":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Nome == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Fantasia":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Fantasia == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Responsavel":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Responsavel == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Representante":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Representante == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Cep":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Cep == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Endereco":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Endereco == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Bairro":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Bairro == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Complemento":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Complemento == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Telefone":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Telefone == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Email":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Email == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Cnpj":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Cnpj == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "InscricaoMunicipal":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.InscricaoMunicipal == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "InscricaoEstadual":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.InscricaoEstadual == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Pais":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Pais.Descricao == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Estado":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Estado.Descricao == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Cidade":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Cidade.Descricao == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            case "Regiao":
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Regiao.Descricao == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
+            default:
+            {
+                var index = agremiacoes!.FindLastIndex(c => c.Nome == nome);
+                if (index < 0)
+                {
+                    return agremiacoes.Count + 1;
+                }
+
+                return index;
+            }
         }
     }
 
@@ -5126,25 +5296,196 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
     {
         switch (nomeParametro)
         {
-            case "Sigla": return agremiacoes!.FindIndex(c => c.Sigla == nome);
-            case "Nome": return agremiacoes!.FindIndex(c => c.Nome == nome);
-            case "Fantasia": return agremiacoes!.FindIndex(c => c.Fantasia == nome);
-            case "Responsavel": return agremiacoes!.FindIndex(c => c.Responsavel == nome);
-            case "Representante": return agremiacoes!.FindIndex(c => c.Representante == nome);
-            case "Cep": return agremiacoes!.FindIndex(c => c.Cep == nome);
-            case "Endereco": return agremiacoes!.FindIndex(c => c.Endereco == nome);
-            case "Bairro": return agremiacoes!.FindIndex(c => c.Bairro == nome);
-            case "Complemento": return agremiacoes!.FindIndex(c => c.Complemento == nome);
-            case "Telefone": return agremiacoes!.FindIndex(c => c.Telefone == nome);
-            case "Email": return agremiacoes!.FindIndex(c => c.Email == nome);
-            case "Cnpj": return agremiacoes!.FindIndex(c => c.Cnpj == nome);
-            case "InscricaoMunicipal": return agremiacoes!.FindIndex(c => c.InscricaoMunicipal == nome);
-            case "InscricaoEstadual": return agremiacoes!.FindIndex(c => c.InscricaoEstadual == nome);
-            case "Pais": return agremiacoes!.FindIndex(c => c.Pais.Descricao == nome);
-            case "Estado": return agremiacoes!.FindIndex(c => c.Estado.Descricao == nome);
-            case "Cidade": return agremiacoes!.FindIndex(c => c.Cidade.Descricao == nome);
-            case "Regiao": return agremiacoes!.FindIndex(c => c.Regiao.Descricao == nome);
-            default: return agremiacoes!.FindIndex(c => c.Nome == nome);
+            case "Sigla":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Sigla == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Nome":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Nome == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Fantasia":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Fantasia == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Responsavel":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Responsavel == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Representante":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Representante == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Cep":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Cep == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Endereco":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Endereco == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Bairro":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Bairro == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Complemento":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Complemento == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Telefone":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Telefone == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Email":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Email == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Cnpj":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Cnpj == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "InscricaoMunicipal":
+            {
+                var index = agremiacoes!.FindIndex(c => c.InscricaoMunicipal == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "InscricaoEstadual":
+            {
+                var index = agremiacoes!.FindIndex(c => c.InscricaoEstadual == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Pais":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Pais.Descricao == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Estado":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Estado.Descricao == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Cidade":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Cidade.Descricao == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            case "Regiao":
+            {
+                var index = agremiacoes!.FindIndex(c => c.Regiao.Descricao == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
+            default:
+            {
+                var index = agremiacoes!.FindIndex(c => c.Nome == nome);
+                if (index < 0)
+                {
+                    return -1;
+                }
+
+                return index;
+            }
         }
     }
 
