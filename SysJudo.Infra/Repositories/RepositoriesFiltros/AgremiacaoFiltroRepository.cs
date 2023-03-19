@@ -28,7 +28,7 @@ public class AgremiacaoFiltroRepository : RepositoryFiltro<AgremiacaoFiltro>, IA
             .AsNoTracking()
             .ToListAsync();
     }
-    
+
     public void LimparFiltro()
     {
         if (Context.AgremiacoesFiltro.Any())
@@ -41,5 +41,36 @@ public class AgremiacaoFiltroRepository : RepositoryFiltro<AgremiacaoFiltro>, IA
     {
         var todos = await Context.AgremiacoesFiltro.AsNoTracking().ToListAsync();
         Context.AgremiacoesFiltro.RemoveRange(todos);
+    }
+
+    public async Task<List<AgremiacaoFiltro>> Pesquisar(string valor)
+    {
+        return await Context.AgremiacoesFiltro.Where(c =>
+                c.Sigla.Contains(valor) || c.Nome.Contains(valor) ||
+                (c.Fantasia != null && c.Fantasia.Contains(valor)) || c.Responsavel.Contains(valor) ||
+                c.Representante.Contains(valor) || c.DataFiliacao == ConvertToDateTime(valor) ||
+                c.DataNascimento == ConvertToDateTime(valor) || c.Cep.Contains(valor) || c.Endereco.Contains(valor) ||
+                c.Bairro.Contains(valor) ||
+                (c.Complemento != null && c.Complemento.Contains(valor)) || c.Telefone.Contains(valor) ||
+                c.Email.Contains(valor) ||
+                c.Cnpj.Contains(valor) || (c.InscricaoMunicipal != null && c.InscricaoMunicipal.Contains(valor)) ||
+                (c.InscricaoEstadual != null && c.InscricaoEstadual.Contains(valor)) ||
+                c.DataCnpj == ConvertToDateTime(valor) || c.DataAta == ConvertToDateTime(valor) ||
+                c.PaisNome.Contains(valor) || c.CidadeNome.Contains(valor) ||
+                c.EstadoNome.Contains(valor) || c.RegiaoNome.Contains(valor))
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    private DateOnly ConvertToDateTime(string data)
+    {
+        if (DateOnly.TryParse(data, out var result))
+        {
+            return result;
+        }
+        else
+        {
+            return new DateOnly(9999, 01, 01);
+        }
     }
 }

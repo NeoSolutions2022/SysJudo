@@ -4942,11 +4942,21 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         return Mapper.Map<PagedDto<AgremiacaoDto>>(agremiacao);
     }
 
+    public async Task<List<AgremiacaoFiltroDto>> Pesquisar(string valor)
+    {
+        var agremiacoes = await _filtroRepository.Pesquisar(valor);
+
+        if (agremiacoes == null)
+        {
+            return new List<AgremiacaoFiltroDto>();
+        }
+
+        return Mapper.Map<List<AgremiacaoFiltroDto>>(agremiacoes);
+    }
+
     public async Task<AgremiacaoDto?> ObterPorId(int id)
     {
         var agremiacao = await _agremiacaoRepository.Obter(id);
-        
-       
         
         if (agremiacao == null)
         {
@@ -5532,4 +5542,11 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
         return !Notificator.HasNotification;
     }
+    //
+    // public async void Pesquisar(string valor)
+    // {
+    //     var agremiacao = await _agremiacaoRepository.ObterTodos();
+    //
+    //     var valores = agremiacao.Select(c => c.Sigla == valor || c.DataAta == DateOnly.Parse(valor));
+    // }
 }

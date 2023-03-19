@@ -27,6 +27,17 @@ public class AgremiacaoController : MainController
         var agremiacao = await _service.Buscar(dto);
         return OkResponse(agremiacao);
     }
+    
+    [HttpGet("pesquisar-{valor}")]
+    [SwaggerOperation(Summary = "Pesquisar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
+    [ProducesResponseType(typeof(List<AgremiacaoDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> Buscar(string valor)
+    {
+        var agremiacao = await _service.Pesquisar(valor);
+        return OkResponse(agremiacao);
+    }
 
     [HttpPost("filtrar/agremiacao")]
     [SwaggerOperation(Summary = "Filtrar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
