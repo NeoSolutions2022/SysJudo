@@ -1,7 +1,6 @@
 using SysJudo.Application.Dto.Agremiacao;
 using SysJudo.Application.Dto.Base;
 using SysJudo.Domain.Entities;
-using SysJudo.Domain.Entities.EntitiesFiltros;
 
 namespace SysJudo.Application.Contracts;
 
