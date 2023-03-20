@@ -7,7 +7,7 @@ using SysJudo.Infra.Context;
 
 namespace SysJudo.Infra.Repositories;
 
-public class AgremiacaoRepository : Repository<Agremiacao>,IAgremiacaoRepository
+public class AgremiacaoRepository : Repository<Agremiacao>, IAgremiacaoRepository
 {
     public AgremiacaoRepository(BaseApplicationDbContext context) : base(context)
     {
@@ -30,7 +30,7 @@ public class AgremiacaoRepository : Repository<Agremiacao>,IAgremiacaoRepository
     }
 
     public void Deletar(Agremiacao agremiacao)
-    { 
+    {
         Context.Agremiacoes.Remove(agremiacao);
     }
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using SysJudo.Domain.Entities;
 using SysJudo.Application.Dto.Base;
 using SysJudo.Domain.Entities.EntitiesFiltros;
@@ -142,6 +143,7 @@ public class AutoMapperProfile : Profile
         CreateMap<Agremiacao, AgremiacaoFiltro>().ReverseMap();
         CreateMap<AgremiacaoFiltro, SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>().ReverseMap();
         CreateMap<AgremiacaoFiltro, SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>().ReverseMap();
+        //CreateMap<List<AgremiacaoFiltro>, List<SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>>().ReverseMap();
         CreateMap<ResultadoPaginado<AgremiacaoFiltro>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>>().ReverseMap();
         CreateMap<ResultadoPaginado<AgremiacaoFiltro>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>>().ReverseMap();
 
