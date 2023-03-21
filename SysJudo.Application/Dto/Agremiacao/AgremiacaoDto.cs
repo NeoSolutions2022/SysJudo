@@ -29,7 +29,6 @@ public class AgremiacaoDto
     public string Cnpj { get; set; } = null!;
     public string? InscricaoMunicipal { get; set; }
     public string? InscricaoEstadual { get; set; }
-    public List<DocumentosDto> Documentos { get; set; } = new();
     public string DocumentosUri { get; set; } = null!;
     public DateOnly? DataCnpj { get; set; }
     public DateOnly? DataAta { get; set; }

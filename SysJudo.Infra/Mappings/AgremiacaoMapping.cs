@@ -109,7 +109,7 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
 
         builder.Property(e => e.Telefone)
             .IsRequired()
-            .HasMaxLength(60);
+            .HasMaxLength(60); 
 
         builder.HasOne(d => d.Pais)
             .WithMany(p => p.Agremiacoes)

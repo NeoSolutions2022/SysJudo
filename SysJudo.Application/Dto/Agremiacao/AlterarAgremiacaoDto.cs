@@ -27,7 +27,6 @@ public class AlterarAgremiacaoDto
     public DateOnly? DataCnpj { get; set; }
     public DateOnly? DataAta { get; set; }
     public IFormFile? Foto { get; set; }
-    public List<IFormFile> Documentos { get; set; }
     public bool AlvaraLocacao { get; set; }
     public bool Estatuto { get; set; }
     public bool ContratoSocial { get; set; }
