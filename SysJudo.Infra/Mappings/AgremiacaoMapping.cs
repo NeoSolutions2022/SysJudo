@@ -27,7 +27,7 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
             .HasMaxLength(14);
 
         builder.Property(e => e.Complemento)
-            .IsRequired()
+            .IsRequired(false)
             .HasMaxLength(60);
 
         builder.Property(e => e.Conteudo)
