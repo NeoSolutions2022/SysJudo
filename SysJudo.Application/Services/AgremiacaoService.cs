@@ -4764,21 +4764,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return null;
         }
 
-        StringBuilder links = new StringBuilder();
-        if (dto.Documentos.Count != 0)
-        {
-            foreach (var documento in dto.Documentos)
-            {
-                if (documento is { Length: > 0 })
-                {
-                    links.Append(agremiacao.DocumentosUri + "&" +
-                                 await _fileService.Upload(documento, EUploadPath.FotosAgremiacao));
-                }
-            }
-        }
-
-        agremiacao.DocumentosUri = links.ToString();
-
         _agremiacaoRepository.Alterar(agremiacao);
 
         if (await _agremiacaoRepository.UnitOfWork.Commit())
@@ -4945,12 +4930,18 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
     public async Task<List<AgremiacaoFiltroDto>> Pesquisar(string valor)
     {
         var agremiacoes = await _filtroRepository.Pesquisar(valor);
-
-        if (agremiacoes == null)
+        
+        if (agremiacoes.Count == 0)
         {
             return new List<AgremiacaoFiltroDto>();
         }
 
+        await _filtroRepository.RemoverTodos();
+        foreach (var agremiacao in agremiacoes.DistinctBy(c => c.Id))
+        {
+            _filtroRepository.Cadastrar(agremiacao);
+        }
+        
         return Mapper.Map<List<AgremiacaoFiltroDto>>(agremiacoes);
     }
 
@@ -4965,16 +4956,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         }
         
         var agremiacaoDto = Mapper.Map<AgremiacaoDto>(agremiacao);
-        var documentos = agremiacao.DocumentosUri.Split('&').ToList();
-        foreach (var documento in documentos)
-        {
-            agremiacaoDto.Documentos.Add(new DocumentosDto
-            {
-                Nome = "Documento",
-                Link = documento
-            });
-        }
-
 
         return agremiacaoDto;
     }
