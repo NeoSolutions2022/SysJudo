@@ -9,4 +9,5 @@ public interface IAgremiacaoFiltroRepository : IRepositoryFiltro<AgremiacaoFiltr
     void LimparFiltro();
     Task<List<AgremiacaoFiltro>> Listar();
     Task RemoverTodos();
+    Task<List<AgremiacaoFiltro>> Pesquisar(string valor);
 }
