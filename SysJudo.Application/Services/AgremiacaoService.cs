@@ -3135,7 +3135,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.Pais.Descricao.Contains(dto[aux].ValorString!));
+                            var and = agremiacoes.FindAll(c => c.Pais.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3143,12 +3143,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => c.Pais.Descricao.Contains(dto[aux].ValorString!));
+                            var or = agremiacaoLista.FindAll(c => c.Pais.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Pais.Descricao.Contains(dto[aux].ValorString!));
+                        var filtroContains = agremiacoes.FindAll(c => c.Pais.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -3156,7 +3156,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.Pais.Descricao == dto[aux].ValorString);
+                            var and = agremiacoes.FindAll(c => c.Pais == dto[aux].ValorString);
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3164,12 +3164,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => c.Pais.Descricao == dto[aux].ValorString);
+                            var or = agremiacaoLista.FindAll(c => c.Pais == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroIgual = agremiacoes.FindAll(c => c.Pais.Descricao == dto[aux].ValorString);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Pais == dto[aux].ValorString);
                         return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
@@ -3177,7 +3177,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.Pais.Descricao != dto[aux].ValorString);
+                            var and = agremiacoes.FindAll(c => c.Pais != dto[aux].ValorString);
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3185,12 +3185,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
-                            var or = agremiacaoLista.FindAll(c => c.Pais.Descricao != dto[aux].ValorString);
+                            var or = agremiacaoLista.FindAll(c => c.Pais != dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroDiferente = agremiacoes.FindAll(c => c.Pais.Descricao != dto[aux].ValorString);
+                        var filtroDiferente = agremiacoes.FindAll(c => c.Pais != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
 
                     //MenorQue
@@ -3358,7 +3358,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.Cidade.Descricao.Contains(dto[aux].ValorString!));
+                            var and = agremiacoes.FindAll(c => c.Cidade.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3366,13 +3366,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => c.Cidade.Descricao.Contains(dto[aux].ValorString!));
+                            var or = agremiacaoLista.FindAll(c => c.Cidade.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroContains =
-                            agremiacoes.FindAll(c => c.Cidade.Descricao.Contains(dto[aux].ValorString!));
+                            agremiacoes.FindAll(c => c.Cidade.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -3380,7 +3380,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.Cidade.Descricao == dto[aux].ValorString);
+                            var and = agremiacoes.FindAll(c => c.Cidade == dto[aux].ValorString);
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3388,12 +3388,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => c.Cidade.Descricao == dto[aux].ValorString);
+                            var or = agremiacaoLista.FindAll(c => c.Cidade == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroIgual = agremiacoes.FindAll(c => c.Cidade.Descricao == dto[aux].ValorString);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Cidade == dto[aux].ValorString);
                         return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
@@ -3401,7 +3401,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.Cidade.Descricao != dto[aux].ValorString);
+                            var and = agremiacoes.FindAll(c => c.Cidade != dto[aux].ValorString);
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3409,12 +3409,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
-                            var or = agremiacaoLista.FindAll(c => c.Cidade.Descricao != dto[aux].ValorString);
+                            var or = agremiacaoLista.FindAll(c => c.Cidade != dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroDiferente = agremiacoes.FindAll(c => c.Cidade.Descricao != dto[aux].ValorString);
+                        var filtroDiferente = agremiacoes.FindAll(c => c.Cidade != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
 
                     //MenorQue
@@ -3579,7 +3579,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.Estado.Descricao.Contains(dto[aux].ValorString!));
+                            var and = agremiacoes.FindAll(c => c.Estado.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3587,13 +3587,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => c.Estado.Descricao.Contains(dto[aux].ValorString!));
+                            var or = agremiacaoLista.FindAll(c => c.Estado.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroContains =
-                            agremiacoes.FindAll(c => c.Estado.Descricao.Contains(dto[aux].ValorString!));
+                            agremiacoes.FindAll(c => c.Estado.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -3601,7 +3601,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.Estado.Descricao == dto[aux].ValorString);
+                            var and = agremiacoes.FindAll(c => c.Estado == dto[aux].ValorString);
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3609,12 +3609,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => c.Estado.Descricao == dto[aux].ValorString);
+                            var or = agremiacaoLista.FindAll(c => c.Estado == dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroIgual = agremiacoes.FindAll(c => c.Estado.Descricao == dto[aux].ValorString);
+                        var filtroIgual = agremiacoes.FindAll(c => c.Estado == dto[aux].ValorString);
                         return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
@@ -3622,7 +3622,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.Estado.Descricao != dto[aux].ValorString);
+                            var and = agremiacoes.FindAll(c => c.Estado != dto[aux].ValorString);
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -3630,12 +3630,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await _agremiacaoRepository.ObterTodos();
-                            var or = agremiacaoLista.FindAll(c => c.Estado.Descricao != dto[aux].ValorString);
+                            var or = agremiacaoLista.FindAll(c => c.Estado != dto[aux].ValorString);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroDiferente = agremiacoes.FindAll(c => c.Estado.Descricao != dto[aux].ValorString);
+                        var filtroDiferente = agremiacoes.FindAll(c => c.Estado != dto[aux].ValorString);
                         return await Filtrar(dto, filtroDiferente, tamanho, ++aux);
 
                     //MenorQue
@@ -4674,11 +4674,11 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         await _filtroRepository.RemoverTodos();
         foreach (var agremiacao in agremiacoesFiltro.DistinctBy(c => c.Id))
         {
-            agremiacao.PaisNome = agremiacoes.FirstOrDefault(c => c.IdPais == agremiacao.IdPais)!.Pais.Descricao;
+            agremiacao.PaisNome = agremiacoes.FirstOrDefault(c => c.IdPais == agremiacao.IdPais)!.Pais;
             agremiacao.EstadoNome =
-                agremiacoes.FirstOrDefault(c => c.IdEstado == agremiacao.IdEstado)!.Estado.Descricao;
+                agremiacoes.FirstOrDefault(c => c.IdEstado == agremiacao.IdEstado)!.Estado;
             agremiacao.CidadeNome =
-                agremiacoes.FirstOrDefault(c => c.IdCidade == agremiacao.IdCidade)!.Cidade.Descricao;
+                agremiacoes.FirstOrDefault(c => c.IdCidade == agremiacao.IdCidade)!.Cidade;
             agremiacao.RegiaoNome =
                 agremiacoes.FirstOrDefault(c => c.IdRegiao == agremiacao.IdRegiao)!.Regiao.Descricao;
 
@@ -4942,6 +4942,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             _filtroRepository.Cadastrar(agremiacao);
         }
         
+        if (await _filtroRepository.UnitOfWork.Commit())
+        {
+            return Mapper.Map<List<AgremiacaoFiltroDto>>(
+                await _filtroRepository.Listar());
+        }
+        
         return Mapper.Map<List<AgremiacaoFiltroDto>>(agremiacoes);
     }
 
@@ -4974,11 +4980,11 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         await _filtroRepository.RemoverTodos();
         foreach (var agremiacao in agremiacoesFiltro.DistinctBy(c => c.Id))
         {
-            agremiacao.PaisNome = agremiacoes.FirstOrDefault(c => c.IdPais == agremiacao.IdPais)!.Pais.Descricao;
+            agremiacao.PaisNome = agremiacoes.FirstOrDefault(c => c.IdPais == agremiacao.IdPais)!.Pais;
             agremiacao.EstadoNome =
-                agremiacoes.FirstOrDefault(c => c.IdEstado == agremiacao.IdEstado)!.Estado.Descricao;
+                agremiacoes.FirstOrDefault(c => c.IdEstado == agremiacao.IdEstado)!.Estado;
             agremiacao.CidadeNome =
-                agremiacoes.FirstOrDefault(c => c.IdCidade == agremiacao.IdCidade)!.Cidade.Descricao;
+                agremiacoes.FirstOrDefault(c => c.IdCidade == agremiacao.IdCidade)!.Cidade;
             agremiacao.RegiaoNome =
                 agremiacoes.FirstOrDefault(c => c.IdRegiao == agremiacao.IdRegiao)!.Regiao.Descricao;
 
@@ -5078,9 +5084,9 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             case "InscricaoEstadual": return agremiacoes.OrderBy(c => c.InscricaoEstadual).ToList();
             case "DataCnpj": return agremiacoes.OrderBy(c => c.DataCnpj).ToList();
             case "DataAta": return agremiacoes.OrderBy(c => c.DataAta).ToList();
-            case "Pais": return agremiacoes.OrderBy(c => c.Pais.Descricao).ToList();
-            case "Estado": return agremiacoes.OrderBy(c => c.Estado.Descricao).ToList();
-            case "Cidade": return agremiacoes.OrderBy(c => c.Cidade.Descricao).ToList();
+            case "Pais": return agremiacoes.OrderBy(c => c.Pais).ToList();
+            case "Estado": return agremiacoes.OrderBy(c => c.Estado).ToList();
+            case "Cidade": return agremiacoes.OrderBy(c => c.Cidade).ToList();
             case "Regiao": return agremiacoes.OrderBy(c => c.Regiao.Descricao).ToList();
             default: return agremiacoes.OrderBy(c => c.Id).ToList();
         }
@@ -5232,7 +5238,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             }
             case "Pais":
             {
-                var index = agremiacoes!.FindLastIndex(c => c.Pais.Descricao == nome);
+                var index = agremiacoes!.FindLastIndex(c => c.Pais == nome);
                 if (index < 0)
                 {
                     return agremiacoes.Count + 1;
@@ -5242,7 +5248,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             }
             case "Estado":
             {
-                var index = agremiacoes!.FindLastIndex(c => c.Estado.Descricao == nome);
+                var index = agremiacoes!.FindLastIndex(c => c.Estado == nome);
                 if (index < 0)
                 {
                     return agremiacoes.Count + 1;
@@ -5252,7 +5258,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             }
             case "Cidade":
             {
-                var index = agremiacoes!.FindLastIndex(c => c.Cidade.Descricao == nome);
+                var index = agremiacoes!.FindLastIndex(c => c.Cidade == nome);
                 if (index < 0)
                 {
                     return agremiacoes.Count + 1;
@@ -5429,7 +5435,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             }
             case "Pais":
             {
-                var index = agremiacoes!.FindIndex(c => c.Pais.Descricao == nome);
+                var index = agremiacoes!.FindIndex(c => c.Pais == nome);
                 if (index < 0)
                 {
                     return -1;
@@ -5439,7 +5445,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             }
             case "Estado":
             {
-                var index = agremiacoes!.FindIndex(c => c.Estado.Descricao == nome);
+                var index = agremiacoes!.FindIndex(c => c.Estado == nome);
                 if (index < 0)
                 {
                     return -1;
@@ -5449,7 +5455,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             }
             case "Cidade":
             {
-                var index = agremiacoes!.FindIndex(c => c.Cidade.Descricao == nome);
+                var index = agremiacoes!.FindIndex(c => c.Cidade == nome);
                 if (index < 0)
                 {
                     return -1;

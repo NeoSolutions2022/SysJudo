@@ -111,21 +111,6 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
             .IsRequired()
             .HasMaxLength(60); 
 
-        builder.HasOne(d => d.Pais)
-            .WithMany(p => p.Agremiacoes)
-            .HasForeignKey(d => d.IdPais)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(d => d.Cidade)
-            .WithMany(p => p.Agremiacoes)
-            .HasForeignKey(d => d.IdCidade)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(d => d.Estado)
-            .WithMany(p => p.Agremiacoes)
-            .HasForeignKey(d => d.IdEstado)
-            .OnDelete(DeleteBehavior.Restrict);
-
         builder.HasOne(d => d.Regiao)
             .WithMany(p => p.Agremiacoes)
             .HasForeignKey(d => d.IdRegiao)
