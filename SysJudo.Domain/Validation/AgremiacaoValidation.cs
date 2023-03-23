@@ -34,8 +34,6 @@ public class AgremiacaoValidation: AbstractValidator<Agremiacao>
             .WithMessage("Cnpj deve ter no máximo 14 caracteres");
         
         RuleFor(c => c.Complemento)
-            .NotEmpty()
-            .WithMessage("Complemento não pode ser vazio!")
             .MaximumLength(60)
             .WithMessage("Complemento deve ter no máximo 60 caracteres");
         
@@ -77,24 +75,6 @@ public class AgremiacaoValidation: AbstractValidator<Agremiacao>
         RuleFor(c => c.Fantasia)
             .MaximumLength(60)
             .WithMessage("Fantasia deve ter no máximo 60 caracteres");
-
-        RuleFor(c => c.IdCidade)
-            .NotEmpty()
-            .WithMessage("IdCidade não pode ser vazio!")
-            .NotNull()
-            .WithMessage("IdCidade não pode ser nulo!");
-        
-        RuleFor(c => c.IdEstado)
-            .NotEmpty()
-            .WithMessage("IdEstado não pode ser vazio!")
-            .NotNull()
-            .WithMessage("IdEstado não pode ser nulo!");
-        
-        RuleFor(c => c.IdPais)
-            .NotEmpty()
-            .WithMessage("IdPais não pode ser vazio!")
-            .NotNull()
-            .WithMessage("IdPais não pode ser nulo!");
         
         RuleFor(c => c.IdRegiao)
             .NotEmpty()

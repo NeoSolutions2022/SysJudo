@@ -39,10 +39,9 @@ public class Agremiacao : Entity, IAggregateRoot, ITenant
     public int IdEstado { get; set; }
     public int IdRegiao { get; set; }
     public int ClienteId { get; set; }
-
-    public virtual Pais Pais { get; set; } = null!;
-    public virtual Estado Estado { get; set; } = null!;
-    public virtual Cidade Cidade { get; set; } = null!;
+    public string Pais { get; set; }
+    public string Estado { get; set; }
+    public string Cidade { get; set; }
     public virtual Regiao Regiao { get; set; } = null!;
     public virtual Cliente Cliente { get; set; } = null!;
     public virtual List<Atleta> Atletas { get; set; } = new();
