@@ -19,6 +19,9 @@ public class AlterarAgremiacaoDto
     public int IdCidade { get; set; }
     public int IdEstado { get; set; }
     public int IdPais { get; set; }
+    public string Pais { get; set; } = null!;
+    public string Estado { get; set; } = null!;
+    public string Cidade { get; set; } = null!;
     public string Telefone { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string Cnpj { get; set; } = null!;

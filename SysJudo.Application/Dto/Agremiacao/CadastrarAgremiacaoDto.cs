@@ -1,4 +1,3 @@
-using DocumentFormat.OpenXml.Office2013.Word;
 using Microsoft.AspNetCore.Http;
 
 namespace SysJudo.Application.Dto.Agremiacao;

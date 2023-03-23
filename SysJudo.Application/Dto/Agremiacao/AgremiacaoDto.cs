@@ -24,6 +24,9 @@ public class AgremiacaoDto
     public int IdCidade { get; set; }
     public int IdEstado { get; set; }
     public int IdPais { get; set; }
+    public string Pais { get; set; } = null!;
+    public string Estado { get; set; } = null!;
+    public string Cidade { get; set; } = null!;
     public string Telefone { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string Cnpj { get; set; } = null!;
@@ -40,9 +43,6 @@ public class AgremiacaoDto
     public int IdRegiao { get; set; }
     public string? Anotacoes { get; set; }
     
-    public virtual PaisDto Pais { get; set; } = null!;
-    public virtual EstadoDto Estado { get; set; } = null!;
-    public virtual CidadeDto Cidade { get; set; } = null!;
     public virtual RegiaoDto Regiao { get; set; } = null!;
     public virtual ClienteDto Cliente { get; set; } = null!;
 }
