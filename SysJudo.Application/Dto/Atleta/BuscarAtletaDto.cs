@@ -21,9 +21,9 @@ public class BuscarAtletaDto : BuscaPaginadaDto<Domain.Entities.Atleta>
     public int? IdSexo { get; set; }
     public int? IdEstadoCivil { get; set; }
     public int? IdNacionalidade { get; set; }
-    public int? IdCidade { get; set; }
-    public int? IdEstado { get; set; }
-    public int? IdPais { get; set; }
+    public string? Cidade { get; set; }
+    public string? Estado { get; set; }
+    public string? Pais { get; set; }
     public int? IdAgremiacao { get; set; }
 
     public override void AplicarFiltro(ref IQueryable<Domain.Entities.Atleta> query)
@@ -67,7 +67,7 @@ public class BuscarAtletaDto : BuscaPaginadaDto<Domain.Entities.Atleta>
 
         if (!string.IsNullOrWhiteSpace(Bairro))
         {
-            query = query.Where(c => c.Bairro.Contains(Bairro));
+            query = query.Where(c => c.Bairro != null && c.Bairro.Contains(Bairro));
         }
 
         if (!string.IsNullOrWhiteSpace(Telefone))
@@ -110,19 +110,19 @@ public class BuscarAtletaDto : BuscaPaginadaDto<Domain.Entities.Atleta>
             query = query.Where(c => c.IdNacionalidade == IdNacionalidade);
         }
 
-        if (IdCidade.HasValue)
+        if (!string.IsNullOrWhiteSpace(Cidade))
         {
-            query = query.Where(c => c.IdCidade == IdCidade);
+            query = query.Where(c => c.Identidade.Contains(Cidade));
         }
 
-        if (IdEstado.HasValue)
+        if (!string.IsNullOrWhiteSpace(Estado))
         {
-            query = query.Where(c => c.IdEstado == IdEstado);
+            query = query.Where(c => c.Identidade.Contains(Estado));
         }
 
-        if (IdPais.HasValue)
+        if (!string.IsNullOrWhiteSpace(Pais))
         {
-            query = query.Where(c => c.IdPais == IdPais);
+            query = query.Where(c => c.Identidade.Contains(Pais));
         }
 
         if (IdAgremiacao.HasValue)
@@ -155,9 +155,9 @@ public class BuscarAtletaDto : BuscaPaginadaDto<Domain.Entities.Atleta>
                 "idsexo" => query.OrderBy(c => c.IdSexo),
                 "idestadocivil" => query.OrderBy(c => c.IdEstadoCivil),
                 "idnacionalidade" => query.OrderBy(c => c.IdNacionalidade),
-                "idcidade" => query.OrderBy(c => c.IdCidade),
-                "idestado" => query.OrderBy(c => c.IdEstado),
-                "idpais" => query.OrderBy(c => c.IdPais),
+                "cidade" => query.OrderBy(c => c.Cidade),
+                "estado" => query.OrderBy(c => c.Estado),
+                "pais" => query.OrderBy(c => c.Pais),
                 "idagremiacao" => query.OrderBy(c => c.IdAgremiacao),
                 "id" or _ => query.OrderBy(c => c.Id)
             };
@@ -182,9 +182,9 @@ public class BuscarAtletaDto : BuscaPaginadaDto<Domain.Entities.Atleta>
             "idsexo" => query.OrderByDescending(c => c.IdSexo),
             "idestadocivil" => query.OrderByDescending(c => c.IdEstadoCivil),
             "idnacionalidade" => query.OrderByDescending(c => c.IdNacionalidade),
-            "idcidade" => query.OrderByDescending(c => c.IdCidade),
-            "idestado" => query.OrderByDescending(c => c.IdEstado),
-            "idpais" => query.OrderByDescending(c => c.IdPais),
+            "cidade" => query.OrderByDescending(c => c.Cidade),
+            "estado" => query.OrderByDescending(c => c.Estado),
+            "pais" => query.OrderByDescending(c => c.Pais),
             "idagremiacao" => query.OrderByDescending(c => c.IdAgremiacao),
             "id" or _ => query.OrderByDescending(c => c.Id)
         };

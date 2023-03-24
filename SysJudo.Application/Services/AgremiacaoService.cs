@@ -4674,11 +4674,11 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         await _filtroRepository.RemoverTodos();
         foreach (var agremiacao in agremiacoesFiltro.DistinctBy(c => c.Id))
         {
-            agremiacao.PaisNome = agremiacoes.FirstOrDefault(c => c.IdPais == agremiacao.IdPais)!.Pais;
-            agremiacao.EstadoNome =
-                agremiacoes.FirstOrDefault(c => c.IdEstado == agremiacao.IdEstado)!.Estado;
-            agremiacao.CidadeNome =
-                agremiacoes.FirstOrDefault(c => c.IdCidade == agremiacao.IdCidade)!.Cidade;
+            agremiacao.Pais = agremiacoes.FirstOrDefault(c => c.Id == agremiacao.Id)!.Pais;
+            agremiacao.Estado =
+                agremiacoes.FirstOrDefault(c => c.Id == agremiacao.Id)!.Estado;
+            agremiacao.Cidade =
+                agremiacoes.FirstOrDefault(c => c.Id == agremiacao.Id)!.Cidade;
             agremiacao.RegiaoNome =
                 agremiacoes.FirstOrDefault(c => c.IdRegiao == agremiacao.IdRegiao)!.Regiao.Descricao;
 
@@ -4867,14 +4867,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             if (dto.IdCidade)
             {
                 ws.Cell(1, contador).Value = "Cidade";
-                ws.Cell(linha, contador).Value = agremiacao.CidadeNome;
+                ws.Cell(linha, contador).Value = agremiacao.Cidade;
                 contador++;
             }
 
             if (dto.IdEstado)
             {
                 ws.Cell(1, contador).Value = "Estado";
-                ws.Cell(linha, contador).Value = agremiacao.EstadoNome;
+                ws.Cell(linha, contador).Value = agremiacao.Estado;
                 contador++;
             }
 
@@ -4888,7 +4888,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             if (dto.IdPais)
             {
                 ws.Cell(1, contador).Value = "Pais";
-                ws.Cell(linha, contador).Value = agremiacao.PaisNome;
+                ws.Cell(linha, contador).Value = agremiacao.Pais;
                 contador++;
             }
 
@@ -4980,11 +4980,11 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         await _filtroRepository.RemoverTodos();
         foreach (var agremiacao in agremiacoesFiltro.DistinctBy(c => c.Id))
         {
-            agremiacao.PaisNome = agremiacoes.FirstOrDefault(c => c.IdPais == agremiacao.IdPais)!.Pais;
-            agremiacao.EstadoNome =
-                agremiacoes.FirstOrDefault(c => c.IdEstado == agremiacao.IdEstado)!.Estado;
-            agremiacao.CidadeNome =
-                agremiacoes.FirstOrDefault(c => c.IdCidade == agremiacao.IdCidade)!.Cidade;
+            agremiacao.Pais = agremiacoes.FirstOrDefault(c => c.Id == agremiacao.Id)!.Pais;
+            agremiacao.Estado =
+                agremiacoes.FirstOrDefault(c => c.Id == agremiacao.Id)!.Estado;
+            agremiacao.Cidade =
+                agremiacoes.FirstOrDefault(c => c.Id == agremiacao.Id)!.Cidade;
             agremiacao.RegiaoNome =
                 agremiacoes.FirstOrDefault(c => c.IdRegiao == agremiacao.IdRegiao)!.Regiao.Descricao;
 

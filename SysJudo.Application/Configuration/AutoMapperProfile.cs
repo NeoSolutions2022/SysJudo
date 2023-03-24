@@ -55,33 +55,6 @@ public class AutoMapperProfile : Profile
 
         #endregion
 
-        #region Pais
-
-        CreateMap<Pais, SysJudo.Application.Dto.Pais.PaisDto>().ReverseMap();
-        CreateMap<Pais, SysJudo.Application.Dto.Pais.CreatePaisDto>().ReverseMap();
-        CreateMap<Pais, SysJudo.Application.Dto.Pais.UpdatePaisDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Pais>, PagedDto<SysJudo.Application.Dto.Pais.PaisDto>>().ReverseMap();
-
-        #endregion
-
-        #region Estado
-
-        CreateMap<Estado, SysJudo.Application.Dto.Estado.EstadoDto>().ReverseMap();
-        CreateMap<Estado, SysJudo.Application.Dto.Estado.CreateEstadoDto>().ReverseMap();
-        CreateMap<Estado, SysJudo.Application.Dto.Estado.UpdadeEstadoDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Estado>, PagedDto<SysJudo.Application.Dto.Estado.EstadoDto>>().ReverseMap();
-
-        #endregion
-
-        #region Cidade
-
-        CreateMap<Cidade, SysJudo.Application.Dto.Cidade.CidadeDto>().ReverseMap();
-        CreateMap<Cidade, SysJudo.Application.Dto.Cidade.CreateCidadeDto>().ReverseMap();
-        CreateMap<Cidade, SysJudo.Application.Dto.Cidade.UpdateCidadeDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Cidade>, PagedDto<SysJudo.Application.Dto.Cidade.CidadeDto>>().ReverseMap();
-
-        #endregion
-
         #region Regiao
 
         CreateMap<Regiao, SysJudo.Application.Dto.Regiao.RegiaoDto>().ReverseMap();

@@ -1,8 +1,4 @@
-using Org.BouncyCastle.Utilities.Collections;
-using SysJudo.Application.Dto.Cidade;
 using SysJudo.Application.Dto.Cliente;
-using SysJudo.Application.Dto.Estado;
-using SysJudo.Application.Dto.Pais;
 using SysJudo.Application.Dto.Regiao;
 
 namespace SysJudo.Application.Dto.Agremiacao;
@@ -21,12 +17,6 @@ public class AgremiacaoDto
     public string Endereco { get; set; } = null!;
     public string Bairro { get; set; } = null!;
     public string Complemento { get; set; } = null!;
-    public int IdCidade { get; set; }
-    public int IdEstado { get; set; }
-    public int IdPais { get; set; }
-    public string Pais { get; set; } = null!;
-    public string Estado { get; set; } = null!;
-    public string Cidade { get; set; } = null!;
     public string Telefone { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string Cnpj { get; set; } = null!;
@@ -42,6 +32,9 @@ public class AgremiacaoDto
     public bool DocumentacaoAtualizada { get; set; }
     public int IdRegiao { get; set; }
     public string? Anotacoes { get; set; }
+    public string Pais { get; set; } = null!;
+    public string Estado { get; set; } = null!;
+    public string Cidade { get; set; } = null!;
     
     public virtual RegiaoDto Regiao { get; set; } = null!;
     public virtual ClienteDto Cliente { get; set; } = null!;

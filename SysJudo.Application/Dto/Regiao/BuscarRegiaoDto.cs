@@ -7,9 +7,9 @@ public class BuscarRegiaoDto : BuscaPaginadaDto<Domain.Entities.Regiao>
 {
     public string? Sigla { get; set; } = null!;
     public string? Cep { get; set; } = null!;
-    public int? IdCidade { get; set; }
-    public int? IdEstado { get; set; }
-    public int? IdPais { get; set; }
+    public string? Cidade { get; set; }
+    public string? Estado { get; set; }
+    public string? Pais { get; set; }
 
     public override void AplicarFiltro(ref IQueryable<Domain.Entities.Regiao> query)
     {
@@ -25,19 +25,19 @@ public class BuscarRegiaoDto : BuscaPaginadaDto<Domain.Entities.Regiao>
             query = query.Where(s => s.Cep.Contains(Cep));
         }
         
-        if (IdCidade.HasValue)
+        if (!string.IsNullOrWhiteSpace(Cidade))
         {
-            query = query.Where(s => s.IdCidade == IdCidade);
+            query = query.Where(c => c.Cidade.Contains(Cidade));
         }
-        
-        if (IdEstado.HasValue)
+
+        if (!string.IsNullOrWhiteSpace(Estado))
         {
-            query = query.Where(s => s.IdEstado == IdEstado);
+            query = query.Where(c => c.Estado.Contains(Estado));
         }
-        
-        if (IdPais.HasValue)
+
+        if (!string.IsNullOrWhiteSpace(Pais))
         {
-            query = query.Where(s => s.IdPais == IdPais);
+            query = query.Where(c => c.Pais.Contains(Pais));
         }
 
         query = query.Where(expression);
@@ -50,9 +50,9 @@ public class BuscarRegiaoDto : BuscaPaginadaDto<Domain.Entities.Regiao>
             query = OrdenarPor.ToLower() switch
             {
                 "id" => query.OrderBy(c => c.Id),
-                "idcidade" => query.OrderBy(c => c.IdCidade),
-                "idestado" => query.OrderBy(c => c.IdEstado),
-                "idpais" => query.OrderBy(c => c.IdPais),
+                "cidade" => query.OrderBy(c => c.Cidade),
+                "estado" => query.OrderBy(c => c.Estado),
+                "pais" => query.OrderBy(c => c.Pais),
                 "cep" or _ => query.OrderBy(c => c.Cep)
             };
             return;
@@ -61,9 +61,9 @@ public class BuscarRegiaoDto : BuscaPaginadaDto<Domain.Entities.Regiao>
         query = OrdenarPor.ToLower() switch
         {
             "id" => query.OrderByDescending(c => c.Id),
-            "idcidade" => query.OrderByDescending(c => c.IdCidade),
-            "idestado" => query.OrderByDescending(c => c.IdEstado),
-            "idpais" => query.OrderByDescending(c => c.IdPais),
+            "cidade" => query.OrderByDescending(c => c.Cidade),
+            "estado" => query.OrderByDescending(c => c.Estado),
+            "pais" => query.OrderByDescending(c => c.Pais),
             "cep" or _ => query.OrderByDescending(c => c.Cep)
         };
     }

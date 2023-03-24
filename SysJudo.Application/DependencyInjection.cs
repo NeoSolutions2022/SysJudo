@@ -1,16 +1,11 @@
-﻿using System.Net;
-using System.Reflection;
-using Microsoft.AspNetCore.Builder;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using ScottBrady91.AspNetCore.Identity;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Notifications;
 using SysJudo.Application.Services;
-using SysJudo.Core.Enums;
-using SysJudo.Core.Extension;
 using SysJudo.Core.Settings;
 using SysJudo.Domain.Entities;
 using SysJudo.Infra;
@@ -36,11 +31,8 @@ public static class DependencyInjection
     {
         services.AddScoped<IAdministradorService, AdministradorService>();
         services.AddScoped<IAgremiacaoService, AgremiacaoService>();
-        services.AddScoped<ICidadeService, CidadeService>();
         services.AddScoped<IClienteService, ClienteService>();
-        services.AddScoped<IEstadoService, EstadoService>();
         services.AddScoped<IFaixaService, FaixaService>();
-        services.AddScoped<IPaisService, PaisService>();
         services.AddScoped<IRegiaoService, RegiaoService>();
         services.AddScoped<ISistemaService, SistemaService>();
         services.AddScoped<IUsuarioService, UsuarioService>();

@@ -71,15 +71,6 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
         builder.Property(e => e.Foto)
             .IsRequired(false);
 
-        builder.Property(e => e.IdCidade)
-            .IsRequired();
-
-        builder.Property(e => e.IdEstado)
-            .IsRequired();
-
-        builder.Property(e => e.IdPais)
-            .IsRequired();
-
         builder.Property(e => e.IdRegiao)
             .IsRequired();
 
@@ -110,6 +101,18 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
         builder.Property(e => e.Telefone)
             .IsRequired()
             .HasMaxLength(60); 
+        
+        builder.Property(c => c.Cidade)
+            .IsRequired()
+            .HasMaxLength(30);
+
+        builder.Property(c => c.Estado)
+            .IsRequired()
+            .HasMaxLength(30);
+
+        builder.Property(c => c.Pais)
+            .IsRequired()
+            .HasMaxLength(30);
 
         builder.HasOne(d => d.Regiao)
             .WithMany(p => p.Agremiacoes)

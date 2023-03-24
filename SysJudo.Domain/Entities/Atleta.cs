@@ -7,7 +7,7 @@ namespace SysJudo.Domain.Entities;
 
 public class Atleta : Entity, IAggregateRoot, ITenant
 {
-    public string? Foto { get; set; } = null!;
+    public string? Foto { get; set; }
     public string RegistroFederacao { get; set; } = null!;
     public string? RegistroConfederacao { get; set; }
     public string Nome { get; set; } = null!;
@@ -34,9 +34,9 @@ public class Atleta : Entity, IAggregateRoot, ITenant
     public int? IdProfissaoPai { get; set; }
     public int IdEmissor { get; set; }
     public int IdNacionalidade { get; set; }
-    public int IdCidade { get; set; }
-    public int IdEstado { get; set; }
-    public int IdPais { get; set; }
+    public string Cidade { get; set; } = null!;
+    public string Estado { get; set; } = null!;
+    public string Pais { get; set; } = null!;
     public int IdAgremiacao { get; set; }
     public int ClienteId { get; set; }
 
@@ -46,9 +46,6 @@ public class Atleta : Entity, IAggregateRoot, ITenant
     public virtual Profissao Profissao { get; set; } = null!;
     public virtual EmissoresIdentidade EmissoresIdentidade { get; set; } = null!;
     public virtual Nacionalidade Nacionalidade { get; set; } = null!;
-    public virtual Cidade Cidade { get; set; } = null!;
-    public virtual Estado Estado { get; set; } = null!;
-    public virtual Pais Pais { get; set; } = null!;
     public virtual Agremiacao Agremiacao { get; set; } = null!;
     public virtual List<AgremiacaoFiltro> AgremiacoesFiltro { get; set; } = new();
     public virtual Cliente Cliente { get; set; } = null!;

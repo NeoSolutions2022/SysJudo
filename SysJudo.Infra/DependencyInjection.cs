@@ -57,11 +57,8 @@ public static class DependencyInjection
     {
         services.AddScoped<IAdministradorRepository, AdministradorRepository>();
         services.AddScoped<IAgremiacaoRepository, AgremiacaoRepository>();
-        services.AddScoped<ICidadeRepository, CidadeRepository>();
         services.AddScoped<IClienteRepository, ClienteRepository>();
-        services.AddScoped<IEstadoRepository, EstadoRepository>();
         services.AddScoped<IFaixaRepository, FaixaRepository>();
-        services.AddScoped<IPaisRepository, PaisRepository>();
         services.AddScoped<IRegiaoRepository, RegiaoRepository>();
         services.AddScoped<ISistemaRepository, SistemaRepository>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();

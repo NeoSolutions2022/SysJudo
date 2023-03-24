@@ -19,9 +19,9 @@ public class BuscarAgremiacaoFiltroDto : BuscaPaginadaFiltroDto<AgremiacaoFiltro
 
     public string? Representante { get; set; } = null!;
     public string? Anotacoes { get; set; }
-    public int? IdPais { get; set; }
-    public int? IdCidade { get; set; }
-    public int? IdEstado { get; set; }
+    public string? Pais { get; set; }
+    public string? Cidade { get; set; }
+    public string? Estado { get; set; }
     public int? IdRegiao { get; set; }
 
     public override void AplicarFiltro(ref IQueryable<AgremiacaoFiltro> query)
@@ -33,24 +33,24 @@ public class BuscarAgremiacaoFiltroDto : BuscaPaginadaFiltroDto<AgremiacaoFiltro
             query = query.Where(a => a.Sigla.Contains(Sigla));
         }
 
-        if (IdCidade.HasValue)
+        if (!string.IsNullOrWhiteSpace(Cidade))
         {
-            query = query.Where(s => s.IdCidade == IdCidade);
+            query = query.Where(a => a.Cidade.Contains(Cidade));
         }
 
-        if (IdEstado.HasValue)
+        if (!string.IsNullOrWhiteSpace(Estado))
         {
-            query = query.Where(s => s.IdEstado == IdEstado);
+            query = query.Where(a => a.Estado.Contains(Estado));
         }
 
-        if (IdPais.HasValue)
+        if (!string.IsNullOrWhiteSpace(Pais))
         {
-            query = query.Where(s => s.IdPais == IdPais);
+            query = query.Where(a => a.Pais.Contains(Pais));
         }
 
         if (IdRegiao.HasValue)
         {
-            query = query.Where(s => s.IdPais == IdPais);
+            query = query.Where(s => s.IdRegiao == IdRegiao);
         }
 
         if (!string.IsNullOrWhiteSpace(Representante))
@@ -129,9 +129,9 @@ public class BuscarAgremiacaoFiltroDto : BuscaPaginadaFiltroDto<AgremiacaoFiltro
                 "bairro" => query.OrderBy(c => c.Nome),
                 "representante" => query.OrderBy(c => c.Representante),
                 "anotacoes" => query.OrderBy(c => c.Anotacoes),
-                "idcidade" => query.OrderBy(c => c.IdCidade),
-                "idestado" => query.OrderBy(c => c.IdEstado),
-                "idpais" => query.OrderBy(c => c.IdPais),
+                "cidade" => query.OrderBy(c => c.Cidade),
+                "estado" => query.OrderBy(c => c.Estado),
+                "pais" => query.OrderBy(c => c.Pais),
                 "idregiao" => query.OrderBy(c => c.IdRegiao),
                 "sigla" or _ => query.OrderBy(c => c.Sigla)
             };
@@ -152,9 +152,9 @@ public class BuscarAgremiacaoFiltroDto : BuscaPaginadaFiltroDto<AgremiacaoFiltro
             "bairro" => query.OrderByDescending(c => c.Nome),
             "representante" => query.OrderByDescending(c => c.Representante),
             "anotacoes" => query.OrderByDescending(c => c.Anotacoes),
-            "idcidade" => query.OrderByDescending(c => c.IdCidade),
-            "idestado" => query.OrderByDescending(c => c.IdEstado),
-            "idpais" => query.OrderByDescending(c => c.IdPais),
+            "cidade" => query.OrderByDescending(c => c.Cidade),
+            "estado" => query.OrderByDescending(c => c.Estado),
+            "pais" => query.OrderByDescending(c => c.Pais),
             "idregiao" => query.OrderByDescending(c => c.IdRegiao),
             "sigla" or _ => query.OrderByDescending(c => c.Sigla)
         };

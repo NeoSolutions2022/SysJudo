@@ -51,19 +51,19 @@ public class RegiaoValidator : AbstractValidator<Regiao>
             .MaximumLength(60)
             .WithMessage("Complemento deve ter no máximo 60 caracteres");
         
-        RuleFor(s => s.IdCidade)
+        RuleFor(s => s.Cidade)
             .NotEmpty()
             .WithMessage("IdCidade não pode ser vazio")
             .NotNull()
             .WithMessage("IdCidade não pode ser nulo");
         
-        RuleFor(s => s.IdEstado)
+        RuleFor(s => s.Estado)
             .NotEmpty()
             .WithMessage("IdEstado não pode ser vazio")
             .NotNull()
             .WithMessage("IdEstado não pode ser nulo");
         
-        RuleFor(s => s.IdPais)
+        RuleFor(s => s.Pais)
             .NotEmpty()
             .WithMessage("IdPais não pode ser vazio")
             .NotNull()
