@@ -41,22 +41,19 @@ public class RegiaoMapping : IEntityTypeConfiguration<Regiao>
 
         builder.Property(e => e.Telefone)
             .HasMaxLength(60);
-
-        builder.HasOne(d => d.Pais)
-            .WithMany(p => p.Regioes)
-            .HasForeignKey(d => d.IdPais)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(d => d.Estado)
-            .WithMany(p => p.Regioes)
-            .HasForeignKey(d => d.IdEstado)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(d => d.Cidade)
-            .WithMany(p => p.Regioes)
-            .HasForeignKey(d => d.IdCidade)
-            .OnDelete(DeleteBehavior.Restrict);
         
+        builder.Property(c => c.Cidade)
+            .IsRequired()
+            .HasMaxLength(30);
+
+        builder.Property(c => c.Estado)
+            .IsRequired()
+            .HasMaxLength(30);
+
+        builder.Property(c => c.Pais)
+            .IsRequired()
+            .HasMaxLength(30);
+
         builder.HasOne(d => d.Cliente)
             .WithMany(p => p.Regioes)
             .HasForeignKey(d => d.ClienteId)

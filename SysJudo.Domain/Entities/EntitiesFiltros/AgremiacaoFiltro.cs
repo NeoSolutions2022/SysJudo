@@ -31,13 +31,10 @@ public class AgremiacaoFiltro : EntityFiltro, IAggregateRoot, ITenant
     public bool ContratoSocial { get; set; }
     public bool DocumentacaoAtualizada { get; set; }
     public string Anotacoes { get;set;}= " ";
-    public string CidadeNome { get; set; } = null!;
-    public string EstadoNome { get; set; } = null!;
+    public string Cidade { get; set; } = null!;
+    public string Estado { get; set; } = null!;
     public string RegiaoNome { get; set; } = null!;
-    public string PaisNome { get; set; } = null!;
-    public int IdPais { get; set; }
-    public int IdCidade { get; set; }
-    public int IdEstado { get; set; }
+    public string Pais { get; set; } = null!;
     public int IdRegiao { get; set; }
     public int ClienteId { get; set; }
 }

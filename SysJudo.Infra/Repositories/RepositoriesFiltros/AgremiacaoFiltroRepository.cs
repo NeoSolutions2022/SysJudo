@@ -56,8 +56,8 @@ public class AgremiacaoFiltroRepository : RepositoryFiltro<AgremiacaoFiltro>, IA
                 c.Cnpj.Contains(valor) || (c.InscricaoMunicipal != null && c.InscricaoMunicipal.Contains(valor)) ||
                 (c.InscricaoEstadual != null && c.InscricaoEstadual.Contains(valor)) ||
                 c.DataCnpj == ConvertToDateTime(valor) || c.DataAta == ConvertToDateTime(valor) ||
-                c.PaisNome.Contains(valor) || c.CidadeNome.Contains(valor) ||
-                c.EstadoNome.Contains(valor) || c.RegiaoNome.Contains(valor))
+                c.Pais.Contains(valor) || c.Cidade.Contains(valor) ||
+                c.Estado.Contains(valor) || c.RegiaoNome.Contains(valor))
             .AsNoTracking()
             .ToListAsync();
     }

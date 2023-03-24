@@ -17,14 +17,11 @@ public class Regiao : Entity, IAggregateRoot, ITenant
     public string? Anotacoes { get; set; }
 
     public int ClienteId { get; set; }
-    public int IdCidade { get; set; }
-    public int IdEstado { get; set; }
-    public int IdPais { get; set; }
+    public string Cidade { get; set; } = null!;
+    public string Estado { get; set; } = null!;
+    public string Pais { get; set; } = null!;
     
     public virtual List<Agremiacao> Agremiacoes { get; set; } = new();
     public virtual List<AgremiacaoFiltro> AgremiacoesFiltro { get; set; } = new();
-    public virtual Pais Pais { get; set; } = null!;
-    public virtual Estado Estado { get; set; } = null!;
-    public virtual Cidade Cidade { get; set; } = null!;
     public virtual Cliente Cliente { get; set; } = null!;
 }

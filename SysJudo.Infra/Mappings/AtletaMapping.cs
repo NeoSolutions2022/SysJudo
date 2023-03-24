@@ -45,14 +45,17 @@ public class AtletaMapping : IEntityTypeConfiguration<Atleta>
             .IsRequired(false)
             .HasMaxLength(60);
 
-        builder.Property(c => c.IdCidade)
-            .IsRequired();
+        builder.Property(c => c.Cidade)
+            .IsRequired()
+            .HasMaxLength(30);
 
-        builder.Property(c => c.IdEstado)
-            .IsRequired();
+        builder.Property(c => c.Estado)
+            .IsRequired()
+            .HasMaxLength(30);
 
-        builder.Property(c => c.IdPais)
-            .IsRequired();
+        builder.Property(c => c.Pais)
+            .IsRequired()
+            .HasMaxLength(30);
 
         builder.Property(c => c.Telefone)
             .IsRequired()
@@ -133,21 +136,6 @@ public class AtletaMapping : IEntityTypeConfiguration<Atleta>
             .HasOne(a => a.Nacionalidade)
             .WithMany(e => e.Atletas)
             .HasForeignKey(a => a.IdNacionalidade);
-
-        builder
-            .HasOne(a => a.Cidade)
-            .WithMany(e => e.Atletas)
-            .HasForeignKey(a => a.IdCidade);
-
-        builder
-            .HasOne(a => a.Estado)
-            .WithMany(e => e.Atletas)
-            .HasForeignKey(a => a.IdEstado);
-
-        builder
-            .HasOne(a => a.Pais)
-            .WithMany(e => e.Atletas)
-            .HasForeignKey(a => a.IdPais);
 
         builder
             .HasOne(a => a.Agremiacao)

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SysJudo.Infra.Context;
 
@@ -11,9 +12,10 @@ using SysJudo.Infra.Context;
 namespace SysJudo.Infra.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230324175044_RemovendoPaisEstadoCidade")]
+    partial class RemovendoPaisEstadoCidade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -443,7 +445,7 @@ namespace SysJudo.Infra.Migrations
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
 
-                    b.Property<string>("Cidade")
+                    b.Property<string>("CidadeNome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -495,7 +497,7 @@ namespace SysJudo.Infra.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<string>("Estado")
+                    b.Property<string>("EstadoNome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -530,7 +532,7 @@ namespace SysJudo.Infra.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<string>("Pais")
+                    b.Property<string>("PaisNome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
