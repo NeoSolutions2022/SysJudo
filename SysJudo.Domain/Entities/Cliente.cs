@@ -14,9 +14,6 @@ public class Cliente : Entity, IAggregateRoot
     public int IdSistema { get; set; }
 
     public virtual Sistema Sistema { get; set; } = null!;
-    public virtual List<Cidade> Cidades { get; set; } = new();
-    public virtual List<Pais> Paises { get; set; } = new();
-    public virtual List<Estado> Estados { get; set; } = new();
     public virtual List<Faixa> Faixas { get; set; } = new();
     public virtual List<Usuario> Usuarios { get; set; } = new();
     public virtual List<Agremiacao> Agremiacoes { get; set; } = new();

@@ -21,7 +21,7 @@ public class AtletaValidator : AbstractValidator<Atleta>
             .NotEmpty()
             .WithMessage("Nome não pode ser vazio")
             .MaximumLength(60)
-            .WithMessage("Nome deve ter no máximo 10 caracteres");
+            .WithMessage("Nome deve ter no máximo 60 caracteres");
         
         RuleFor(c => c.DataNascimento)
             .NotNull()
@@ -61,23 +61,29 @@ public class AtletaValidator : AbstractValidator<Atleta>
             .MaximumLength(60)
             .WithMessage("Bairro deve ter no máximo 60 caracteres");
         
-        RuleFor(c => c.IdCidade)
+        RuleFor(c => c.Cidade)
             .NotNull()
-            .WithMessage("IdCidade não pode ser nulo")
+            .WithMessage("Cidade não pode ser nulo")
+            .MaximumLength(30)
+            .WithMessage("Cidade deve ter no máximo 30 caracteres")
             .NotEmpty()
-            .WithMessage("IdCidade não pode ser vazio");
+            .WithMessage("Cidade não pode ser vazio");
         
-        RuleFor(c => c.IdEstado)
+        RuleFor(c => c.Estado)
             .NotNull()
-            .WithMessage("IdEstado não pode ser nulo")
+            .WithMessage("Estado não pode ser nulo")
+            .MaximumLength(30)
+            .WithMessage("Estado deve ter no máximo 30 caracteres")
             .NotEmpty()
-            .WithMessage("IdEstado não pode ser vazio");
+            .WithMessage("Estado não pode ser vazio");
         
-        RuleFor(c => c.IdPais)
+        RuleFor(c => c.Pais)
             .NotNull()
-            .WithMessage("IdPais não pode ser nulo")
+            .WithMessage("Pais não pode ser nulo")
+            .MaximumLength(30)
+            .WithMessage("Pais deve ter no máximo 30 caracteres")
             .NotEmpty()
-            .WithMessage("IdPais não pode ser vazio");
+            .WithMessage("Pais não pode ser vazio");
         
         RuleFor(c => c.Telefone)
             .NotEmpty()

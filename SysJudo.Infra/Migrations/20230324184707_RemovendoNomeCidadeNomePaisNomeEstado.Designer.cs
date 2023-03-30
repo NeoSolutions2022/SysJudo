@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SysJudo.Infra.Context;
 
@@ -11,9 +12,10 @@ using SysJudo.Infra.Context;
 namespace SysJudo.Infra.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230324184707_RemovendoNomeCidadeNomePaisNomeEstado")]
+    partial class RemovendoNomeCidadeNomePaisNomeEstado
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,6 +94,7 @@ namespace SysJudo.Infra.Migrations
                         .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("Complemento")
+                        .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 

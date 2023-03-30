@@ -73,15 +73,6 @@ public class AgremiacaoFiltroMapping : IEntityTypeConfiguration<AgremiacaoFiltro
         builder.Property(e => e.Foto)
             .IsRequired(false);
 
-        builder.Property(e => e.IdCidade)
-            .IsRequired();
-
-        builder.Property(e => e.IdEstado)
-            .IsRequired();
-
-        builder.Property(e => e.IdPais)
-            .IsRequired();
-
         builder.Property(e => e.IdRegiao)
             .IsRequired();
 

@@ -33,15 +33,12 @@ public class Agremiacao : Entity, IAggregateRoot, ITenant
     public bool ContratoSocial { get; set; }
     public bool DocumentacaoAtualizada { get; set; }
     public string Anotacoes { get; set; } = " ";
-
-    public int IdPais { get; set; }
-    public int IdCidade { get; set; }
-    public int IdEstado { get; set; }
+    
+    public string Pais { get; set; } = null!;
+    public string Estado { get; set; } = null!;
+    public string Cidade { get; set; } = null!;
     public int IdRegiao { get; set; }
     public int ClienteId { get; set; }
-    public string Pais { get; set; }
-    public string Estado { get; set; }
-    public string Cidade { get; set; }
     public virtual Regiao Regiao { get; set; } = null!;
     public virtual Cliente Cliente { get; set; } = null!;
     public virtual List<Atleta> Atletas { get; set; } = new();
