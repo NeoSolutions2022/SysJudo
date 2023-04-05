@@ -31,9 +31,9 @@ public class UpdateAtletaDto
     public int? IdProfissaoPai { get; set; }
     public int IdEmissor { get; set; }
     public int IdNacionalidade { get; set; }
-    public int IdCidade { get; set; }
-    public int IdEstado { get; set; }
-    public int IdPais { get; set; }
+    public string Cidade { get; set; }
+    public string Estado { get; set; }
+    public string Pais { get; set; }
     public int IdAgremiacao { get; set; }
     public int ClienteId { get; set; }
 }
