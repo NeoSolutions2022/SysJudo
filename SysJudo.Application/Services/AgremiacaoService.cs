@@ -5077,6 +5077,18 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         documentoId = documentoId == 0 ? documentoId : documentoId - 1;
         var remover = documentos[documentoId];
         documentos.Remove(remover);
+        StringBuilder links = new StringBuilder();
+        for (int i = 0; i <= documentos.Count; i++)
+        {
+            links.Append("&" + documentos[i]);
+        }
+
+        agremiacao.DocumentosUri = links.ToString();
+        _agremiacaoRepository.Alterar(agremiacao);
+        if (!await _agremiacaoRepository.UnitOfWork.Commit())
+        {
+            Notificator.Handle("Não foi possível remover documentos.");
+        }
     }
     
     private async Task<List<Agremiacao>> PossuiAgremiacao(string nomeParametro, List<Agremiacao>? agremiacoes = null)
