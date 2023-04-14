@@ -5074,7 +5074,9 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         }
         
         var documentos = agremiacao.DocumentosUri.Split('&').ToList();
-        var remover = documentos[documentoId];
+        var remover = documentos[documentoId + 1];
+        documentos.Remove(remover);
+        remover = documentos[0];
         documentos.Remove(remover);
         StringBuilder links = new StringBuilder();
         for (int i = 0; i <= documentos.Count - 1; i++)
