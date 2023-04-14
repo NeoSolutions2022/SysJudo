@@ -5057,6 +5057,28 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         }
     }
 
+    public async Task DeletarDocumento(int id, int documentoId)
+    {
+        var agremiacao = await _agremiacaoRepository.Obter(id);
+
+        if (agremiacao is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return;
+        }
+
+        if(agremiacao.DocumentosUri == "&" || agremiacao.DocumentosUri == string.Empty || agremiacao.DocumentosUri == null)
+        {
+            Notificator.Handle("Não há anexos ou documento não existe.");
+            return;
+        }
+        
+        var documentos = agremiacao.DocumentosUri.Split('&').ToList();
+        documentoId = documentoId == 0 ? documentoId : documentoId - 1;
+        var remover = documentos[documentoId];
+        documentos.Remove(remover);
+    }
+    
     private async Task<List<Agremiacao>> PossuiAgremiacao(string nomeParametro, List<Agremiacao>? agremiacoes = null)
     {
         if (agremiacoes == null)

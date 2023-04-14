@@ -118,6 +118,17 @@ public class AgremiacaoController : MainController
         return NoContentResponse();
     }
 
+    [HttpPatch("{id}/removerdocumentos")]
+    [SwaggerOperation(Summary = "Anexos Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> RemoverAnexo(int id, int documentoId)
+    {
+        await _service.DeletarDocumento(id, documentoId);
+        return NoContentResponse();
+    }
+    
     [HttpPatch("{id}/EnviarDocumentos")]
     [SwaggerOperation(Summary = "Enviar documentos Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
