@@ -17,5 +17,5 @@ public interface IAgremiacaoService
     Task<string> Exportar(ExportarAgremiacaoDto dto);
     Task Anotar(int id, AnotarAgremiacaoDto anotacao);
     Task EnviarDocumentos(int id, EnviarDocumentosDto dto);
-    Task DeletarDocumento(int id, int documentoId);
+    Task DeletarDocumento(int id, string documentoUri);
 }

@@ -123,9 +123,9 @@ public class AgremiacaoController : MainController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> RemoverAnexo(int id, int documentoId)
+    public async Task<IActionResult> RemoverAnexo(int id, string documentoUri)
     {
-        await _service.DeletarDocumento(id, documentoId);
+        await _service.DeletarDocumento(id, documentoUri);
         return NoContentResponse();
     }
     

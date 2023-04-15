@@ -5057,7 +5057,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         }
     }
 
-    public async Task DeletarDocumento(int id, int documentoId)
+    public async Task DeletarDocumento(int id, string documentoUri)
     {
         var agremiacao = await _agremiacaoRepository.Obter(id);
 
@@ -5073,13 +5073,10 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return;
         }
         
-        var documentos = agremiacao.DocumentosUri.Split('&').ToList();
-        var remover = documentos[documentoId];
-        documentos.Remove(remover);
-        remover = documentos[0];
-        documentos.Remove(remover);
+        var documentos = agremiacao.DocumentosUri.Substring(1).Split('&').ToList();
+        documentos.Remove(documentoUri);
         StringBuilder links = new StringBuilder();
-        for (int i = 0; i <= documentos.Count - 1; i++)
+        for (int i = 0; i < documentos.Count; i++)
         {
             links.Append("&" + documentos[i]);
         }
