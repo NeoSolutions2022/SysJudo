@@ -5074,8 +5074,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         }
         
         var documentos = agremiacao.DocumentosUri.Split('&').ToList();
-        var remover = "";
-        
+        var remover = documentos[documentoId];
         documentos.Remove(remover);
         remover = documentos[0];
         documentos.Remove(remover);
