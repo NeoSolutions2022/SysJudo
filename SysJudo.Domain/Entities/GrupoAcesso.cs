@@ -1,6 +1,8 @@
+using SysJudo.Domain.Contracts;
+
 namespace SysJudo.Domain.Entities;
 
-public class GrupoAcesso
+public class GrupoAcesso : ITenant, IEntity, IAggregateRoot
 {
     public string Nome { get; set; } = null!;
     public string Descricao { get; set; } = null!;
@@ -15,4 +17,5 @@ public class GrupoAcesso
     //     validationResult = new GrupoAcessoValidator().Validate(this);
     //     return validationResult.IsValid;
     // }
+    public int Id { get; set; }
 }
