@@ -24,6 +24,7 @@ public class Cliente : Entity, IAggregateRoot
     public virtual List<EstadoCivil> EstadosCivis { get; set; } = new();
     public virtual List<Nacionalidade> Nacionalidades { get; set; } = new();
     public virtual List<Atleta> Atletas { get; set; } = new();
+    public virtual List<FuncaoMenu> FuncoesMenus { get; set; } = new();
 
 
     public override bool Validar(out ValidationResult validationResult)

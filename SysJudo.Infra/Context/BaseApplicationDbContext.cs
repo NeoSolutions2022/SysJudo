@@ -33,6 +33,7 @@ public abstract class BaseApplicationDbContext : DbContext, IUnitOfWork
     public DbSet<EstadoCivil> EstadosCivis { get; set; } = null!;
     public DbSet<Nacionalidade> Nacionalidades { get; set; } = null!;
     public DbSet<Atleta> Atletas { get; set; } = null!;
+    public DbSet<FuncaoMenu> FuncoesMenus { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

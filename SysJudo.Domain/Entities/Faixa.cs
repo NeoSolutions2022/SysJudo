@@ -11,7 +11,7 @@ public class Faixa : Entity, IAggregateRoot, ITenant
     public int MesesCarencia { get; set; }
     public int IdadeMinima { get; set; }
     public int OrdemExibicao { get; set; }
-    
+
     public int ClienteId { get; set; }
 
     public virtual Cliente Cliente { get; set; } = null!;
