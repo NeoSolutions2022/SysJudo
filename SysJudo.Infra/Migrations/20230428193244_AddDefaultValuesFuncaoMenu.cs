@@ -119,7 +119,7 @@ namespace SysJudo.Infra.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData("FuncoesMenus", "Id", Enumerable.Range(1, 100).ToArray());
+            migrationBuilder.DeleteData("FuncoesMenus", "Id", Enumerable.Range(1, 101).ToArray());
         }
     }
 }
