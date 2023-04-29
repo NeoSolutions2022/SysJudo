@@ -66,6 +66,7 @@ public static class DependencyInjection
         services.AddScoped<IEmissoresIdentidadeRepository, EmissoresIdentidadeRepository>();
         services.AddScoped<INacionalidadeRepositoty, NacionalidadeRepository>();
         services.AddScoped<IProfissaoRepository, ProfissaoRepository>();
+        services.AddScoped<IRegistroDeEventoRepository, RegistroDeEventosRepository>();
 
         #region Filtro
 
