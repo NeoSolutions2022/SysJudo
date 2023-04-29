@@ -9,4 +9,5 @@ public class TipoOperacao : Entity, ITenant
     public int ClienteId { get; set; }
 
     public Cliente Cliente { get; set; } = null!;
+    public virtual List<RegistroDeEvento> RegistroDeEventos { get; set; } = new();
 }

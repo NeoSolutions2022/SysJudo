@@ -17,7 +17,8 @@ public class Usuario : Entity, IAggregateRoot
     public int ClienteId { get; set; }
 
     public virtual Cliente Cliente { get; set; } = null!;
-
+    public virtual List<RegistroDeEvento> RegistroDeEventos { get; set; } = new();
+    
     public override bool Validar(out ValidationResult validationResult)
     {
         validationResult = new UsuarioValidator().Validate(this);

@@ -35,6 +35,7 @@ public abstract class BaseApplicationDbContext : DbContext, IUnitOfWork
     public DbSet<Atleta> Atletas { get; set; } = null!;
     public DbSet<FuncaoMenu> FuncoesMenus { get; set; } = null!;
     public DbSet<TipoOperacao> TiposOperacoes { get; set; } = null!;
+    public DbSet<RegistroDeEvento> RegistroDeEventos { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
