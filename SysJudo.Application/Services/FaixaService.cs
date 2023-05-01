@@ -11,11 +11,13 @@ namespace SysJudo.Application.Services;
 public class FaixaService : BaseService, IFaixaService
 {
     private readonly IFaixaRepository _faixaRepository;
-    public FaixaService(IMapper mapper, INotificator notificator, IFaixaRepository faixaRepository) : base(mapper, notificator)
+
+    public FaixaService(IMapper mapper, INotificator notificator, IFaixaRepository faixaRepository,
+        IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper, notificator, registroDeEventoRepository)
     {
         _faixaRepository = faixaRepository;
     }
-    
+
     public async Task<FaixaDto?> Adicionar(CreateFaixaDto dto)
     {
         var faixa = Mapper.Map<Faixa>(dto);
@@ -23,13 +25,13 @@ public class FaixaService : BaseService, IFaixaService
         {
             return null;
         }
-        
+
         _faixaRepository.Adicionar(faixa);
         if (await _faixaRepository.UnitOfWork.Commit())
         {
             return Mapper.Map<FaixaDto>(faixa);
         }
-        
+
         Notificator.Handle("Não foi possível cadastrar a faixa");
         return null;
     }
@@ -54,13 +56,13 @@ public class FaixaService : BaseService, IFaixaService
         {
             return null;
         }
-        
+
         _faixaRepository.Alterar(faixa);
         if (await _faixaRepository.UnitOfWork.Commit())
         {
             return Mapper.Map<FaixaDto>(faixa);
         }
-        
+
         Notificator.Handle("Não possível alterar a faixa");
         return null;
     }
@@ -91,13 +93,14 @@ public class FaixaService : BaseService, IFaixaService
             Notificator.HandleNotFoundResource();
             return;
         }
+
         _faixaRepository.Remover(faixa);
         if (!await _faixaRepository.UnitOfWork.Commit())
         {
             Notificator.Handle("Não foi possível remover o sistema");
         }
     }
-    
+
     private async Task<bool> Validar(Faixa faixa)
     {
         if (!faixa.Validar(out var validationResult))
@@ -105,7 +108,8 @@ public class FaixaService : BaseService, IFaixaService
             Notificator.Handle(validationResult.Errors);
         }
 
-        var existente = await _faixaRepository.FirstOrDefault(c => c.Sigla == faixa.Sigla || c.Descricao == faixa.Descricao && c.Id != faixa.Id);
+        var existente = await _faixaRepository.FirstOrDefault(c =>
+            c.Sigla == faixa.Sigla || c.Descricao == faixa.Descricao && c.Id != faixa.Id);
         if (existente != null)
         {
             Notificator.Handle("Já existe uma faixa cadastrada com essa sigla e/ou descrição");

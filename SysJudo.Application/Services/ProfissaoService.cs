@@ -12,8 +12,9 @@ public class ProfissaoService : BaseService, IProfissaoService
 {
     private readonly IProfissaoRepository _profissaoRepository;
 
-    public ProfissaoService(IMapper mapper, INotificator notificator, IProfissaoRepository profissaoRepository) : base(
-        mapper, notificator)
+    public ProfissaoService(IMapper mapper, INotificator notificator, IProfissaoRepository profissaoRepository,
+        IRegistroDeEventoRepository registroDeEventoRepository) : base(
+        mapper, notificator, registroDeEventoRepository)
     {
         _profissaoRepository = profissaoRepository;
     }

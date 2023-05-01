@@ -16,7 +16,8 @@ public class AtletaService : BaseService, IAtletaService
     private readonly IAtletaRepository _atletaRepository;
 
     public AtletaService(IMapper mapper, INotificator notificator, IAtletaRepository atletaRepository,
-        IFileService fileService) : base(mapper, notificator)
+        IFileService fileService, IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper, notificator,
+        registroDeEventoRepository)
     {
         _atletaRepository = atletaRepository;
         _fileService = fileService;
@@ -28,7 +29,7 @@ public class AtletaService : BaseService, IAtletaService
         {
             return null;
         }
-        
+
         var atleta = Mapper.Map<Atleta>(dto);
         if (!await Validar(atleta))
         {

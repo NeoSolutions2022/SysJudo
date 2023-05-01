@@ -12,8 +12,9 @@ public class SistemaService : BaseService, ISistemaService
 {
     private readonly ISistemaRepository _sistemaRepository;
 
-    public SistemaService(IMapper mapper, INotificator notificator, ISistemaRepository sistemaRepository) : base(mapper,
-        notificator)
+    public SistemaService(IMapper mapper, INotificator notificator, ISistemaRepository sistemaRepository,
+        IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper,
+        notificator, registroDeEventoRepository)
     {
         _sistemaRepository = sistemaRepository;
     }

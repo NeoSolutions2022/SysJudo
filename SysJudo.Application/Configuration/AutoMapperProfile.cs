@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using SysJudo.Domain.Entities;
 using SysJudo.Application.Dto.Base;
 using SysJudo.Domain.Entities.EntitiesFiltros;
@@ -106,6 +105,14 @@ public class AutoMapperProfile : Profile
         CreateMap<Profissao, SysJudo.Application.Dto.Profissao.CreateProfissaoDto>().ReverseMap();
         CreateMap<Profissao, SysJudo.Application.Dto.Profissao.UpdateProfissaoDto>().ReverseMap();
         CreateMap<ResultadoPaginado<Profissao>, PagedDto<SysJudo.Application.Dto.Profissao.ProfissaoDto>>().ReverseMap();
+
+        #endregion
+
+        #region RegistroDeEventos
+
+        CreateMap<RegistroDeEvento, SysJudo.Application.Dto.RegistroDeEvento.RegistroDeEventoDto>().ReverseMap();
+        CreateMap<RegistroDeEvento, SysJudo.Application.Dto.RegistroDeEvento.AdicionarRegistroDeEvento>().ReverseMap();
+        CreateMap<ResultadoPaginado<RegistroDeEvento>, PagedDto<SysJudo.Application.Dto.RegistroDeEvento.RegistroDeEventoDto>>().ReverseMap();
 
         #endregion
         

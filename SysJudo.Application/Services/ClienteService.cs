@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using FluentEmail.Core;
-using StackExchange.Redis;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Base;
 using SysJudo.Application.Dto.Cliente;
@@ -13,12 +11,13 @@ namespace SysJudo.Application.Services;
 public class ClienteService : BaseService, IClienteService
 {
     private readonly IClienteRepository _clienteRepository;
-    
-    public ClienteService(IMapper mapper, INotificator notificator, IClienteRepository clienteRepository) : base(mapper, notificator)
+
+    public ClienteService(IMapper mapper, INotificator notificator, IClienteRepository clienteRepository,
+        IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper, notificator, registroDeEventoRepository)
     {
         _clienteRepository = clienteRepository;
     }
-    
+
     public async Task<ClienteDto?> Adicionar(CreateClienteDto dto)
     {
         var cliente = Mapper.Map<Cliente>(dto);
@@ -26,13 +25,13 @@ public class ClienteService : BaseService, IClienteService
         {
             return null;
         }
-        
+
         _clienteRepository.Adicionar(cliente);
         if (await _clienteRepository.UnitOfWork.Commit())
         {
             return Mapper.Map<ClienteDto>(cliente);
         }
-        
+
         Notificator.Handle("Não foi possível cadastrar o cliente");
         return null;
     }
@@ -57,13 +56,13 @@ public class ClienteService : BaseService, IClienteService
         {
             return null;
         }
-        
+
         _clienteRepository.Alterar(cliente);
         if (await _clienteRepository.UnitOfWork.Commit())
         {
             return Mapper.Map<ClienteDto>(cliente);
         }
-        
+
         Notificator.Handle("Não possível alterar o cliente");
         return null;
     }
@@ -94,7 +93,7 @@ public class ClienteService : BaseService, IClienteService
             Notificator.HandleNotFoundResource();
             return;
         }
-        
+
         _clienteRepository.Remover(cliente);
         if (!await _clienteRepository.UnitOfWork.Commit())
         {
@@ -109,7 +108,8 @@ public class ClienteService : BaseService, IClienteService
             Notificator.Handle(validationResult.Errors);
         }
 
-        var existente = await _clienteRepository.FirstOrDefault(s => (s.Sigla == cliente.Sigla || s.Nome == cliente.Nome) && s.Id != cliente.Id);
+        var existente = await _clienteRepository.FirstOrDefault(s =>
+            (s.Sigla == cliente.Sigla || s.Nome == cliente.Nome) && s.Id != cliente.Id);
         if (existente != null)
         {
             Notificator.Handle("Já existe um cliente cadastrado com essa sigla e/ou nome");

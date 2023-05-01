@@ -9,25 +9,25 @@ public class RegistroDeEventoMap : IEntityTypeConfiguration<RegistroDeEvento>
     public void Configure(EntityTypeBuilder<RegistroDeEvento> builder)
     {
         builder.Property(c => c.DataHoraEvento)
-            .IsRequired();
+            .IsRequired(false);
         
         builder.Property(c => c.ComputadorId)
-            .IsRequired();
+            .IsRequired(false);
         
         builder.Property(c => c.Descricao)
-            .IsRequired();
+            .IsRequired(false);
         
         builder.Property(c => c.ClienteId)
-            .IsRequired();
+            .IsRequired(false);
         
         builder.Property(c => c.TipoOperacaoId)
-            .IsRequired();
+            .IsRequired(false);
         
         builder.Property(c => c.UsuarioId)    
-            .IsRequired();
+            .IsRequired(false);
         
         builder.Property(c => c.FuncaoMenuId)
-            .IsRequired();
+            .IsRequired(false);
 
         builder
             .HasOne(c => c.Cliente)
@@ -51,6 +51,12 @@ public class RegistroDeEventoMap : IEntityTypeConfiguration<RegistroDeEvento>
             .HasOne(c => c.FuncaoMenu)
             .WithMany(c => c.RegistroDeEventos)
             .HasForeignKey(c => c.FuncaoMenuId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        builder
+            .HasOne(c => c.Administrador)
+            .WithMany(c => c.RegistroDeEventos)
+            .HasForeignKey(c => c.AdministradorId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -14,12 +14,14 @@ public class UsuarioService : BaseService, IUsuarioService
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IPasswordHasher<Usuario> _passwordHasher;
 
-    public UsuarioService(IMapper mapper, INotificator notificator, IUsuarioRepository usuarioRepository, IPasswordHasher<Usuario> passwordHasher) : base(mapper, notificator)
+    public UsuarioService(IMapper mapper, INotificator notificator, IUsuarioRepository usuarioRepository,
+        IPasswordHasher<Usuario> passwordHasher, IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper,
+        notificator, registroDeEventoRepository)
     {
         _usuarioRepository = usuarioRepository;
         _passwordHasher = passwordHasher;
     }
-    
+
     public async Task<UsuarioDto?> Adicionar(CreateUsuarioDto dto)
     {
         var usuario = Mapper.Map<Usuario>(dto);
@@ -28,13 +30,13 @@ public class UsuarioService : BaseService, IUsuarioService
         {
             return null;
         }
-        
+
         _usuarioRepository.Adicionar(usuario);
         if (await _usuarioRepository.UnitOfWork.Commit())
         {
             return Mapper.Map<UsuarioDto>(usuario);
         }
-        
+
         Notificator.Handle("Não foi possível cadastrar o usuario");
         return null;
     }
@@ -60,13 +62,13 @@ public class UsuarioService : BaseService, IUsuarioService
         {
             return null;
         }
-        
+
         _usuarioRepository.Alterar(usuario);
         if (await _usuarioRepository.UnitOfWork.Commit())
         {
             return Mapper.Map<UsuarioDto>(usuario);
         }
-        
+
         Notificator.Handle("Não possível alterar o usuario");
         return null;
     }
@@ -109,20 +111,19 @@ public class UsuarioService : BaseService, IUsuarioService
             Notificator.HandleNotFoundResource();
             return;
         }
-        
+
         _usuarioRepository.Remover(usuario);
         if (!await _usuarioRepository.UnitOfWork.Commit())
         {
             Notificator.Handle("Não foi possível remover o usuario");
         }
     }
-    
+
     private async Task<bool> Validar(Usuario usuario)
     {
         if (!usuario.Validar(out var validationResult))
         {
             Notificator.Handle(validationResult.Errors);
-            
         }
 
         var existente = await _usuarioRepository.FirstOrDefault(s => s.Email == usuario.Email && s.Id != usuario.Id);

@@ -10,6 +10,8 @@ public class Administrador : Entity, IAggregateRoot
     public string Email { get; set; } = null!;
     public string Senha { get; set; } = null!;
 
+    public virtual List<RegistroDeEvento> RegistroDeEventos { get; set; } = new();
+
     public override bool Validar(out ValidationResult validationResult)
     {
         validationResult = new AdministradorValidator().Validate(this);

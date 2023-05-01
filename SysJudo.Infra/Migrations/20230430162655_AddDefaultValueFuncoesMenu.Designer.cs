@@ -12,8 +12,8 @@ using SysJudo.Infra.Context;
 namespace SysJudo.Infra.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230429001056_AddEntidadeRegistroDeEvento")]
-    partial class AddEntidadeRegistroDeEvento
+    [Migration("20230430162655_AddDefaultValueFuncoesMenu")]
+    partial class AddDefaultValueFuncoesMenu
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -645,9 +645,6 @@ namespace SysJudo.Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -657,8 +654,6 @@ namespace SysJudo.Infra.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClienteId");
 
                     b.ToTable("FuncoesMenus");
                 });
@@ -898,9 +893,6 @@ namespace SysJudo.Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -910,8 +902,6 @@ namespace SysJudo.Infra.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClienteId");
 
                     b.ToTable("TiposOperacoes");
                 });
@@ -1110,17 +1100,6 @@ namespace SysJudo.Infra.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("SysJudo.Domain.Entities.FuncaoMenu", b =>
-                {
-                    b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
-                        .WithMany("FuncoesMenus")
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Cliente");
-                });
-
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
                 {
                     b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
@@ -1189,17 +1168,6 @@ namespace SysJudo.Infra.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("SysJudo.Domain.Entities.TipoOperacao", b =>
-                {
-                    b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
-                        .WithMany("TiposOperacoes")
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Cliente");
-                });
-
             modelBuilder.Entity("SysJudo.Domain.Entities.Usuario", b =>
                 {
                     b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
@@ -1235,8 +1203,6 @@ namespace SysJudo.Infra.Migrations
 
                     b.Navigation("Faixas");
 
-                    b.Navigation("FuncoesMenus");
-
                     b.Navigation("Nacionalidades");
 
                     b.Navigation("Profissoes");
@@ -1244,8 +1210,6 @@ namespace SysJudo.Infra.Migrations
                     b.Navigation("Regioes");
 
                     b.Navigation("RegistroDeEventos");
-
-                    b.Navigation("TiposOperacoes");
 
                     b.Navigation("Usuarios");
                 });

@@ -18,12 +18,15 @@ public class AuthService : BaseService, IAuthService
 {
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IPasswordHasher<Usuario> _passwordHasher;
-    public AuthService(IMapper mapper, INotificator notificator, IUsuarioRepository usuarioRepository, IPasswordHasher<Usuario> passwordHasher) : base(mapper, notificator)
+
+    public AuthService(IMapper mapper, INotificator notificator, IUsuarioRepository usuarioRepository,
+        IPasswordHasher<Usuario> passwordHasher, IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper,
+        notificator, registroDeEventoRepository)
     {
         _usuarioRepository = usuarioRepository;
         _passwordHasher = passwordHasher;
     }
-    
+
     public async Task<UsuarioAutenticadoDto?> Login(LoginDto loginDto)
     {
         var usuario = await _usuarioRepository.ObterPorEmail(loginDto.Email);
@@ -61,7 +64,8 @@ public class AuthService : BaseService, IAuthService
                 new Claim("TipoUsuario", ETipoUsuario.Comum.ToDescriptionString())
             }),
             Expires = DateTime.UtcNow.AddHours(2),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials =
+                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return Task.FromResult(tokenHandler.WriteToken(token));

@@ -5,10 +5,48 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SysJudo.Infra.Migrations
 {
-    public partial class AddEntidadeRegistroDeEvento : Migration
+    public partial class AddRegistroDeEventos : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<string>(
+                name: "Complemento",
+                table: "Agremiacoes",
+                type: "nvarchar(60)",
+                maxLength: 60,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(60)",
+                oldMaxLength: 60);
+
+            migrationBuilder.CreateTable(
+                name: "FuncoesMenus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Sigla = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FuncoesMenus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TiposOperacoes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Sigla = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TiposOperacoes", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "RegistroDeEventos",
                 columns: table => new
@@ -77,6 +115,24 @@ namespace SysJudo.Infra.Migrations
         {
             migrationBuilder.DropTable(
                 name: "RegistroDeEventos");
+
+            migrationBuilder.DropTable(
+                name: "FuncoesMenus");
+
+            migrationBuilder.DropTable(
+                name: "TiposOperacoes");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Complemento",
+                table: "Agremiacoes",
+                type: "nvarchar(60)",
+                maxLength: 60,
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(60)",
+                oldMaxLength: 60,
+                oldNullable: true);
         }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Administrador;
 using SysJudo.Application.Notifications;
+using SysJudo.Core.Extension;
 using SysJudo.Domain.Contracts.Repositories;
 using SysJudo.Domain.Entities;
 
@@ -12,13 +15,18 @@ public class AdministradorService : BaseService, IAdministradorService
 {
     private readonly IAdministradorRepository _administradorRepository;
     private readonly IPasswordHasher<Administrador> _passwordHasher;
-    
-    public AdministradorService(IMapper mapper, INotificator notificator, IAdministradorRepository administradorRepository, IPasswordHasher<Administrador> passwordHasher) : base(mapper, notificator)
+    private readonly HttpContextAccessor _httpContextAccessor;
+
+    public AdministradorService(IMapper mapper, INotificator notificator,
+        IAdministradorRepository administradorRepository, IPasswordHasher<Administrador> passwordHasher,
+        IRegistroDeEventoRepository registroDeEventoRepository, IOptions<HttpContextAccessor> httpContextAccessor) :
+        base(mapper, notificator, registroDeEventoRepository)
     {
         _administradorRepository = administradorRepository;
         _passwordHasher = passwordHasher;
+        _httpContextAccessor = httpContextAccessor.Value;
     }
-    
+
     public async Task<AdministradorDto?> Adicionar(CreateAdministradorDto dto)
     {
         var administrador = Mapper.Map<Administrador>(dto);
@@ -27,13 +35,26 @@ public class AdministradorService : BaseService, IAdministradorService
         {
             return null;
         }
-        
+
         _administradorRepository.Adicionar(administrador);
         if (await _administradorRepository.UnitOfWork.Commit())
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Adicionar administrador",
+                ClienteId = null,
+                TipoOperacaoId = 4,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<AdministradorDto>(administrador);
         }
-        
+
         Notificator.Handle("Não foi possível cadastrar o administrador");
         return null;
     }
@@ -59,13 +80,26 @@ public class AdministradorService : BaseService, IAdministradorService
         {
             return null;
         }
-        
+
         _administradorRepository.Alterar(administrador);
         if (await _administradorRepository.UnitOfWork.Commit())
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Alterar administrador",
+                ClienteId = null,
+                TipoOperacaoId = 5,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<AdministradorDto>(administrador);
         }
-        
+
         Notificator.Handle("Não possível alterar o usuario");
         return null;
     }
@@ -73,8 +107,22 @@ public class AdministradorService : BaseService, IAdministradorService
     public async Task<AdministradorDto?> ObterPorId(int id)
     {
         var administrador = await _administradorRepository.ObterPorId(id);
+
         if (administrador != null)
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Visualizar administrador",
+                ClienteId = null,
+                TipoOperacaoId = 7,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<AdministradorDto>(administrador);
         }
 
@@ -87,6 +135,19 @@ public class AdministradorService : BaseService, IAdministradorService
         var administrador = await _administradorRepository.ObterPorEmail(email);
         if (administrador != null)
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Visualizar administrador",
+                ClienteId = null,
+                TipoOperacaoId = 7,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<AdministradorDto>(administrador);
         }
 
@@ -102,14 +163,29 @@ public class AdministradorService : BaseService, IAdministradorService
             Notificator.HandleNotFoundResource();
             return;
         }
-        
+
         _administradorRepository.Remover(administrador);
         if (!await _administradorRepository.UnitOfWork.Commit())
         {
             Notificator.Handle("Não foi possível remover o administrador");
+            return;
         }
+        
+        RegistroDeEventos.Adicionar(new RegistroDeEvento
+        {
+            DataHoraEvento = DateTime.Now,
+            ComputadorId = null,
+            Descricao = "Remover administrador",
+            ClienteId = null,
+            TipoOperacaoId = 6,
+            UsuarioId = null,
+            AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+            FuncaoMenuId = null
+        });
+
+        await RegistroDeEventos.UnitOfWork.Commit();
     }
-    
+
     private async Task<bool> Validar(Administrador administrador)
     {
         if (!administrador.Validar(out var validationResult))
@@ -117,7 +193,9 @@ public class AdministradorService : BaseService, IAdministradorService
             Notificator.Handle(validationResult.Errors);
         }
 
-        var existente = await _administradorRepository.FirstOrDefault(s => s.Email == administrador.Email && s.Id != administrador.Id);
+        var existente =
+            await _administradorRepository.FirstOrDefault(s =>
+                s.Email == administrador.Email && s.Id != administrador.Id);
         if (existente != null)
         {
             Notificator.Handle("Já existe um administrador cadastrado com esse email");

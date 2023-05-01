@@ -13,10 +13,5 @@ public class FuncaoMenuMap : IEntityTypeConfiguration<FuncaoMenu>
         
         builder.Property(c => c.Descricao)
             .IsRequired();
-
-        builder.HasOne(c => c.Cliente)
-            .WithMany(c => c.FuncoesMenus)
-            .HasForeignKey(c => c.ClienteId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -12,7 +12,10 @@ namespace SysJudo.Application.Services;
 public class NacionalidadeService : BaseService, INacionalidadeService
 {
     private readonly INacionalidadeRepositoty _nacionalidadeRepositoty;
-    public NacionalidadeService(IMapper mapper, INotificator notificator, INacionalidadeRepositoty nacionalidadeRepositoty) : base(mapper, notificator)
+
+    public NacionalidadeService(IMapper mapper, INotificator notificator,
+        INacionalidadeRepositoty nacionalidadeRepositoty, IRegistroDeEventoRepository registroDeEventoRepository) :
+        base(mapper, notificator, registroDeEventoRepository)
     {
         _nacionalidadeRepositoty = nacionalidadeRepositoty;
     }
@@ -99,7 +102,7 @@ public class NacionalidadeService : BaseService, INacionalidadeService
             Notificator.Handle("Não foi possível remover a nacionalidade");
         }
     }
-    
+
     private async Task<bool> Validar(Nacionalidade nacionalidade)
     {
         if (!nacionalidade.Validar(out var validationResult))

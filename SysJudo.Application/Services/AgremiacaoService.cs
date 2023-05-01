@@ -21,7 +21,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
     private readonly IFileService _fileService;
 
     public AgremiacaoService(IMapper mapper, INotificator notificator, IAgremiacaoRepository agremiacaoRepository,
-        IFileService fileService, IAgremiacaoFiltroRepository filtroRepository) : base(mapper, notificator)
+        IFileService fileService, IAgremiacaoFiltroRepository filtroRepository,
+        IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper, notificator, registroDeEventoRepository)
     {
         _agremiacaoRepository = agremiacaoRepository;
         _fileService = fileService;
@@ -490,7 +491,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.Fantasia != null && c.Fantasia.Contains(dto[aux].ValorString!));
+                            var and = agremiacoes.FindAll(c =>
+                                c.Fantasia != null && c.Fantasia.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -498,12 +500,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => c.Fantasia != null && c.Fantasia.Contains(dto[aux].ValorString!));
+                            var or = agremiacaoLista.FindAll(c =>
+                                c.Fantasia != null && c.Fantasia.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroContains = agremiacoes.FindAll(c => c.Fantasia != null && c.Fantasia.Contains(dto[aux].ValorString!));
+                        var filtroContains = agremiacoes.FindAll(c =>
+                            c.Fantasia != null && c.Fantasia.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -711,7 +715,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.InscricaoMunicipal != null && c.InscricaoMunicipal.Contains(dto[aux].ValorString!));
+                            var and = agremiacoes.FindAll(c =>
+                                c.InscricaoMunicipal != null && c.InscricaoMunicipal.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -720,13 +725,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
                             var or = agremiacaoLista.FindAll(c => c.InscricaoMunicipal != null &&
-                                c.InscricaoMunicipal.Contains(dto[aux].ValorString!));
+                                                                  c.InscricaoMunicipal.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroContains =
-                            agremiacoes.FindAll(c => c.InscricaoMunicipal != null && c.InscricaoMunicipal.Contains(dto[aux].ValorString!));
+                            agremiacoes.FindAll(c =>
+                                c.InscricaoMunicipal != null && c.InscricaoMunicipal.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -934,7 +940,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.InscricaoEstadual != null &&  c.InscricaoEstadual!.Contains(dto[aux].ValorString!));
+                            var and = agremiacoes.FindAll(c =>
+                                c.InscricaoEstadual != null && c.InscricaoEstadual!.Contains(dto[aux].ValorString!));
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -942,13 +949,15 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => c.InscricaoEstadual != null && c.InscricaoEstadual!.Contains(dto[aux].ValorString!));
+                            var or = agremiacaoLista.FindAll(c =>
+                                c.InscricaoEstadual != null && c.InscricaoEstadual!.Contains(dto[aux].ValorString!));
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
                         var filtroContains =
-                            agremiacoes.FindAll(c => c.InscricaoEstadual != null && c.InscricaoEstadual!.Contains(dto[aux].ValorString!));
+                            agremiacoes.FindAll(c =>
+                                c.InscricaoEstadual != null && c.InscricaoEstadual!.Contains(dto[aux].ValorString!));
                         return await Filtrar(dto, filtroContains, tamanho, ++aux);
 
                     //Igual
@@ -4351,7 +4360,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         //And
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 1)
                         {
-                            var and = agremiacoes.FindAll(c => c.DataCnpj != null && c.DataCnpj == dto[aux].DataInicial);
+                            var and = agremiacoes.FindAll(c =>
+                                c.DataCnpj != null && c.DataCnpj == dto[aux].DataInicial);
                             return await Filtrar(dto, and, tamanho, ++aux);
                         }
 
@@ -4359,12 +4369,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => c.DataCnpj != null && c.DataCnpj == dto[aux].DataInicial);
+                            var or = agremiacaoLista.FindAll(c =>
+                                c.DataCnpj != null && c.DataCnpj == dto[aux].DataInicial);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroIgual = agremiacoes.FindAll(c => c.DataCnpj != null && c.DataCnpj == dto[aux].DataInicial);
+                        var filtroIgual =
+                            agremiacoes.FindAll(c => c.DataCnpj != null && c.DataCnpj == dto[aux].DataInicial);
                         return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
@@ -4524,12 +4536,14 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                         if (aux != 0 && dto[aux - 1].OperadorLogico == 2)
                         {
                             var agremiacaoLista = await PossuiAgremiacao(dto[aux].NomeParametro);
-                            var or = agremiacaoLista.FindAll(c => c.DataAta != null && c.DataAta == dto[aux].DataInicial);
+                            var or = agremiacaoLista.FindAll(
+                                c => c.DataAta != null && c.DataAta == dto[aux].DataInicial);
                             agremiacoes.AddRange(or);
                             return await Filtrar(dto, agremiacoes, tamanho, ++aux);
                         }
 
-                        var filtroIgual = agremiacoes.FindAll(c => c.DataAta != null && c.DataAta == dto[aux].DataInicial);
+                        var filtroIgual =
+                            agremiacoes.FindAll(c => c.DataAta != null && c.DataAta == dto[aux].DataInicial);
                         return await Filtrar(dto, filtroIgual, tamanho, ++aux);
 
                     //Diferente
@@ -4930,7 +4944,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
     public async Task<List<AgremiacaoFiltroDto>> Pesquisar(string valor)
     {
         var agremiacoes = await _filtroRepository.Pesquisar(valor);
-        
+
         if (agremiacoes.Count == 0)
         {
             return new List<AgremiacaoFiltroDto>();
@@ -4941,26 +4955,26 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         {
             _filtroRepository.Cadastrar(agremiacao);
         }
-        
+
         if (await _filtroRepository.UnitOfWork.Commit())
         {
             return Mapper.Map<List<AgremiacaoFiltroDto>>(
                 await _filtroRepository.Listar());
         }
-        
+
         return Mapper.Map<List<AgremiacaoFiltroDto>>(agremiacoes);
     }
 
     public async Task<AgremiacaoDto?> ObterPorId(int id)
     {
         var agremiacao = await _agremiacaoRepository.Obter(id);
-        
+
         if (agremiacao == null)
         {
             Notificator.HandleNotFoundResource();
             return null;
         }
-        
+
         var agremiacaoDto = Mapper.Map<AgremiacaoDto>(agremiacao);
 
         return agremiacaoDto;
@@ -5067,12 +5081,13 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return;
         }
 
-        if(agremiacao.DocumentosUri == "&" || agremiacao.DocumentosUri == string.Empty || agremiacao.DocumentosUri == null)
+        if (agremiacao.DocumentosUri == "&" || agremiacao.DocumentosUri == string.Empty ||
+            agremiacao.DocumentosUri == null)
         {
             Notificator.Handle("Não há anexos ou documento não existe.");
             return;
         }
-        
+
         var documentos = agremiacao.DocumentosUri.Split('&').ToList();
         var remover = documentos[documentoId];
         documentos.Remove(remover);
@@ -5091,7 +5106,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             Notificator.Handle("Não foi possível remover documentos.");
         }
     }
-    
+
     private async Task<List<Agremiacao>> PossuiAgremiacao(string nomeParametro, List<Agremiacao>? agremiacoes = null)
     {
         if (agremiacoes == null)
@@ -5556,7 +5571,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         }
 
         if (dto.Foto != null && dto.Foto.FileName.Split(".").Last() != "jfif" &&
-            dto.Foto.FileName.Split(".").Last() != "png" && dto.Foto.FileName.Split(".").Last() != "jpg" 
+            dto.Foto.FileName.Split(".").Last() != "png" && dto.Foto.FileName.Split(".").Last() != "jpg"
             && dto.Foto.FileName.Split(".").Last() != "jpeg")
         {
             Notificator.Handle("Foto deve do tipo png, jfif ou jpg");

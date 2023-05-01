@@ -13,10 +13,5 @@ public class TipoOperacaoMap : IEntityTypeConfiguration<TipoOperacao>
 
         builder.Property(c => c.Descricao)
             .IsRequired();
-
-        builder.HasOne(c => c.Cliente)
-            .WithMany(c => c.TiposOperacoes)
-            .HasForeignKey(c => c.ClienteId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

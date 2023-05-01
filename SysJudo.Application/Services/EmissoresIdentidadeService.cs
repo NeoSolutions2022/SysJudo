@@ -13,7 +13,8 @@ public class EmissoresIdentidadeService : BaseService, IEmissoresIdentidadeServi
     private readonly IEmissoresIdentidadeRepository _emissoresIdentidadeRepository;
 
     public EmissoresIdentidadeService(IMapper mapper, INotificator notificator,
-        IEmissoresIdentidadeRepository emissoresIdentidadeRepository) : base(mapper, notificator)
+        IEmissoresIdentidadeRepository emissoresIdentidadeRepository,
+        IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper, notificator, registroDeEventoRepository)
     {
         _emissoresIdentidadeRepository = emissoresIdentidadeRepository;
     }

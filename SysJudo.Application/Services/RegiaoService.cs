@@ -9,11 +9,12 @@ using SysJudo.Domain.Entities;
 
 namespace SysJudo.Application.Services;
 
-public class RegiaoService : BaseService ,IRegiaoService
+public class RegiaoService : BaseService, IRegiaoService
 {
     private readonly IRegiaoRepository _regiaoRepository;
-    
-    public RegiaoService(IMapper mapper, INotificator notificator, IRegiaoRepository regiaoRepository) : base(mapper, notificator)
+
+    public RegiaoService(IMapper mapper, INotificator notificator, IRegiaoRepository regiaoRepository,
+        IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper, notificator, registroDeEventoRepository)
     {
         _regiaoRepository = regiaoRepository;
     }
@@ -25,13 +26,13 @@ public class RegiaoService : BaseService ,IRegiaoService
         {
             return null;
         }
-        
+
         _regiaoRepository.Adicionar(regiao);
         if (await _regiaoRepository.UnitOfWork.Commit())
         {
             return Mapper.Map<RegiaoDto>(regiao);
         }
-        
+
         Notificator.Handle("Não foi possível cadastrar a região");
         return null;
     }
@@ -56,13 +57,13 @@ public class RegiaoService : BaseService ,IRegiaoService
         {
             return null;
         }
-        
+
         _regiaoRepository.Alterar(regiao);
         if (await _regiaoRepository.UnitOfWork.Commit())
         {
             return Mapper.Map<RegiaoDto>(regiao);
         }
-        
+
         Notificator.Handle("Não possível alterar a região");
         return null;
     }
@@ -93,23 +94,23 @@ public class RegiaoService : BaseService ,IRegiaoService
             Notificator.HandleNotFoundResource();
             return;
         }
-        
+
         _regiaoRepository.Remover(regiao);
         if (!await _regiaoRepository.UnitOfWork.Commit())
         {
             Notificator.Handle("Não foi possível remover a região");
         }
     }
-    
+
     private async Task<bool> Validar(Regiao regiao)
     {
         if (!regiao.Validar(out var validationResult))
         {
             Notificator.Handle(validationResult.Errors);
-            
         }
 
-        var existente = await _regiaoRepository.FirstOrDefault(s => s.Sigla == regiao.Sigla || s.Descricao == regiao.Descricao && s.Id != regiao.Id);
+        var existente = await _regiaoRepository.FirstOrDefault(s =>
+            s.Sigla == regiao.Sigla || s.Descricao == regiao.Descricao && s.Id != regiao.Id);
         if (existente != null)
         {
             Notificator.Handle("Já existe uma região cadastrado com essa sigla e/ou descrição");
