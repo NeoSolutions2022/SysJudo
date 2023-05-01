@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Base;
 using SysJudo.Application.Dto.Sistema;
 using SysJudo.Application.Notifications;
+using SysJudo.Core.Extension;
 using SysJudo.Domain.Contracts.Repositories;
 using SysJudo.Domain.Entities;
 
@@ -11,12 +14,15 @@ namespace SysJudo.Application.Services;
 public class SistemaService : BaseService, ISistemaService
 {
     private readonly ISistemaRepository _sistemaRepository;
+    private readonly HttpContextAccessor _httpContextAccessor;
 
     public SistemaService(IMapper mapper, INotificator notificator, ISistemaRepository sistemaRepository,
-        IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper,
+        IRegistroDeEventoRepository registroDeEventoRepository,
+        IOptions<HttpContextAccessor> httpContextAccessor) : base(mapper,
         notificator, registroDeEventoRepository)
     {
         _sistemaRepository = sistemaRepository;
+        _httpContextAccessor = httpContextAccessor.Value;
     }
 
     public async Task<SistemaDto?> Adicionar(CreateSistemaDto dto)
@@ -30,6 +36,19 @@ public class SistemaService : BaseService, ISistemaService
         _sistemaRepository.Adicionar(sistema);
         if (await _sistemaRepository.UnitOfWork.Commit())
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Adicionar sistema",
+                ClienteId = null,
+                TipoOperacaoId = 4,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = 98
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<SistemaDto>(sistema);
         }
 
@@ -61,6 +80,19 @@ public class SistemaService : BaseService, ISistemaService
         _sistemaRepository.Alterar(sistema);
         if (await _sistemaRepository.UnitOfWork.Commit())
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Alterar sistema",
+                ClienteId = null,
+                TipoOperacaoId = 5,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<SistemaDto>(sistema);
         }
 
@@ -79,6 +111,19 @@ public class SistemaService : BaseService, ISistemaService
         var sistema = await _sistemaRepository.ObterPorId(id);
         if (sistema != null)
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Visualizar sistema",
+                ClienteId = null,
+                TipoOperacaoId = 7,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<SistemaDto>(sistema);
         }
 
@@ -100,6 +145,20 @@ public class SistemaService : BaseService, ISistemaService
         {
             Notificator.Handle("Não foi possível remover o sistema");
         }
+
+        RegistroDeEventos.Adicionar(new RegistroDeEvento
+        {
+            DataHoraEvento = DateTime.Now,
+            ComputadorId = null,
+            Descricao = "Remover sistema",
+            ClienteId = null,
+            TipoOperacaoId = 6,
+            UsuarioId = null,
+            AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+            FuncaoMenuId = null
+        });
+
+        await RegistroDeEventos.UnitOfWork.Commit();
     }
 
     private async Task<bool> Validar(Sistema sistema)

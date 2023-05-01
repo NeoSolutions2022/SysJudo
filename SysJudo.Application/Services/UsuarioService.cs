@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Base;
 using SysJudo.Application.Dto.Usuario;
 using SysJudo.Application.Notifications;
+using SysJudo.Core.Extension;
 using SysJudo.Domain.Contracts.Repositories;
 using SysJudo.Domain.Entities;
 
@@ -11,15 +14,18 @@ namespace SysJudo.Application.Services;
 
 public class UsuarioService : BaseService, IUsuarioService
 {
+    private readonly HttpContextAccessor _httpContextAccessor;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IPasswordHasher<Usuario> _passwordHasher;
 
     public UsuarioService(IMapper mapper, INotificator notificator, IUsuarioRepository usuarioRepository,
-        IPasswordHasher<Usuario> passwordHasher, IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper,
+        IPasswordHasher<Usuario> passwordHasher, IRegistroDeEventoRepository registroDeEventoRepository,
+        IOptions<HttpContextAccessor> httpContextAccessor) : base(mapper,
         notificator, registroDeEventoRepository)
     {
         _usuarioRepository = usuarioRepository;
         _passwordHasher = passwordHasher;
+        _httpContextAccessor = httpContextAccessor.Value;
     }
 
     public async Task<UsuarioDto?> Adicionar(CreateUsuarioDto dto)
@@ -31,9 +37,24 @@ public class UsuarioService : BaseService, IUsuarioService
             return null;
         }
 
+        usuario.CriadoEm = DateTime.Now;
+        usuario.DataExpiracao = DateTime.Now.AddMonths(1);
         _usuarioRepository.Adicionar(usuario);
         if (await _usuarioRepository.UnitOfWork.Commit())
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Adicionar usuario",
+                ClienteId = null,
+                TipoOperacaoId = 4,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = 91
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<UsuarioDto>(usuario);
         }
 
@@ -66,6 +87,19 @@ public class UsuarioService : BaseService, IUsuarioService
         _usuarioRepository.Alterar(usuario);
         if (await _usuarioRepository.UnitOfWork.Commit())
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Alterar usuario",
+                ClienteId = null,
+                TipoOperacaoId = 5,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<UsuarioDto>(usuario);
         }
 
@@ -84,6 +118,19 @@ public class UsuarioService : BaseService, IUsuarioService
         var usuario = await _usuarioRepository.ObterPorEmail(email);
         if (usuario != null)
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Visualizar usuario",
+                ClienteId = null,
+                TipoOperacaoId = 7,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<UsuarioDto>(usuario);
         }
 
@@ -96,6 +143,19 @@ public class UsuarioService : BaseService, IUsuarioService
         var usuario = await _usuarioRepository.ObterPorId(id);
         if (usuario != null)
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Visualizar usuario",
+                ClienteId = null,
+                TipoOperacaoId = 7,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<UsuarioDto>(usuario);
         }
 
@@ -117,6 +177,20 @@ public class UsuarioService : BaseService, IUsuarioService
         {
             Notificator.Handle("Não foi possível remover o usuario");
         }
+        
+        RegistroDeEventos.Adicionar(new RegistroDeEvento
+        {
+            DataHoraEvento = DateTime.Now,
+            ComputadorId = null,
+            Descricao = "Remover usuario",
+            ClienteId = null,
+            TipoOperacaoId = 6,
+            UsuarioId = null,
+            AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+            FuncaoMenuId = null
+        });
+
+        await RegistroDeEventos.UnitOfWork.Commit();
     }
 
     private async Task<bool> Validar(Usuario usuario)

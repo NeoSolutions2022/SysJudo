@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Base;
 using SysJudo.Application.Dto.Cliente;
 using SysJudo.Application.Notifications;
+using SysJudo.Core.Extension;
 using SysJudo.Domain.Contracts.Repositories;
 using SysJudo.Domain.Entities;
 
@@ -10,12 +13,14 @@ namespace SysJudo.Application.Services;
 
 public class ClienteService : BaseService, IClienteService
 {
+    private readonly HttpContextAccessor _httpContextAccessor;
     private readonly IClienteRepository _clienteRepository;
 
     public ClienteService(IMapper mapper, INotificator notificator, IClienteRepository clienteRepository,
-        IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper, notificator, registroDeEventoRepository)
+        IRegistroDeEventoRepository registroDeEventoRepository, IOptions<HttpContextAccessor> httpContextAccessor) : base(mapper, notificator, registroDeEventoRepository)
     {
         _clienteRepository = clienteRepository;
+        _httpContextAccessor = httpContextAccessor.Value;
     }
 
     public async Task<ClienteDto?> Adicionar(CreateClienteDto dto)
@@ -29,6 +34,19 @@ public class ClienteService : BaseService, IClienteService
         _clienteRepository.Adicionar(cliente);
         if (await _clienteRepository.UnitOfWork.Commit())
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Adicionar cliente",
+                ClienteId = null,
+                TipoOperacaoId = 4,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = 99
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<ClienteDto>(cliente);
         }
 
@@ -60,6 +78,19 @@ public class ClienteService : BaseService, IClienteService
         _clienteRepository.Alterar(cliente);
         if (await _clienteRepository.UnitOfWork.Commit())
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Alterar cliente",
+                ClienteId = null,
+                TipoOperacaoId = 5,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<ClienteDto>(cliente);
         }
 
@@ -78,6 +109,19 @@ public class ClienteService : BaseService, IClienteService
         var cliente = await _clienteRepository.ObterPorId(id);
         if (cliente != null)
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Visualizar cliente",
+                ClienteId = null,
+                TipoOperacaoId = 7,
+                UsuarioId = null,
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<ClienteDto>(cliente);
         }
 
@@ -99,6 +143,20 @@ public class ClienteService : BaseService, IClienteService
         {
             Notificator.Handle("Não foi possível remover o cliete");
         }
+        
+        RegistroDeEventos.Adicionar(new RegistroDeEvento
+        {
+            DataHoraEvento = DateTime.Now,
+            ComputadorId = null,
+            Descricao = "Remover cliente",
+            ClienteId = null,
+            TipoOperacaoId = 6,
+            UsuarioId = null,
+            AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+            FuncaoMenuId = null
+        });
+
+        await RegistroDeEventos.UnitOfWork.Commit();
     }
 
     private async Task<bool> Validar(Cliente cliente)

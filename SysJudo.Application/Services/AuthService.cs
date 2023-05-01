@@ -35,9 +35,12 @@ public class AuthService : BaseService, IAuthService
             Notificator.HandleNotFoundResource();
             return null;
         }
-
+        
         var result = _passwordHasher.VerifyHashedPassword(usuario, usuario.Senha, loginDto.Senha);
         if (result != PasswordVerificationResult.Failed)
+        {
+            usuario.UltimoLogin = DateTime.Now;
+            await _usuarioRepository.UnitOfWork.Commit();
             return new UsuarioAutenticadoDto
             {
                 Id = usuario.Id,
@@ -45,6 +48,8 @@ public class AuthService : BaseService, IAuthService
                 Nome = usuario.Nome,
                 Token = await CreateToken(usuario)
             };
+        }
+        
         Notificator.Handle("Combinação de email e senha incorreta");
         return null;
     }

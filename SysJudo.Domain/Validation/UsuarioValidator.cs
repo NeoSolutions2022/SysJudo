@@ -25,25 +25,9 @@ public class UsuarioValidator : AbstractValidator<Usuario>
             .Matches(@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")
             .WithMessage("O email deve ser válido");
         
-        RuleFor(s => s.UltimoLogin)
-            .NotNull()
-            .WithMessage("UltimoLogin não pode ser nulo");
-        
-        RuleFor(s => s.UltimoLogin)
-            .NotNull()
-            .WithMessage("UltimoLogin não pode ser nulo");
-        
         RuleFor(s => s.CriadoEm)
-            .NotEmpty()
-            .WithMessage("CriadoEm não pode ser vazio")
             .NotNull()
             .WithMessage("CriadoEm não pode ser nulo");
-        
-        RuleFor(s => s.DataExpiracao)
-            .NotEmpty()
-            .WithMessage("DataExpiracao não pode ser vazio")
-            .NotNull()
-            .WithMessage("DataExpiracao não pode ser nulo");
         
         RuleFor(s => s.Senha)
             .NotEmpty()
