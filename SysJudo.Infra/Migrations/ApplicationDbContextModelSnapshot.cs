@@ -48,7 +48,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Administradores");
+                    b.ToTable("Administradores", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Agremiacao", b =>
@@ -197,7 +197,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("IdRegiao");
 
-                    b.ToTable("Agremiacoes");
+                    b.ToTable("Agremiacoes", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Atleta", b =>
@@ -348,7 +348,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("IdSexo");
 
-                    b.ToTable("Atletas");
+                    b.ToTable("Atletas", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Cliente", b =>
@@ -381,7 +381,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("IdSistema");
 
-                    b.ToTable("Clientes");
+                    b.ToTable("Clientes", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.EmissoresIdentidade", b =>
@@ -409,7 +409,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("EmissoresIdentidades");
+                    b.ToTable("EmissoresIdentidades", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.EntitiesFiltros.AgremiacaoFiltro", b =>
@@ -568,7 +568,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("RegiaoId");
 
-                    b.ToTable("AgremiacoesFiltro");
+                    b.ToTable("AgremiacoesFiltro", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.EstadoCivil", b =>
@@ -595,7 +595,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("EstadosCivis");
+                    b.ToTable("EstadosCivis", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Faixa", b =>
@@ -632,7 +632,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("Faixas");
+                    b.ToTable("Faixas", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.FuncaoMenu", b =>
@@ -653,7 +653,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FuncoesMenus");
+                    b.ToTable("FuncoesMenus", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
@@ -681,7 +681,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("Nacionalidades");
+                    b.ToTable("Nacionalidades", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Profissao", b =>
@@ -709,7 +709,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("Profissoes");
+                    b.ToTable("Profissoes", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Regiao", b =>
@@ -786,7 +786,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("Regioes");
+                    b.ToTable("Regioes", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.RegistroDeEvento", b =>
@@ -833,7 +833,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("RegistroDeEventos");
+                    b.ToTable("RegistroDeEventos", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Sexo", b =>
@@ -855,7 +855,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sexos");
+                    b.ToTable("Sexos", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Sistema", b =>
@@ -883,7 +883,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sistemas");
+                    b.ToTable("Sistemas", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.TipoOperacao", b =>
@@ -904,7 +904,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TiposOperacoes");
+                    b.ToTable("TiposOperacoes", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Usuario", b =>
@@ -951,7 +951,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Agremiacao", b =>

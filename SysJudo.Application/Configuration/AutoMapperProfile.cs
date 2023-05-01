@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SysJudo.Domain.Entities;
 using SysJudo.Application.Dto.Base;
+using SysJudo.Core.Extension;
 using SysJudo.Domain.Entities.EntitiesFiltros;
 using SysJudo.Domain.Paginacao;
 
@@ -56,19 +57,38 @@ public class AutoMapperProfile : Profile
 
         #region Regiao
 
-        CreateMap<Regiao, SysJudo.Application.Dto.Regiao.RegiaoDto>().ReverseMap();
-        CreateMap<Regiao, SysJudo.Application.Dto.Regiao.CreateRegiaoDto>().ReverseMap();
-        CreateMap<Regiao, SysJudo.Application.Dto.Regiao.UpdateRegiaoDto>().ReverseMap();
+        CreateMap<Regiao, SysJudo.Application.Dto.Regiao.RegiaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
+            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
+            .ReverseMap();
+        CreateMap<Regiao, SysJudo.Application.Dto.Regiao.CreateRegiaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
+            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
+            .ReverseMap();
+        CreateMap<Regiao, SysJudo.Application.Dto.Regiao.UpdateRegiaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
+            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
+            .ReverseMap();
         CreateMap<ResultadoPaginado<Regiao>, PagedDto<SysJudo.Application.Dto.Regiao.RegiaoDto>>().ReverseMap();
 
         #endregion
 
         #region Agremiacao
 
-        CreateMap<Agremiacao, SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>().ReverseMap();
-        CreateMap<Agremiacao, SysJudo.Application.Dto.Agremiacao.CadastrarAgremiacaoDto>().ReverseMap();
-        CreateMap<Agremiacao, SysJudo.Application.Dto.Agremiacao.AlterarAgremiacaoDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Agremiacao>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>>().ReverseMap();
+        CreateMap<Agremiacao, SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
+            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
+            .ReverseMap();
+        CreateMap<Agremiacao, SysJudo.Application.Dto.Agremiacao.CadastrarAgremiacaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
+            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
+            .ReverseMap();
+        CreateMap<Agremiacao, SysJudo.Application.Dto.Agremiacao.AlterarAgremiacaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
+            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
+            .ReverseMap();
+        CreateMap<ResultadoPaginado<Agremiacao>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>>()
+            .ReverseMap();
 
         #endregion
 
@@ -80,31 +100,37 @@ public class AutoMapperProfile : Profile
         CreateMap<ResultadoPaginado<Atleta>, PagedDto<SysJudo.Application.Dto.Atleta.AtletaDto>>().ReverseMap();
 
         #endregion
-        
+
         #region EmissoresIdentidade
 
-        CreateMap<EmissoresIdentidade, SysJudo.Application.Dto.EmissoresIdentidade.EmissoresIdentidadeDto>().ReverseMap();
-        CreateMap<EmissoresIdentidade, SysJudo.Application.Dto.EmissoresIdentidade.CreateEmissoresIdentidadeDto>().ReverseMap();
-        CreateMap<EmissoresIdentidade, SysJudo.Application.Dto.EmissoresIdentidade.UpdateEmissoresIdentidadeDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<EmissoresIdentidade>, PagedDto<SysJudo.Application.Dto.EmissoresIdentidade.EmissoresIdentidadeDto>>().ReverseMap();
+        CreateMap<EmissoresIdentidade, SysJudo.Application.Dto.EmissoresIdentidade.EmissoresIdentidadeDto>()
+            .ReverseMap();
+        CreateMap<EmissoresIdentidade, SysJudo.Application.Dto.EmissoresIdentidade.CreateEmissoresIdentidadeDto>()
+            .ReverseMap();
+        CreateMap<EmissoresIdentidade, SysJudo.Application.Dto.EmissoresIdentidade.UpdateEmissoresIdentidadeDto>()
+            .ReverseMap();
+        CreateMap<ResultadoPaginado<EmissoresIdentidade>,
+            PagedDto<SysJudo.Application.Dto.EmissoresIdentidade.EmissoresIdentidadeDto>>().ReverseMap();
 
         #endregion
-        
+
         #region Nacionalidade
 
         CreateMap<Nacionalidade, SysJudo.Application.Dto.Nacionalidade.NacionalidadeDto>().ReverseMap();
         CreateMap<Nacionalidade, SysJudo.Application.Dto.Nacionalidade.CreateNacionalidadeDto>().ReverseMap();
         CreateMap<Nacionalidade, SysJudo.Application.Dto.Nacionalidade.UpdateNacionalidadeDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Nacionalidade>, PagedDto<SysJudo.Application.Dto.Nacionalidade.NacionalidadeDto>>().ReverseMap();
+        CreateMap<ResultadoPaginado<Nacionalidade>, PagedDto<SysJudo.Application.Dto.Nacionalidade.NacionalidadeDto>>()
+            .ReverseMap();
 
         #endregion
-        
+
         #region Profissao
 
         CreateMap<Profissao, SysJudo.Application.Dto.Profissao.ProfissaoDto>().ReverseMap();
         CreateMap<Profissao, SysJudo.Application.Dto.Profissao.CreateProfissaoDto>().ReverseMap();
         CreateMap<Profissao, SysJudo.Application.Dto.Profissao.UpdateProfissaoDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Profissao>, PagedDto<SysJudo.Application.Dto.Profissao.ProfissaoDto>>().ReverseMap();
+        CreateMap<ResultadoPaginado<Profissao>, PagedDto<SysJudo.Application.Dto.Profissao.ProfissaoDto>>()
+            .ReverseMap();
 
         #endregion
 
@@ -112,10 +138,11 @@ public class AutoMapperProfile : Profile
 
         CreateMap<RegistroDeEvento, SysJudo.Application.Dto.RegistroDeEvento.RegistroDeEventoDto>().ReverseMap();
         CreateMap<RegistroDeEvento, SysJudo.Application.Dto.RegistroDeEvento.AdicionarRegistroDeEvento>().ReverseMap();
-        CreateMap<ResultadoPaginado<RegistroDeEvento>, PagedDto<SysJudo.Application.Dto.RegistroDeEvento.RegistroDeEventoDto>>().ReverseMap();
+        CreateMap<ResultadoPaginado<RegistroDeEvento>,
+            PagedDto<SysJudo.Application.Dto.RegistroDeEvento.RegistroDeEventoDto>>().ReverseMap();
 
         #endregion
-        
+
         /* **** Filtros **** */
 
         #region Agremiacao
@@ -123,9 +150,10 @@ public class AutoMapperProfile : Profile
         CreateMap<Agremiacao, AgremiacaoFiltro>().ReverseMap();
         CreateMap<AgremiacaoFiltro, SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>().ReverseMap();
         CreateMap<AgremiacaoFiltro, SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>().ReverseMap();
-        //CreateMap<List<AgremiacaoFiltro>, List<SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>>().ReverseMap();
-        CreateMap<ResultadoPaginado<AgremiacaoFiltro>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>>().ReverseMap();
-        CreateMap<ResultadoPaginado<AgremiacaoFiltro>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>>().ReverseMap();
+        CreateMap<ResultadoPaginado<AgremiacaoFiltro>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>>()
+            .ReverseMap();
+        CreateMap<ResultadoPaginado<AgremiacaoFiltro>,
+            PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>>().ReverseMap();
 
         #endregion
     }

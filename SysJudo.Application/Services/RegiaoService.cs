@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
-using Hangfire.Dashboard.Resources;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Base;
 using SysJudo.Application.Dto.Regiao;
 using SysJudo.Application.Notifications;
+using SysJudo.Core.Extension;
 using SysJudo.Domain.Contracts.Repositories;
 using SysJudo.Domain.Entities;
 
@@ -12,11 +14,14 @@ namespace SysJudo.Application.Services;
 public class RegiaoService : BaseService, IRegiaoService
 {
     private readonly IRegiaoRepository _regiaoRepository;
+    private readonly HttpContextAccessor _httpContextAccessor;
 
     public RegiaoService(IMapper mapper, INotificator notificator, IRegiaoRepository regiaoRepository,
-        IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper, notificator, registroDeEventoRepository)
+        IRegistroDeEventoRepository registroDeEventoRepository, IOptions<HttpContextAccessor> httpContextAccessor) :
+        base(mapper, notificator, registroDeEventoRepository)
     {
         _regiaoRepository = regiaoRepository;
+        _httpContextAccessor = httpContextAccessor.Value;
     }
 
     public async Task<RegiaoDto?> Adicionar(CreateRegiaoDto dto)
@@ -30,6 +35,19 @@ public class RegiaoService : BaseService, IRegiaoService
         _regiaoRepository.Adicionar(regiao);
         if (await _regiaoRepository.UnitOfWork.Commit())
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Adicionar regiao",
+                ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
+                TipoOperacaoId = 4,
+                UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                AdministradorId = null,
+                FuncaoMenuId = 8
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<RegiaoDto>(regiao);
         }
 
@@ -61,6 +79,19 @@ public class RegiaoService : BaseService, IRegiaoService
         _regiaoRepository.Alterar(regiao);
         if (await _regiaoRepository.UnitOfWork.Commit())
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Alterar regiao",
+                ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
+                TipoOperacaoId = 5,
+                UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                AdministradorId = null,
+                FuncaoMenuId = 8
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<RegiaoDto>(regiao);
         }
 
@@ -79,6 +110,19 @@ public class RegiaoService : BaseService, IRegiaoService
         var regiao = await _regiaoRepository.ObterPorId(id);
         if (regiao != null)
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Visualizar regiao",
+                ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
+                TipoOperacaoId = 7,
+                UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                AdministradorId = null,
+                FuncaoMenuId = 8
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<RegiaoDto>(regiao);
         }
 
@@ -100,6 +144,20 @@ public class RegiaoService : BaseService, IRegiaoService
         {
             Notificator.Handle("Não foi possível remover a região");
         }
+
+        RegistroDeEventos.Adicionar(new RegistroDeEvento
+        {
+            DataHoraEvento = DateTime.Now,
+            ComputadorId = null,
+            Descricao = "Remover regiao",
+            ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
+            TipoOperacaoId = 6,
+            UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+            AdministradorId = null,
+            FuncaoMenuId = 8
+        });
+
+        await RegistroDeEventos.UnitOfWork.Commit();
     }
 
     private async Task<bool> Validar(Regiao regiao)
@@ -109,8 +167,9 @@ public class RegiaoService : BaseService, IRegiaoService
             Notificator.Handle(validationResult.Errors);
         }
 
-        var existente = await _regiaoRepository.FirstOrDefault(s =>
-            s.Sigla == regiao.Sigla || s.Descricao == regiao.Descricao && s.Id != regiao.Id);
+        var existente = await _regiaoRepository.FirstOrDefault(s => s.Id != regiao.Id &&
+                                                                    (s.Sigla == regiao.Sigla ||
+                                                                     s.Descricao == regiao.Descricao));
         if (existente != null)
         {
             Notificator.Handle("Já existe uma região cadastrado com essa sigla e/ou descrição");

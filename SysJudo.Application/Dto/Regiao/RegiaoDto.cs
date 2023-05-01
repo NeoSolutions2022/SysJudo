@@ -13,7 +13,7 @@ public class RegiaoDto
     public string? Telefone { get; set; }
     public string? Email { get; set; }
     public string? Anotacoes { get; set; }
-    public int IdCidade { get; set; }
-    public int IdEstado { get; set; }
-    public int IdPais { get; set; }
+    public string Cidade { get; set; } = null!;
+    public string Estado { get; set; } = null!;
+    public string Pais { get; set; } = null!;
 }
