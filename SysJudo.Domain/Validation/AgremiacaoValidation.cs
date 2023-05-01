@@ -24,14 +24,11 @@ public class AgremiacaoValidation: AbstractValidator<Agremiacao>
         RuleFor(c => c.Cep)
             .NotEmpty()
             .WithMessage("Cep não pode ser vazio!")
-            .MaximumLength(8)
-            .WithMessage("Cep deve ter no máximo 8 caracteres");
-        
+            .MaximumLength(9)
+            .WithMessage("Cep deve ter no máximo 9 caracteres");
+
         RuleFor(c => c.Cnpj)
-            .NotEmpty()
-            .WithMessage("Cnpj não pode ser vazio!")
-            .MaximumLength(14)
-            .WithMessage("Cnpj deve ter no máximo 14 caracteres");
+            .IsValidCNPJ();
         
         RuleFor(c => c.Complemento)
             .MaximumLength(60)
