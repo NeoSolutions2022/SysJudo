@@ -137,7 +137,7 @@ public class AgremiacaoController : MainController
     public async Task<IActionResult> EnviarDocumentos(int id, [FromForm] EnviarDocumentosDto dto)
     {
         await _service.EnviarDocumentos(id, dto);
-        return NoContentResponse();
+        return NoContentResponse(); 
     }
 
     [HttpDelete("{id}")]
