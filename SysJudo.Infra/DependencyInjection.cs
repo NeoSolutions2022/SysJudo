@@ -63,6 +63,8 @@ public static class DependencyInjection
         services.AddScoped<ISistemaRepository, SistemaRepository>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IAtletaRepository, AtletaRepository>();
+        services.AddScoped<IGrupoAcessoRepository, GrupoAcessoRepository>();
+        services.AddScoped<IPermissaoRepository, PermissaoRepository>();
         services.AddScoped<IEmissoresIdentidadeRepository, EmissoresIdentidadeRepository>();
         services.AddScoped<INacionalidadeRepositoty, NacionalidadeRepository>();
         services.AddScoped<IProfissaoRepository, ProfissaoRepository>();

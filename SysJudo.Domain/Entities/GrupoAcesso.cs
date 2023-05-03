@@ -2,7 +2,7 @@ using SysJudo.Domain.Contracts;
 
 namespace SysJudo.Domain.Entities;
 
-public class GrupoAcesso : ITenant, IEntity, IAggregateRoot
+public class GrupoAcesso : Entity, ITenant, IAggregateRoot
 {
     public string Nome { get; set; } = null!;
     public string Descricao { get; set; } = null!;

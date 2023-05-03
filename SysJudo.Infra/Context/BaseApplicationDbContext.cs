@@ -25,6 +25,8 @@ public abstract class BaseApplicationDbContext : DbContext, IUnitOfWork
     public DbSet<Cliente> Clientes { get; set; } = null!;
     public DbSet<Faixa> Faixas { get; set; } = null!;
     public DbSet<Usuario> Usuarios { get; set; } = null!;
+    public DbSet<GrupoAcesso> GruposAcesso { get; set; } = null!;
+    public DbSet<Permissao> Permissoes { get; set; } = null!;
     public DbSet<Administrador> Administradores { get; set; } = null!;
     public DbSet<Regiao> Regioes { get; set; } = null!;
     public DbSet<EmissoresIdentidade> EmissoresIdentidades { get; set; } = null!;
