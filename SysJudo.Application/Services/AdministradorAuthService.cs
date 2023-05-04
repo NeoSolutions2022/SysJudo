@@ -2,9 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Administrador;
@@ -22,15 +20,13 @@ public class AdministradorAuthService : BaseService, IAdministradorAuthService
 {
     private readonly IPasswordHasher<Administrador> _passwordHasher;
     private readonly IAdministradorRepository _administradorRepository;
-    private readonly HttpContextAccessor _httpContextAccessor;
 
     public AdministradorAuthService(IMapper mapper, INotificator notificator,
         IPasswordHasher<Administrador> passwordHasher, IAdministradorRepository administradorRepository,
-        IRegistroDeEventoRepository registroDeEventoRepository, IOptions<HttpContextAccessor> httpContextAccessor) : base(mapper, notificator, registroDeEventoRepository)
+        IRegistroDeEventoRepository registroDeEventoRepository) : base(mapper, notificator, registroDeEventoRepository)
     {
         _passwordHasher = passwordHasher;
         _administradorRepository = administradorRepository;
-        _httpContextAccessor = httpContextAccessor.Value;
     }
 
     public async Task<UsuarioAutenticadoDto?> Login(LoginAdministradorDto loginDto)
@@ -54,11 +50,11 @@ public class AdministradorAuthService : BaseService, IAdministradorAuthService
             Id = administrador.Id,
             Email = administrador.Email,
             Nome = administrador.Nome,
-            Token = await CreateToken(administrador)
+            Token = await CreateToken(administrador, loginDto.Ip)
         };
     }
 
-    public Task<string> CreateToken(Administrador administrador)
+    public Task<string> CreateToken(Administrador administrador, string ip)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(Settings.Settings.Secret);
@@ -69,7 +65,8 @@ public class AdministradorAuthService : BaseService, IAdministradorAuthService
                 new Claim(ClaimTypes.NameIdentifier, administrador.Id.ToString()),
                 new Claim(ClaimTypes.Name, administrador.Nome),
                 new Claim(ClaimTypes.Email, administrador.Email),
-                new Claim("TipoUsuario", ETipoUsuario.Administrador.ToDescriptionString())
+                new Claim("TipoUsuario", ETipoUsuario.Administrador.ToDescriptionString()),
+                new Claim("IpMaquina", ip)
             }),
             Expires = DateTime.UtcNow.AddHours(2),
             SigningCredentials =

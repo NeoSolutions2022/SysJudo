@@ -45,7 +45,7 @@ public class UsuarioService : BaseService, IUsuarioService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Adicionar usuario",
                 ClienteId = null,
                 TipoOperacaoId = 4,
@@ -90,7 +90,7 @@ public class UsuarioService : BaseService, IUsuarioService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Alterar usuario",
                 ClienteId = null,
                 TipoOperacaoId = 5,
@@ -121,7 +121,7 @@ public class UsuarioService : BaseService, IUsuarioService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Visualizar usuario",
                 ClienteId = null,
                 TipoOperacaoId = 7,
@@ -146,7 +146,7 @@ public class UsuarioService : BaseService, IUsuarioService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Visualizar usuario",
                 ClienteId = null,
                 TipoOperacaoId = 7,
@@ -181,7 +181,7 @@ public class UsuarioService : BaseService, IUsuarioService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
             Descricao = "Remover usuario",
             ClienteId = null,
             TipoOperacaoId = 6,

@@ -38,7 +38,7 @@ public class RegiaoService : BaseService, IRegiaoService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Adicionar regiao",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 4,
@@ -82,7 +82,7 @@ public class RegiaoService : BaseService, IRegiaoService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Alterar regiao",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 5,
@@ -113,7 +113,7 @@ public class RegiaoService : BaseService, IRegiaoService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Visualizar regiao",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 7,
@@ -148,7 +148,7 @@ public class RegiaoService : BaseService, IRegiaoService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
             Descricao = "Remover regiao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 6,

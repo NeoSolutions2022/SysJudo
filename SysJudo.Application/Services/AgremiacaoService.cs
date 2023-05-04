@@ -4707,7 +4707,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
             Descricao = "Filtrar agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 13,
@@ -4767,7 +4767,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Adicionar agremiacao",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 4,
@@ -4817,7 +4817,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Alterar agremiacao",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 5,
@@ -4978,7 +4978,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
             Descricao = "Exportar agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 10,
@@ -4999,7 +4999,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
             Descricao = "Visualizar agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 7,
@@ -5030,7 +5030,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
             Descricao = "Pesquisar agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 14,
@@ -5064,7 +5064,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
             Descricao = "Visualizar agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 7,
@@ -5127,7 +5127,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
             Descricao = "Remover agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 6,
@@ -5155,7 +5155,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Adicionar anotacoes em agremiacao",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 11,
@@ -5198,7 +5198,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
             Descricao = "Alterar agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 8,
@@ -5248,7 +5248,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
             Descricao = "Remover documento em agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 6,

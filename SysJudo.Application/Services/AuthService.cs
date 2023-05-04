@@ -46,7 +46,7 @@ public class AuthService : BaseService, IAuthService
                 Id = usuario.Id,
                 Email = usuario.Email,
                 Nome = usuario.Nome,
-                Token = await CreateToken(usuario)
+                Token = await CreateToken(usuario, loginDto.Ip)
             };
         }
         
@@ -54,7 +54,7 @@ public class AuthService : BaseService, IAuthService
         return null;
     }
 
-    public Task<string> CreateToken(Usuario usuario)
+    public Task<string> CreateToken(Usuario usuario, string ip)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(Settings.Settings.Secret);
@@ -66,7 +66,8 @@ public class AuthService : BaseService, IAuthService
                 new Claim(ClaimTypes.Name, usuario.Nome),
                 new Claim(ClaimTypes.Email, usuario.Email),
                 new Claim("ClienteId", usuario.ClienteId.ToString()),
-                new Claim("TipoUsuario", ETipoUsuario.Comum.ToDescriptionString())
+                new Claim("TipoUsuario", ETipoUsuario.Comum.ToDescriptionString()),
+                new Claim("IpMaquina", ip)
             }),
             Expires = DateTime.UtcNow.AddHours(2),
             SigningCredentials =

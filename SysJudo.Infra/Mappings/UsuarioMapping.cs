@@ -12,7 +12,7 @@ public class UsuarioMapping : IEntityTypeConfiguration<Usuario>
             .Property(c => c.Nome)
             .IsRequired()
             .HasMaxLength(60);
-        
+
         builder
             .Property(c => c.Email)
             .IsRequired()
@@ -25,11 +25,11 @@ public class UsuarioMapping : IEntityTypeConfiguration<Usuario>
         builder
             .Property(c => c.DataExpiracao)
             .IsRequired(false);
-        
+
         builder
             .Property(c => c.CriadoEm)
             .IsRequired();
-        
+
         builder
             .Property(c => c.Senha)
             .IsRequired()

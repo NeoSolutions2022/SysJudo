@@ -656,77 +656,6 @@ namespace SysJudo.Infra.Migrations
                     b.ToTable("FuncoesMenus", (string)null);
                 });
 
-            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcesso", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("Administrador")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Desativado")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClienteId");
-
-                    b.ToTable("GruposAcesso");
-                });
-
-            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcessoPermissao", b =>
-                {
-                    b.Property<int>("GrupoAcessoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PermissaoId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("AtualizadoEm")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("AtualizadoPor")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("CriadoPor")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("CriadoPorAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
-
-                    b.HasKey("GrupoAcessoId", "PermissaoId");
-
-                    b.HasIndex("PermissaoId");
-
-                    b.ToTable("GrupoAcessoPermissao");
-                });
-
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
                 {
                     b.Property<int>("Id")
@@ -753,34 +682,6 @@ namespace SysJudo.Infra.Migrations
                     b.HasIndex("ClienteId");
 
                     b.ToTable("Nacionalidades", (string)null);
-                });
-
-            modelBuilder.Entity("SysJudo.Domain.Entities.Permissao", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Categoria")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Permissoes");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Profissao", b =>
@@ -1200,36 +1101,6 @@ namespace SysJudo.Infra.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcesso", b =>
-                {
-                    b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
-                        .WithMany("GrupoAcessos")
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Cliente");
-                });
-
-            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcessoPermissao", b =>
-                {
-                    b.HasOne("SysJudo.Domain.Entities.GrupoAcesso", "GrupoAcesso")
-                        .WithMany("Permissoes")
-                        .HasForeignKey("GrupoAcessoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SysJudo.Domain.Entities.Permissao", "Permissao")
-                        .WithMany("Grupos")
-                        .HasForeignKey("PermissaoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("GrupoAcesso");
-
-                    b.Navigation("Permissao");
-                });
-
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
                 {
                     b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
@@ -1341,8 +1212,6 @@ namespace SysJudo.Infra.Migrations
 
                     b.Navigation("Faixas");
 
-                    b.Navigation("GrupoAcessos");
-
                     b.Navigation("Nacionalidades");
 
                     b.Navigation("Profissoes");
@@ -1377,11 +1246,6 @@ namespace SysJudo.Infra.Migrations
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
                 {
                     b.Navigation("Atletas");
-                });
-
-            modelBuilder.Entity("SysJudo.Domain.Entities.Permissao", b =>
-                {
-                    b.Navigation("Grupos");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Profissao", b =>

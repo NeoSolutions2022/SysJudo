@@ -37,7 +37,7 @@ public class ClienteService : BaseService, IClienteService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Adicionar cliente",
                 ClienteId = null,
                 TipoOperacaoId = 4,
@@ -81,7 +81,7 @@ public class ClienteService : BaseService, IClienteService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Alterar cliente",
                 ClienteId = null,
                 TipoOperacaoId = 5,
@@ -112,7 +112,7 @@ public class ClienteService : BaseService, IClienteService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
                 Descricao = "Visualizar cliente",
                 ClienteId = null,
                 TipoOperacaoId = 7,
@@ -147,7 +147,7 @@ public class ClienteService : BaseService, IClienteService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = _httpContextAccessor.HttpContext?.User.ObterComputadorIp(),
             Descricao = "Remover cliente",
             ClienteId = null,
             TipoOperacaoId = 6,

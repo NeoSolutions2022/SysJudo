@@ -12,12 +12,12 @@ public class AdministradorMapping : IEntityTypeConfiguration<Administrador>
             .Property(c => c.Nome)
             .IsRequired()
             .HasMaxLength(60);
-        
+
         builder
             .Property(c => c.Email)
             .IsRequired()
             .HasMaxLength(80);
-        
+
         builder
             .Property(c => c.Senha)
             .IsRequired()

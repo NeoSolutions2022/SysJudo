@@ -5,7 +5,7 @@ namespace SysJudo.Domain.Entities;
 public class RegistroDeEvento : Entity, IAggregateRoot
 {
     public DateTime? DataHoraEvento { get; set; }
-    public int? ComputadorId { get; set; }
+    public string? ComputadorId { get; set; }
     public string? Descricao { get; set; }
     public int? ClienteId { get; set; }
     public int? TipoOperacaoId { get; set; }
