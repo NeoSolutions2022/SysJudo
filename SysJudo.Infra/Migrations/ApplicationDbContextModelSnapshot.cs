@@ -689,7 +689,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("GruposAcesso");
+                    b.ToTable("GruposAcesso", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcessoPermissao", b =>
@@ -724,7 +724,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("PermissaoId");
 
-                    b.ToTable("GrupoAcessoPermissao");
+                    b.ToTable("GrupoAcessoPermissao", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
@@ -780,7 +780,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permissoes");
+                    b.ToTable("Permissoes", (string)null);
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Profissao", b =>
@@ -1372,6 +1372,11 @@ namespace SysJudo.Infra.Migrations
             modelBuilder.Entity("SysJudo.Domain.Entities.FuncaoMenu", b =>
                 {
                     b.Navigation("RegistroDeEventos");
+                });
+
+            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcesso", b =>
+                {
+                    b.Navigation("Permissoes");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
