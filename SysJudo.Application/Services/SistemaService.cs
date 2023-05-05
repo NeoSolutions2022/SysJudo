@@ -39,7 +39,7 @@ public class SistemaService : BaseService, ISistemaService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Adicionar sistema",
                 ClienteId = null,
                 TipoOperacaoId = 4,
@@ -83,7 +83,7 @@ public class SistemaService : BaseService, ISistemaService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Alterar sistema",
                 ClienteId = null,
                 TipoOperacaoId = 5,
@@ -114,7 +114,7 @@ public class SistemaService : BaseService, ISistemaService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Visualizar sistema",
                 ClienteId = null,
                 TipoOperacaoId = 7,
@@ -149,7 +149,7 @@ public class SistemaService : BaseService, ISistemaService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = ObterIp(),
             Descricao = "Remover sistema",
             ClienteId = null,
             TipoOperacaoId = 6,

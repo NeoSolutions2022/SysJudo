@@ -4,7 +4,7 @@
 
 namespace SysJudo.Infra.Migrations
 {
-    public partial class AddDefaultValueTiposOperacoes : Migration
+    public partial class AddDefaultValueTipoOperacao : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

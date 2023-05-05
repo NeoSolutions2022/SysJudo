@@ -42,7 +42,7 @@ public class AdministradorService : BaseService, IAdministradorService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Adicionar administrador",
                 ClienteId = null,
                 TipoOperacaoId = 4,
@@ -87,7 +87,7 @@ public class AdministradorService : BaseService, IAdministradorService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Alterar administrador",
                 ClienteId = null,
                 TipoOperacaoId = 5,
@@ -113,7 +113,7 @@ public class AdministradorService : BaseService, IAdministradorService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Visualizar administrador",
                 ClienteId = null,
                 TipoOperacaoId = 7,
@@ -138,7 +138,7 @@ public class AdministradorService : BaseService, IAdministradorService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Visualizar administrador",
                 ClienteId = null,
                 TipoOperacaoId = 7,
@@ -174,7 +174,7 @@ public class AdministradorService : BaseService, IAdministradorService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = ObterIp(),
             Descricao = "Remover administrador",
             ClienteId = null,
             TipoOperacaoId = 6,

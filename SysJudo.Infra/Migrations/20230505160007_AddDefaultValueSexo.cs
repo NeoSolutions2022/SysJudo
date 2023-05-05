@@ -4,7 +4,7 @@
 
 namespace SysJudo.Infra.Migrations
 {
-    public partial class AddDefaultValueEmSexo : Migration
+    public partial class AddDefaultValueSexo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

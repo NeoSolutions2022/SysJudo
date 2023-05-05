@@ -4,7 +4,7 @@
 
 namespace SysJudo.Infra.Migrations
 {
-    public partial class AddDefaultAdministrador : Migration
+    public partial class AddDefaultValueAdministrador : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,10 +13,10 @@ namespace SysJudo.Infra.Migrations
             
             migrationBuilder.InsertData(
                 table: "Administradores",
-                columns: new[] { "Id", "Nome", "Email", "Senha", "Selecao"},
+                columns: new[] { "Id", "Nome", "Email", "Senha"},
                 values: new object[,]
                 {
-                    { 1, "Admin", "admin@admin.com", senha, false  }
+                    { 1, "Admin", "admin@admin.com", senha}
                 });
         }
 

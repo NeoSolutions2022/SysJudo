@@ -12,8 +12,8 @@ using SysJudo.Infra.Context;
 namespace SysJudo.Infra.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230105002442_AjusteTamanhoDePropriedadeEmAgremiacao")]
-    partial class AjusteTamanhoDePropriedadeEmAgremiacao
+    [Migration("20230505160413_AddDefaultValueFuncoesMenu")]
+    partial class AddDefaultValueFuncoesMenu
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,10 +61,10 @@ namespace SysJudo.Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AlvaraLocacao")
-                        .HasMaxLength(1)
-                        .HasColumnType("nchar(1)")
-                        .IsFixedLength();
+                    b.Property<bool>("AlvaraLocacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Anotacoes")
                         .HasMaxLength(1200)
@@ -80,6 +80,11 @@ namespace SysJudo.Infra.Migrations
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
 
+                    b.Property<string>("Cidade")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
@@ -89,34 +94,36 @@ namespace SysJudo.Infra.Migrations
                         .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("Complemento")
-                        .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
                     b.Property<byte[]>("Conteudo")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("ContratoSocial")
-                        .HasMaxLength(255)
-                        .HasColumnType("nchar(255)")
-                        .IsFixedLength();
+                    b.Property<bool>("ContratoSocial")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("DataAta")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DATE");
 
                     b.Property<DateTime?>("DataCnpj")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DATE");
 
                     b.Property<DateTime>("DataFiliacao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DATE");
 
                     b.Property<DateTime>("DataNascimento")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DATE");
 
-                    b.Property<string>("DocumentacaoAtualizada")
-                        .HasMaxLength(255)
-                        .HasColumnType("nchar(255)")
-                        .IsFixedLength();
+                    b.Property<bool>("DocumentacaoAtualizada")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("DocumentosUri")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -128,39 +135,43 @@ namespace SysJudo.Infra.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<string>("Estatuto")
-                        .HasMaxLength(255)
-                        .HasColumnType("nchar(255)")
-                        .IsFixedLength();
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<bool>("Estatuto")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Fantasia")
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("IdCidade")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdEstado")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPais")
-                        .HasColumnType("int");
+                    b.Property<string>("Foto")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdRegiao")
                         .HasColumnType("int");
 
                     b.Property<string>("InscricaoEstadual")
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("InscricaoMunicipal")
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Pais")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Representante")
                         .IsRequired()
@@ -186,12 +197,6 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.HasIndex("IdCidade");
-
-                    b.HasIndex("IdEstado");
-
-                    b.HasIndex("IdPais");
-
                     b.HasIndex("IdRegiao");
 
                     b.ToTable("Agremiacoes");
@@ -216,6 +221,11 @@ namespace SysJudo.Infra.Migrations
                         .IsRequired()
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("Cidade")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
@@ -248,16 +258,20 @@ namespace SysJudo.Infra.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Foto")
+                        .HasMaxLength(255)
+                        .HasColumnType("nchar(255)")
+                        .IsFixedLength();
+
                     b.Property<int>("IdAgremiacao")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdCidade")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdEmissor")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdEstado")
                         .HasColumnType("int");
 
                     b.Property<int>("IdEstadoCivil")
@@ -267,9 +281,6 @@ namespace SysJudo.Infra.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("IdNacionalidade")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPais")
                         .HasColumnType("int");
 
                     b.Property<int>("IdProfissaoAtleta")
@@ -302,6 +313,11 @@ namespace SysJudo.Infra.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
+                    b.Property<string>("Pais")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
                     b.Property<string>("RegistroConfederacao")
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
@@ -322,11 +338,7 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("IdAgremiacao");
 
-                    b.HasIndex("IdCidade");
-
                     b.HasIndex("IdEmissor");
-
-                    b.HasIndex("IdEstado");
 
                     b.HasIndex("IdEstadoCivil");
 
@@ -334,53 +346,11 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("IdNacionalidade");
 
-                    b.HasIndex("IdPais");
-
                     b.HasIndex("IdProfissaoAtleta");
 
                     b.HasIndex("IdSexo");
 
                     b.ToTable("Atletas");
-                });
-
-            modelBuilder.Entity("SysJudo.Domain.Entities.Cidade", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(60)");
-
-                    b.Property<int>("IdEstado")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPais")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Sigla")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(10)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClienteId");
-
-                    b.HasIndex("IdEstado");
-
-                    b.HasIndex("IdPais");
-
-                    b.ToTable("Cidades");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Cliente", b =>
@@ -444,39 +414,163 @@ namespace SysJudo.Infra.Migrations
                     b.ToTable("EmissoresIdentidades");
                 });
 
-            modelBuilder.Entity("SysJudo.Domain.Entities.Estado", b =>
+            modelBuilder.Entity("SysJudo.Domain.Entities.EntitiesFiltros.AgremiacaoFiltro", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Identificador")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Identificador"), 1L, 1);
+
+                    b.Property<bool>("AlvaraLocacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Anotacoes")
+                        .HasMaxLength(1200)
+                        .HasColumnType("nvarchar(1200)");
+
+                    b.Property<int?>("AtletaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Cep")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("Cidade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Descricao")
+                    b.Property<string>("Cnpj")
+                        .IsRequired()
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
+
+                    b.Property<string>("Complemento")
                         .IsRequired()
                         .HasMaxLength(60)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(60)");
+                        .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("IdPais")
+                    b.Property<byte[]>("Conteudo")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<bool>("ContratoSocial")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("DataAta")
+                        .HasColumnType("DATE");
+
+                    b.Property<DateTime?>("DataCnpj")
+                        .HasColumnType("DATE");
+
+                    b.Property<DateTime>("DataFiliacao")
+                        .HasColumnType("DATE");
+
+                    b.Property<DateTime>("DataNascimento")
+                        .HasColumnType("DATE");
+
+                    b.Property<bool>("DocumentacaoAtualizada")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Estatuto")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Fantasia")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Foto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
                         .HasColumnType("int");
+
+                    b.Property<int>("IdRegiao")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InscricaoEstadual")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("InscricaoMunicipal")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Pais")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RegiaoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RegiaoNome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Representante")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Responsavel")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("Sigla")
                         .IsRequired()
-                        .HasMaxLength(2)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.HasKey("Identificador");
+
+                    b.HasIndex("AtletaId");
 
                     b.HasIndex("ClienteId");
 
-                    b.HasIndex("IdPais");
+                    b.HasIndex("RegiaoId");
 
-                    b.ToTable("Estados");
+                    b.ToTable("AgremiacoesFiltro");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.EstadoCivil", b =>
@@ -543,6 +637,98 @@ namespace SysJudo.Infra.Migrations
                     b.ToTable("Faixas");
                 });
 
+            modelBuilder.Entity("SysJudo.Domain.Entities.FuncaoMenu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sigla")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FuncoesMenus");
+                });
+
+            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcesso", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Administrador")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Desativado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.ToTable("GruposAcesso");
+                });
+
+            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcessoPermissao", b =>
+                {
+                    b.Property<int>("GrupoAcessoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissaoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("AtualizadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("AtualizadoPor")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CriadoPor")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("CriadoPorAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.HasKey("GrupoAcessoId", "PermissaoId");
+
+                    b.HasIndex("PermissaoId");
+
+                    b.ToTable("GrupoAcessoPermissao");
+                });
+
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
                 {
                     b.Property<int>("Id")
@@ -571,7 +757,7 @@ namespace SysJudo.Infra.Migrations
                     b.ToTable("Nacionalidades");
                 });
 
-            modelBuilder.Entity("SysJudo.Domain.Entities.Pais", b =>
+            modelBuilder.Entity("SysJudo.Domain.Entities.Permissao", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -579,37 +765,24 @@ namespace SysJudo.Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("int");
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasMaxLength(60)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(60)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("Nacionalidade")
-                        .HasMaxLength(30)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(30)");
-
-                    b.Property<string>("Sigla2")
+                    b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(2)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2)");
-
-                    b.Property<string>("Sigla3")
-                        .IsRequired()
-                        .HasMaxLength(3)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(3)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClienteId");
-
-                    b.ToTable("Paises");
+                    b.ToTable("Permissoes");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Profissao", b =>
@@ -661,6 +834,11 @@ namespace SysJudo.Infra.Migrations
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
 
+                    b.Property<string>("Cidade")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
@@ -682,14 +860,15 @@ namespace SysJudo.Infra.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("IdCidade")
-                        .HasColumnType("int");
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("IdEstado")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPais")
-                        .HasColumnType("int");
+                    b.Property<string>("Pais")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Responsavel")
                         .HasMaxLength(60)
@@ -708,13 +887,54 @@ namespace SysJudo.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.HasIndex("IdCidade");
-
-                    b.HasIndex("IdEstado");
-
-                    b.HasIndex("IdPais");
-
                     b.ToTable("Regioes");
+                });
+
+            modelBuilder.Entity("SysJudo.Domain.Entities.RegistroDeEvento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AdministradorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ComputadorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DataHoraEvento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("FuncaoMenuId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TipoOperacaoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdministradorId");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("FuncaoMenuId");
+
+                    b.HasIndex("TipoOperacaoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("RegistroDeEventos");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Sexo", b =>
@@ -765,6 +985,27 @@ namespace SysJudo.Infra.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sistemas");
+                });
+
+            modelBuilder.Entity("SysJudo.Domain.Entities.TipoOperacao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sigla")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TiposOperacoes");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Usuario", b =>
@@ -822,37 +1063,13 @@ namespace SysJudo.Infra.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SysJudo.Domain.Entities.Cidade", "Cidade")
-                        .WithMany("Agremiacoes")
-                        .HasForeignKey("IdCidade")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SysJudo.Domain.Entities.Estado", "Estado")
-                        .WithMany("Agremiacoes")
-                        .HasForeignKey("IdEstado")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SysJudo.Domain.Entities.Pais", "Pais")
-                        .WithMany("Agremiacoes")
-                        .HasForeignKey("IdPais")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("SysJudo.Domain.Entities.Regiao", "Regiao")
                         .WithMany("Agremiacoes")
                         .HasForeignKey("IdRegiao")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Cidade");
-
                     b.Navigation("Cliente");
-
-                    b.Navigation("Estado");
-
-                    b.Navigation("Pais");
 
                     b.Navigation("Regiao");
                 });
@@ -871,21 +1088,9 @@ namespace SysJudo.Infra.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SysJudo.Domain.Entities.Cidade", "Cidade")
-                        .WithMany("Atletas")
-                        .HasForeignKey("IdCidade")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SysJudo.Domain.Entities.EmissoresIdentidade", "EmissoresIdentidade")
                         .WithMany("Atletas")
                         .HasForeignKey("IdEmissor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SysJudo.Domain.Entities.Estado", "Estado")
-                        .WithMany("Atletas")
-                        .HasForeignKey("IdEstado")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -907,12 +1112,6 @@ namespace SysJudo.Infra.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SysJudo.Domain.Entities.Pais", "Pais")
-                        .WithMany("Atletas")
-                        .HasForeignKey("IdPais")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SysJudo.Domain.Entities.Profissao", "Profissao")
                         .WithMany("Atletas")
                         .HasForeignKey("IdProfissaoAtleta")
@@ -927,13 +1126,9 @@ namespace SysJudo.Infra.Migrations
 
                     b.Navigation("Agremiacao");
 
-                    b.Navigation("Cidade");
-
                     b.Navigation("Cliente");
 
                     b.Navigation("EmissoresIdentidade");
-
-                    b.Navigation("Estado");
 
                     b.Navigation("EstadoCivil");
 
@@ -941,38 +1136,9 @@ namespace SysJudo.Infra.Migrations
 
                     b.Navigation("Nacionalidade");
 
-                    b.Navigation("Pais");
-
                     b.Navigation("Profissao");
 
                     b.Navigation("Sexo");
-                });
-
-            modelBuilder.Entity("SysJudo.Domain.Entities.Cidade", b =>
-                {
-                    b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
-                        .WithMany("Cidades")
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SysJudo.Domain.Entities.Estado", "Estado")
-                        .WithMany("Cidades")
-                        .HasForeignKey("IdEstado")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SysJudo.Domain.Entities.Pais", "Pais")
-                        .WithMany("Cidades")
-                        .HasForeignKey("IdPais")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Cliente");
-
-                    b.Navigation("Estado");
-
-                    b.Navigation("Pais");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Cliente", b =>
@@ -997,23 +1163,21 @@ namespace SysJudo.Infra.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("SysJudo.Domain.Entities.Estado", b =>
+            modelBuilder.Entity("SysJudo.Domain.Entities.EntitiesFiltros.AgremiacaoFiltro", b =>
                 {
-                    b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
-                        .WithMany("Estados")
+                    b.HasOne("SysJudo.Domain.Entities.Atleta", null)
+                        .WithMany("AgremiacoesFiltro")
+                        .HasForeignKey("AtletaId");
+
+                    b.HasOne("SysJudo.Domain.Entities.Cliente", null)
+                        .WithMany("AgremiacoesFiltro")
                         .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SysJudo.Domain.Entities.Pais", "Pais")
-                        .WithMany("Estados")
-                        .HasForeignKey("IdPais")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Cliente");
-
-                    b.Navigation("Pais");
+                    b.HasOne("SysJudo.Domain.Entities.Regiao", null)
+                        .WithMany("AgremiacoesFiltro")
+                        .HasForeignKey("RegiaoId");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.EstadoCivil", b =>
@@ -1038,10 +1202,10 @@ namespace SysJudo.Infra.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
+            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcesso", b =>
                 {
                     b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
-                        .WithMany("Nacionalidades")
+                        .WithMany("GrupoAcessos")
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1049,10 +1213,29 @@ namespace SysJudo.Infra.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("SysJudo.Domain.Entities.Pais", b =>
+            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcessoPermissao", b =>
+                {
+                    b.HasOne("SysJudo.Domain.Entities.GrupoAcesso", "GrupoAcesso")
+                        .WithMany("Permissoes")
+                        .HasForeignKey("GrupoAcessoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SysJudo.Domain.Entities.Permissao", "Permissao")
+                        .WithMany("Grupos")
+                        .HasForeignKey("PermissaoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GrupoAcesso");
+
+                    b.Navigation("Permissao");
+                });
+
+            modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
                 {
                     b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
-                        .WithMany("Paises")
+                        .WithMany("Nacionalidades")
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1079,31 +1262,45 @@ namespace SysJudo.Infra.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SysJudo.Domain.Entities.Cidade", "Cidade")
-                        .WithMany("Regioes")
-                        .HasForeignKey("IdCidade")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("Cliente");
+                });
 
-                    b.HasOne("SysJudo.Domain.Entities.Estado", "Estado")
-                        .WithMany("Regioes")
-                        .HasForeignKey("IdEstado")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+            modelBuilder.Entity("SysJudo.Domain.Entities.RegistroDeEvento", b =>
+                {
+                    b.HasOne("SysJudo.Domain.Entities.Administrador", "Administrador")
+                        .WithMany("RegistroDeEventos")
+                        .HasForeignKey("AdministradorId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SysJudo.Domain.Entities.Pais", "Pais")
-                        .WithMany("Regioes")
-                        .HasForeignKey("IdPais")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
+                        .WithMany("RegistroDeEventos")
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Cidade");
+                    b.HasOne("SysJudo.Domain.Entities.FuncaoMenu", "FuncaoMenu")
+                        .WithMany("RegistroDeEventos")
+                        .HasForeignKey("FuncaoMenuId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SysJudo.Domain.Entities.TipoOperacao", "TipoOperacao")
+                        .WithMany("RegistroDeEventos")
+                        .HasForeignKey("TipoOperacaoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SysJudo.Domain.Entities.Usuario", "Usuario")
+                        .WithMany("RegistroDeEventos")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Administrador");
 
                     b.Navigation("Cliente");
 
-                    b.Navigation("Estado");
+                    b.Navigation("FuncaoMenu");
 
-                    b.Navigation("Pais");
+                    b.Navigation("TipoOperacao");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Usuario", b =>
@@ -1117,43 +1314,44 @@ namespace SysJudo.Infra.Migrations
                     b.Navigation("Cliente");
                 });
 
+            modelBuilder.Entity("SysJudo.Domain.Entities.Administrador", b =>
+                {
+                    b.Navigation("RegistroDeEventos");
+                });
+
             modelBuilder.Entity("SysJudo.Domain.Entities.Agremiacao", b =>
                 {
                     b.Navigation("Atletas");
                 });
 
-            modelBuilder.Entity("SysJudo.Domain.Entities.Cidade", b =>
+            modelBuilder.Entity("SysJudo.Domain.Entities.Atleta", b =>
                 {
-                    b.Navigation("Agremiacoes");
-
-                    b.Navigation("Atletas");
-
-                    b.Navigation("Regioes");
+                    b.Navigation("AgremiacoesFiltro");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Cliente", b =>
                 {
                     b.Navigation("Agremiacoes");
 
+                    b.Navigation("AgremiacoesFiltro");
+
                     b.Navigation("Atletas");
 
-                    b.Navigation("Cidades");
-
                     b.Navigation("EmissoresIdentidades");
-
-                    b.Navigation("Estados");
 
                     b.Navigation("EstadosCivis");
 
                     b.Navigation("Faixas");
 
-                    b.Navigation("Nacionalidades");
+                    b.Navigation("GrupoAcessos");
 
-                    b.Navigation("Paises");
+                    b.Navigation("Nacionalidades");
 
                     b.Navigation("Profissoes");
 
                     b.Navigation("Regioes");
+
+                    b.Navigation("RegistroDeEventos");
 
                     b.Navigation("Usuarios");
                 });
@@ -1161,17 +1359,6 @@ namespace SysJudo.Infra.Migrations
             modelBuilder.Entity("SysJudo.Domain.Entities.EmissoresIdentidade", b =>
                 {
                     b.Navigation("Atletas");
-                });
-
-            modelBuilder.Entity("SysJudo.Domain.Entities.Estado", b =>
-                {
-                    b.Navigation("Agremiacoes");
-
-                    b.Navigation("Atletas");
-
-                    b.Navigation("Cidades");
-
-                    b.Navigation("Regioes");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.EstadoCivil", b =>
@@ -1184,22 +1371,24 @@ namespace SysJudo.Infra.Migrations
                     b.Navigation("Atletas");
                 });
 
+            modelBuilder.Entity("SysJudo.Domain.Entities.FuncaoMenu", b =>
+                {
+                    b.Navigation("RegistroDeEventos");
+                });
+
+            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcesso", b =>
+                {
+                    b.Navigation("Permissoes");
+                });
+
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
                 {
                     b.Navigation("Atletas");
                 });
 
-            modelBuilder.Entity("SysJudo.Domain.Entities.Pais", b =>
+            modelBuilder.Entity("SysJudo.Domain.Entities.Permissao", b =>
                 {
-                    b.Navigation("Agremiacoes");
-
-                    b.Navigation("Atletas");
-
-                    b.Navigation("Cidades");
-
-                    b.Navigation("Estados");
-
-                    b.Navigation("Regioes");
+                    b.Navigation("Grupos");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Profissao", b =>
@@ -1210,6 +1399,8 @@ namespace SysJudo.Infra.Migrations
             modelBuilder.Entity("SysJudo.Domain.Entities.Regiao", b =>
                 {
                     b.Navigation("Agremiacoes");
+
+                    b.Navigation("AgremiacoesFiltro");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Sexo", b =>
@@ -1220,6 +1411,16 @@ namespace SysJudo.Infra.Migrations
             modelBuilder.Entity("SysJudo.Domain.Entities.Sistema", b =>
                 {
                     b.Navigation("Clientes");
+                });
+
+            modelBuilder.Entity("SysJudo.Domain.Entities.TipoOperacao", b =>
+                {
+                    b.Navigation("RegistroDeEventos");
+                });
+
+            modelBuilder.Entity("SysJudo.Domain.Entities.Usuario", b =>
+                {
+                    b.Navigation("RegistroDeEventos");
                 });
 #pragma warning restore 612, 618
         }

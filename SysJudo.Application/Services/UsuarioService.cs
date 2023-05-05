@@ -45,7 +45,7 @@ public class UsuarioService : BaseService, IUsuarioService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Adicionar usuario",
                 ClienteId = null,
                 TipoOperacaoId = 4,
@@ -90,7 +90,7 @@ public class UsuarioService : BaseService, IUsuarioService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Alterar usuario",
                 ClienteId = null,
                 TipoOperacaoId = 5,
@@ -121,7 +121,7 @@ public class UsuarioService : BaseService, IUsuarioService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Visualizar usuario",
                 ClienteId = null,
                 TipoOperacaoId = 7,
@@ -146,7 +146,7 @@ public class UsuarioService : BaseService, IUsuarioService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Visualizar usuario",
                 ClienteId = null,
                 TipoOperacaoId = 7,
@@ -181,7 +181,7 @@ public class UsuarioService : BaseService, IUsuarioService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = ObterIp(),
             Descricao = "Remover usuario",
             ClienteId = null,
             TipoOperacaoId = 6,
