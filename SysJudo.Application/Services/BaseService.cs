@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using SysJudo.Application.Notifications;
 using SysJudo.Domain.Contracts.Repositories;
 
@@ -15,5 +16,12 @@ public abstract class BaseService
         Mapper = mapper;
         Notificator = notificator;
         RegistroDeEventos = registroDeEventos;
+    }
+    
+    protected static string ObterIp()
+    {
+        string nomeMaquina = Dns.GetHostName();
+        IPAddress[] ipLocal = Dns.GetHostAddresses(nomeMaquina);
+        return ipLocal[1].ToString();
     }
 }
