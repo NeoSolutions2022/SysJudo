@@ -4,7 +4,7 @@ public class RegistroDeEventoDto
 {
     public int Id { get; set; }
     public DateTime DataHoraEvento { get; set; }
-    public int? ComputadorId { get; set; }
+    public string? ComputadorId { get; set; }
     public string Descricao { get; set; } = null!;
     public int ClienteId { get; set; }
     public int TipoOperacaoId { get; set; }

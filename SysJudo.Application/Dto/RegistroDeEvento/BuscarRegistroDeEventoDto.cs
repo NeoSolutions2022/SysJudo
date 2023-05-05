@@ -6,7 +6,7 @@ namespace SysJudo.Application.Dto.RegistroDeEvento;
 public class BuscarRegistroDeEventoDto : BuscaPaginadaDto<Domain.Entities.RegistroDeEvento>
 {
     public DateTime? DataHoraEvento { get; set; }
-    public int? ComputadorId { get; set; }
+    public string? ComputadorId { get; set; }
     public string? Descricao { get; set; }
     public int? ClienteId { get; set; }
     public int? TipoOperacaoId { get; set; }
@@ -22,14 +22,14 @@ public class BuscarRegistroDeEventoDto : BuscaPaginadaDto<Domain.Entities.Regist
             query = query.Where(c => c.DataHoraEvento == DataHoraEvento);
         }
         
-        if (ComputadorId.HasValue)
+        if (!string.IsNullOrWhiteSpace(ComputadorId))
         {
-            query = query.Where(c => c.DataHoraEvento == DataHoraEvento);
+            query = query.Where(c => c.ComputadorId == ComputadorId);
         }
         
         if (!string.IsNullOrWhiteSpace(Descricao))
         {
-            query = query.Where(c => c.Descricao.Contains(Descricao));
+            query = query.Where(c => c.Descricao!.Contains(Descricao));
         }
         
         if (ClienteId.HasValue)

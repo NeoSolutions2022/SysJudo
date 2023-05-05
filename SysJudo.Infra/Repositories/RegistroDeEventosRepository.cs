@@ -28,6 +28,13 @@ public class RegistroDeEventosRepository : Repository<RegistroDeEvento>,IRegistr
         return await Context.RegistroDeEventos.FirstOrDefaultAsync(c => c.Id == id);
     }
 
+    public async Task<List<RegistroDeEvento>?> ObterTodos()
+    {
+        return await Context.RegistroDeEventos
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
     public async Task<IResultadoPaginado<RegistroDeEvento>> Buscar(IBuscaPaginada<RegistroDeEvento> filtro)
     {
         var query = Context.RegistroDeEventos.AsQueryable();
