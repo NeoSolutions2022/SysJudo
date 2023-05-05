@@ -143,6 +143,16 @@ public class AutoMapperProfile : Profile
 
         #endregion
 
+        #region GruposDeAcesso
+        CreateMap<GrupoAcesso, Dto.GruposDeAcesso.GrupoAcessoDto>().ReverseMap();
+        CreateMap<GrupoAcesso, Dto.GruposDeAcesso.CadastrarGrupoAcessoDto>().ReverseMap();
+        CreateMap<GrupoAcesso, Dto.GruposDeAcesso.AlterarGrupoAcessoDto>().ReverseMap();
+        CreateMap<GrupoAcesso, Dto.GruposDeAcesso.AlterarGrupoAcessoDto>().ReverseMap();
+        CreateMap<GrupoAcessoPermissao, Dto.GruposDeAcesso.GrupoAcessoPermissaoDto>().ReverseMap();
+        
+        
+
+        #endregion
         /* **** Filtros **** */
 
         #region Agremiacao

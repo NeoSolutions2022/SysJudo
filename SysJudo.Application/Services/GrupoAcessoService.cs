@@ -12,9 +12,9 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
     private readonly IPermissaoRepository _permissaoRepository;
     private readonly IGrupoAcessoRepository _grupoAcessoRepository;
 
-    public GrupoAcessoService(IMapper mapper, INotificator notificator, IPermissaoRepository permissaoRepository, 
+    public GrupoAcessoService(IMapper mapper, INotificator notificator, IRegistroDeEventoRepository registroDeEventos,IPermissaoRepository permissaoRepository, 
         IGrupoAcessoRepository grupoAcessoRepository) 
-        : base(mapper, notificator)
+        : base(mapper, notificator, registroDeEventos)
     {
         _permissaoRepository = permissaoRepository;
         _grupoAcessoRepository = grupoAcessoRepository;
