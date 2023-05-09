@@ -7,5 +7,7 @@ public enum ETipoUsuario
     [Description("Administrador")]
     Administrador = 1,
     [Description("Comum")]
-    Comum = 2
+    Comum = 2,
+    [Description("GrupoAcesso")]
+    GrupoAcesso
 }

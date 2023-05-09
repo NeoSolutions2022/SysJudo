@@ -35,7 +35,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
     }
 
     public async Task<List<AgremiacaoFiltroDto>> Filtrar(List<FiltragemAgremiacaoDto> dto,
-        List<Agremiacao> agremiacoes = null!, int tamanho = 0, int aux = 0)
+        List<Agremiacao>? agremiacoes = null!, int tamanho = 0, int aux = 0)
     {
         tamanho = dto.Count;
 
@@ -5309,16 +5309,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
                 return index;
             }
-            case "Nome":
-            {
-                var index = agremiacoes!.FindLastIndex(c => c.Nome == nome);
-                if (index < 0)
-                {
-                    return agremiacoes.Count + 1;
-                }
-
-                return index;
-            }
             case "Fantasia":
             {
                 var index = agremiacoes!.FindLastIndex(c => c.Fantasia == nome);
@@ -5499,16 +5489,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             case "Sigla":
             {
                 var index = agremiacoes!.FindIndex(c => c.Sigla == nome);
-                if (index < 0)
-                {
-                    return -1;
-                }
-
-                return index;
-            }
-            case "Nome":
-            {
-                var index = agremiacoes!.FindIndex(c => c.Nome == nome);
                 if (index < 0)
                 {
                     return -1;

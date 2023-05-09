@@ -8,7 +8,7 @@ using SysJudo.Core.Authorization;
 
 namespace SysJudo.Api.Controllers.V1.Gerencia;
 
-public class GruposAcessoController : MainController
+public class GruposAcessoController : BaseController
 {
     private readonly IGrupoAcessoService _grupoAcessoService;
     public GruposAcessoController(INotificator notificator, IGrupoAcessoService grupoAcessoService) : base(notificator)
@@ -17,6 +17,7 @@ public class GruposAcessoController : MainController
     }
     
     [HttpGet("{id}")]
+    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     // [ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Read)]
     [SwaggerOperation(Summary = "Obter um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(typeof(GrupoAcessoDto), StatusCodes.Status200OK)]
@@ -30,6 +31,7 @@ public class GruposAcessoController : MainController
     }
 
     [HttpPost]
+    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     //[ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Write)]
     [SwaggerOperation(Summary = "Adicionar de um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(typeof(GrupoAcessoDto), StatusCodes.Status201Created)]
@@ -43,6 +45,7 @@ public class GruposAcessoController : MainController
     }
     
     [HttpPut("{id}")]
+    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     // [ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Write)]
     [SwaggerOperation(Summary = "Alterar um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(typeof(GrupoAcessoDto), StatusCodes.Status200OK)]
@@ -57,6 +60,7 @@ public class GruposAcessoController : MainController
     }
     
     [HttpDelete("{id}")]
+    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     // [ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Delete)]
     [SwaggerOperation(Summary = "Desativar um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -71,6 +75,7 @@ public class GruposAcessoController : MainController
     }
     
     [HttpPatch("{id}/reativar")]
+    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     // [ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Write)]
     [SwaggerOperation(Summary = "Reativar um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -80,6 +85,42 @@ public class GruposAcessoController : MainController
     public async Task<IActionResult> Reativar(int id)
     {
         await _grupoAcessoService.Reativar(id);
+        return NoContentResponse();
+    }
+    
+    [HttpGet("pesquisar-{valor}")]
+    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
+    [SwaggerOperation(Summary = "Pesquisar grupo de acesso.", Tags = new[] { "Configurações - Grupos de acesso" })]
+    [ProducesResponseType(typeof(List<GrupoAcessoDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> Buscar(string valor)
+    {
+        var grupoAcesso = await _grupoAcessoService.Pesquisar(valor);
+        return OkResponse(grupoAcesso);
+    }
+    
+    [HttpPost("filtrar/grupo-acesso")]
+    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
+    [SwaggerOperation(Summary = "Filtrar grupo de acesso.", Tags = new[] { "Configurações - Grupos de acesso" })]
+    [ProducesResponseType(typeof(List<GrupoAcessoDto>), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> Filtragem([FromBody] List<FiltragemGrupoDeAcessoDto> dtos)
+    {
+        var agremiacaoLista = await _grupoAcessoService.Filtrar(dtos);
+        return OkResponse(agremiacaoLista);
+    }
+
+    [HttpPost("limpar-grupo-acesso")]
+    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
+    [SwaggerOperation(Summary = "Limpar grupo de acesso.", Tags = new[] { "Configurações - Grupos de acesso" })]
+    [ProducesResponseType(typeof(List<GrupoAcessoDto>), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> Filtragem()
+    {
+        await _grupoAcessoService.LimparFiltro();
         return NoContentResponse();
     }
     

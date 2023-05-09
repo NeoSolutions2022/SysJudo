@@ -73,6 +73,7 @@ public static class DependencyInjection
         #region Filtro
 
         services.AddScoped<IAgremiacaoFiltroRepository, AgremiacaoFiltroRepository>();
+        services.AddScoped<IGrupoAcessoFiltroRepository, GrupoDeAcessoFiltroRepository>();
 
         #endregion
     }

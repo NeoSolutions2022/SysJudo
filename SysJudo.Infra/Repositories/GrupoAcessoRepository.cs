@@ -20,6 +20,13 @@ public class GrupoAcessoRepository : Repository<GrupoAcesso>, IGrupoAcessoReposi
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
+    public async Task<List<GrupoAcesso>> ObterTodos()
+    {
+        return await Context.GruposAcesso
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
     public void Cadastrar(GrupoAcesso grupoAcesso)
     {
         Context.GruposAcesso.Add(grupoAcesso);

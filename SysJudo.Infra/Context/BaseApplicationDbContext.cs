@@ -18,9 +18,7 @@ public abstract class BaseApplicationDbContext : DbContext, IUnitOfWork
     {
         AuthenticatedUser = authenticatedUser;
     }
-    
     public DbSet<Agremiacao> Agremiacoes { get; set; } = null!;
-    public DbSet<AgremiacaoFiltro> AgremiacoesFiltro { get; set; } = null!;
     public DbSet<Sistema> Sistemas { get; set; } = null!;
     public DbSet<Cliente> Clientes { get; set; } = null!;
     public DbSet<Faixa> Faixas { get; set; } = null!;
@@ -38,6 +36,13 @@ public abstract class BaseApplicationDbContext : DbContext, IUnitOfWork
     public DbSet<FuncaoMenu> FuncoesMenus { get; set; } = null!;
     public DbSet<TipoOperacao> TiposOperacoes { get; set; } = null!;
     public DbSet<RegistroDeEvento> RegistroDeEventos { get; set; } = null!;
+    
+    #region Filtro
+
+    public DbSet<AgremiacaoFiltro> AgremiacoesFiltro { get; set; } = null!;
+    public DbSet<GrupoDeAcessoFiltro> GruposDeAcessoFiltro { get; set; } = null!;
+
+    #endregion
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

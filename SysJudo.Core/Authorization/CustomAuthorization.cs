@@ -18,8 +18,11 @@ public static class CustomAuthorization
 
     public static bool ValidateUserType(HttpContext context, string claimName, string claimValue)
     {
-        return context.User.Identity!.IsAuthenticated &&
-               context.User.ObterTipoUsuario() == claimValue;
+        return claimName switch
+        {
+            "GrupoAcesso" => context.User.Identity!.IsAuthenticated && context.User.ObterTipoGrupoAcesso() == claimValue,
+            _ => context.User.Identity!.IsAuthenticated && context.User.ObterTipoUsuario() == claimValue
+        };
     }
 }
 
@@ -59,6 +62,16 @@ public class RequirementClaimFilter : IAuthorizationFilter
                 context.Result = new StatusCodeResult(403);
             }
             
+            return;
+        }
+        
+        if (_claim.Type == "GrupoAcesso")
+        {
+            if (!CustomAuthorization.ValidateUserType(context.HttpContext, _claim.Type, _claim.Value))
+            {
+                context.Result = new StatusCodeResult(403);
+            }
+
             return;
         }
         
