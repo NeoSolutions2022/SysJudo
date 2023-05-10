@@ -37,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<ISistemaService, SistemaService>();
         services.AddScoped<IUsuarioService, UsuarioService>();
         services.AddScoped<IAtletaService, AtletaService>();
+        services.AddScoped<IPermissaoService, PermissaoService>();
         services.AddScoped<IEmissoresIdentidadeService, EmissoresIdentidadeService>();
         services.AddScoped<INacionalidadeService, NacionalidadeService>();
         services.AddScoped<IProfissaoService, ProfissaoService>();

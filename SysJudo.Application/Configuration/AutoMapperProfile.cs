@@ -149,7 +149,19 @@ public class AutoMapperProfile : Profile
         CreateMap<GrupoAcesso, Dto.GruposDeAcesso.AlterarGrupoAcessoDto>().ReverseMap();
         CreateMap<GrupoAcesso, Dto.GruposDeAcesso.AlterarGrupoAcessoDto>().ReverseMap();
         CreateMap<GrupoAcessoPermissao, Dto.GruposDeAcesso.GrupoAcessoPermissaoDto>().ReverseMap();
-        
+        CreateMap<Dto.GruposDeAcesso.ManterGrupoAcessoPermissaoDto, GrupoAcessoPermissao>()
+            .ReverseMap();
+        #endregion
+
+        #region Permissoes
+        CreateMap<PagedDto<Dto.Permissoes.PermissaoDto>, ResultadoPaginado<Permissao>>()
+                    .ReverseMap();
+                CreateMap<Dto.Permissoes.PermissaoDto, Permissao>()
+                    .ReverseMap();
+                CreateMap<Dto.Permissoes.CadastrarPermissaoDto, Permissao>()
+                    .ReverseMap();
+                CreateMap<Dto.Permissoes.AlterarPermissaoDto, Permissao>()
+                    .ReverseMap();
         
 
         #endregion

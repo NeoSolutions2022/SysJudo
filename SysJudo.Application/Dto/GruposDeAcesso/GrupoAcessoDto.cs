@@ -1,3 +1,5 @@
+using SysJudo.Application.Dto.Permissoes;
+
 namespace SysJudo.Application.Dto.GruposDeAcesso;
 
 public class GrupoAcessoDto
@@ -17,14 +19,6 @@ public class GrupoAcessoPermissaoDto
     public int PermissaoId { get; set; }
     public string Tipo { get; set; } = null!;
     public PermissaoDto Permissao { get; set; } = null!;
-}
-
-public class PermissaoDto
-{
-    public int Id { get; set; }
-    public string Nome { get; set; } = null!;
-    public string Descricao { get; set; } = null!;
-    public string Categoria { get; set; } = null!;
 }
 
 public class AlterarGrupoAcessoDto
