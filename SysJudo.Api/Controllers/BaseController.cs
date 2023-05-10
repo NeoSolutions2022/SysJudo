@@ -19,7 +19,6 @@ public class BaseController : Controller
     {
         _notificator = notificator;
     }
-    
     protected IActionResult NoContentResponse() 
         => CustomResponse(NoContent());
 
