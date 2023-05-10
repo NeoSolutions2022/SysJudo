@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using SysJudo.Api.Responses;
 using SysJudo.Application.Contracts;
+using SysJudo.Application.Dto.Base;
 using SysJudo.Application.Dto.GruposDeAcesso;
 using SysJudo.Application.Notifications;
 using SysJudo.Core.Authorization;
@@ -30,6 +31,17 @@ public class GruposAcessoController : BaseController
         return OkResponse(grupoAcesso);
     }
 
+    [HttpGet]
+    // [ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Read)]
+    [SwaggerOperation(Summary = "Buscar um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
+    [ProducesResponseType(typeof(PagedDto<GrupoAcessoDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<PagedDto<GrupoAcessoDto>> Buscar([FromQuery] BuscarGrupoAcessoDto dto)
+    {
+        return await _grupoAcessoService.Buscar(dto);
+    }
+    
     [HttpPost]
     [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     //[ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Write)]
