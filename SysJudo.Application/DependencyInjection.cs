@@ -34,6 +34,7 @@ public static class DependencyInjection
         services.AddScoped<IClienteService, ClienteService>();
         services.AddScoped<IFaixaService, FaixaService>();
         services.AddScoped<IRegiaoService, RegiaoService>();
+        services.AddScoped<IPermissaoService, PermissaoService>();
         services.AddScoped<ISistemaService, SistemaService>();
         services.AddScoped<IUsuarioService, UsuarioService>();
         services.AddScoped<IAtletaService, AtletaService>();
