@@ -65,7 +65,8 @@ public class AdministradorAuthService : BaseService, IAdministradorAuthService
                 new Claim(ClaimTypes.NameIdentifier, administrador.Id.ToString()),
                 new Claim(ClaimTypes.Name, administrador.Nome),
                 new Claim(ClaimTypes.Email, administrador.Email),
-                new Claim("TipoUsuario", ETipoUsuario.Administrador.ToDescriptionString())
+                new Claim("TipoUsuario", ETipoUsuario.Administrador.ToDescriptionString()),
+                new Claim("GrupoAcesso", "GrupoAcesso")
             }),
             Expires = DateTime.UtcNow.AddHours(2),
             SigningCredentials =

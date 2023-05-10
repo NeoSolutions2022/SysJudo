@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using SysJudo.Domain.Entities;
 using SysJudo.Application.Dto.Base;
+using SysJudo.Domain.Entities;
 using SysJudo.Core.Extension;
 using SysJudo.Domain.Entities.EntitiesFiltros;
 using SysJudo.Domain.Paginacao;
@@ -143,16 +143,19 @@ public class AutoMapperProfile : Profile
 
         #endregion
 
-        #region GruposDeAcesso
+        #region GrupoAcesso
+
         CreateMap<GrupoAcesso, Dto.GruposDeAcesso.GrupoAcessoDto>().ReverseMap();
         CreateMap<GrupoAcesso, Dto.GruposDeAcesso.CadastrarGrupoAcessoDto>().ReverseMap();
         CreateMap<GrupoAcesso, Dto.GruposDeAcesso.AlterarGrupoAcessoDto>().ReverseMap();
-        CreateMap<GrupoAcesso, Dto.GruposDeAcesso.AlterarGrupoAcessoDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<GrupoAcesso>, PagedDto<Dto.GruposDeAcesso.GrupoAcessoDto>>().ReverseMap();
+        
         CreateMap<GrupoAcessoPermissao, Dto.GruposDeAcesso.GrupoAcessoPermissaoDto>().ReverseMap();
-        
-        
+        CreateMap<GrupoAcessoPermissao, Dto.GruposDeAcesso.ManterGrupoAcessoPermissaoDto>().ReverseMap();
+        CreateMap<Permissao, Dto.GruposDeAcesso.PermissaoDto>().ReverseMap();
 
         #endregion
+
         /* **** Filtros **** */
 
         #region Agremiacao
@@ -164,6 +167,16 @@ public class AutoMapperProfile : Profile
             .ReverseMap();
         CreateMap<ResultadoPaginado<AgremiacaoFiltro>,
             PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>>().ReverseMap();
+
+        #endregion
+
+        #region GrupoAcesso
+
+        CreateMap<GrupoAcesso, GrupoDeAcessoFiltro>().ReverseMap();
+        CreateMap<GrupoDeAcessoFiltro, SysJudo.Application.Dto.GruposDeAcesso.GrupoAcessoDto>().ReverseMap();
+        CreateMap<GrupoDeAcessoFiltro, SysJudo.Application.Dto.GruposDeAcesso.GrupoDeAcessoFiltroDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<GrupoDeAcessoFiltro>, PagedDto<SysJudo.Application.Dto.GruposDeAcesso.GrupoAcessoDto>>().ReverseMap();
+        CreateMap<ResultadoPaginado<GrupoDeAcessoFiltro>, PagedDto<SysJudo.Application.Dto.GruposDeAcesso.GrupoDeAcessoFiltroDto>>().ReverseMap();
 
         #endregion
     }

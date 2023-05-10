@@ -6,7 +6,7 @@ public class GrupoAcesso : Entity, ITenant, IAggregateRoot
 {
     public string Nome { get; set; } = null!;
     public string Descricao { get; set; } = null!;
-    public bool Administrador { get; protected set; }
+    public bool Administrador { get; set; }
     public bool Desativado { get; set; }
     public int ClienteId { get; set; }
     public virtual Cliente Cliente { get; set; } = null!;
@@ -17,5 +17,4 @@ public class GrupoAcesso : Entity, ITenant, IAggregateRoot
     //     validationResult = new GrupoAcessoValidator().Validate(this);
     //     return validationResult.IsValid;
     // }
-    public int Id { get; set; }
 }

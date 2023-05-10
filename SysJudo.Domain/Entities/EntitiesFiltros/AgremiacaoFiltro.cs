@@ -4,7 +4,6 @@ namespace SysJudo.Domain.Entities.EntitiesFiltros;
 
 public class AgremiacaoFiltro : EntityFiltro, IAggregateRoot, ITenant
 {
-    public int Identificador { get; set; }
     public string Sigla { get; set; } = null!;
     public string Nome { get; set; } = null!;
     public string? Fantasia { get; set; }

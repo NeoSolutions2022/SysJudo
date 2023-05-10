@@ -66,7 +66,8 @@ public class AuthService : BaseService, IAuthService
                 new Claim(ClaimTypes.Name, usuario.Nome),
                 new Claim(ClaimTypes.Email, usuario.Email),
                 new Claim("ClienteId", usuario.ClienteId.ToString()),
-                new Claim("TipoUsuario", ETipoUsuario.Comum.ToDescriptionString())
+                new Claim("TipoUsuario", ETipoUsuario.Comum.ToDescriptionString()),
+                new Claim("GrupoAcesso", "GrupoAcesso")
             }),
             Expires = DateTime.UtcNow.AddHours(2),
             SigningCredentials =
