@@ -2,13 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using SysJudo.Api.Responses;
 using SysJudo.Application.Contracts;
+using SysJudo.Application.Dto.Base;
 using SysJudo.Application.Dto.GruposDeAcesso;
 using SysJudo.Application.Notifications;
 using SysJudo.Core.Authorization;
 
 namespace SysJudo.Api.Controllers.V1.Gerencia;
 
-public class GruposAcessoController : BaseController
+public class GruposAcessoController : MainController
 {
     private readonly IGrupoAcessoService _grupoAcessoService;
     public GruposAcessoController(INotificator notificator, IGrupoAcessoService grupoAcessoService) : base(notificator)
@@ -17,7 +18,6 @@ public class GruposAcessoController : BaseController
     }
     
     [HttpGet("{id}")]
-    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     // [ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Read)]
     [SwaggerOperation(Summary = "Obter um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(typeof(GrupoAcessoDto), StatusCodes.Status200OK)]
@@ -30,8 +30,18 @@ public class GruposAcessoController : BaseController
         return OkResponse(grupoAcesso);
     }
 
+    [HttpGet]
+    // [ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Read)]
+    [SwaggerOperation(Summary = "Buscar um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
+    [ProducesResponseType(typeof(PagedDto<GrupoAcessoDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<PagedDto<GrupoAcessoDto>> Buscar([FromQuery] BuscarGrupoAcessoDto dto)
+    {
+        return await _grupoAcessoService.Buscar(dto);
+    }
+    
     [HttpPost]
-    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     //[ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Write)]
     [SwaggerOperation(Summary = "Adicionar de um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(typeof(GrupoAcessoDto), StatusCodes.Status201Created)]
@@ -45,7 +55,6 @@ public class GruposAcessoController : BaseController
     }
     
     [HttpPut("{id}")]
-    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     // [ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Write)]
     [SwaggerOperation(Summary = "Alterar um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(typeof(GrupoAcessoDto), StatusCodes.Status200OK)]
@@ -60,7 +69,6 @@ public class GruposAcessoController : BaseController
     }
     
     [HttpDelete("{id}")]
-    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     // [ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Delete)]
     [SwaggerOperation(Summary = "Desativar um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -75,7 +83,6 @@ public class GruposAcessoController : BaseController
     }
     
     [HttpPatch("{id}/reativar")]
-    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     // [ClaimsAuthorize(PermissoesBackend.ConfiguracoesGruposAcesso, EPermissaoTipo.Write)]
     [SwaggerOperation(Summary = "Reativar um grupo de acesso.", Tags = new [] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -89,7 +96,6 @@ public class GruposAcessoController : BaseController
     }
     
     [HttpGet("pesquisar-{valor}")]
-    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     [SwaggerOperation(Summary = "Pesquisar grupo de acesso.", Tags = new[] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(typeof(List<GrupoAcessoDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -101,7 +107,6 @@ public class GruposAcessoController : BaseController
     }
     
     [HttpPost("filtrar/grupo-acesso")]
-    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     [SwaggerOperation(Summary = "Filtrar grupo de acesso.", Tags = new[] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(typeof(List<GrupoAcessoDto>), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -113,7 +118,6 @@ public class GruposAcessoController : BaseController
     }
 
     [HttpPost("limpar-grupo-acesso")]
-    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     [SwaggerOperation(Summary = "Limpar grupo de acesso.", Tags = new[] { "Configurações - Grupos de acesso" })]
     [ProducesResponseType(typeof(List<GrupoAcessoDto>), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

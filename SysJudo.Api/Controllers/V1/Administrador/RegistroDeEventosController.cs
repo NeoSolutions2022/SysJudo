@@ -3,10 +3,11 @@ using Swashbuckle.AspNetCore.Annotations;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.RegistroDeEvento;
 using SysJudo.Application.Notifications;
+using SysJudo.Core.Authorization;
 
 namespace SysJudo.Api.Controllers.V1.Administrador;
 
-public class RegistroDeEventosController : MainController
+public class RegistroDeEventosController : BaseController
 {
     private readonly IRegistroDeEventoService _service;
     public RegistroDeEventosController(INotificator notificator, IRegistroDeEventoService service) : base(notificator)
@@ -15,6 +16,7 @@ public class RegistroDeEventosController : MainController
     }
     
     [HttpGet("{id}")]
+    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     [SwaggerOperation(Summary = "Obter Registro de evento.", Tags = new [] { "Administrador - Registro de evento" })]
     [ProducesResponseType(typeof(RegistroDeEventoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -27,6 +29,7 @@ public class RegistroDeEventosController : MainController
     }
     
     [HttpGet]
+    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
     [SwaggerOperation(Summary = "Obter todos Registro de evento.", Tags = new [] { "Administrador - Registro de evento" })]
     [ProducesResponseType(typeof(RegistroDeEventoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

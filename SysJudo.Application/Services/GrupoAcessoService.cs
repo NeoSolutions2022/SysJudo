@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using SysJudo.Application.Contracts;
+using SysJudo.Application.Dto.Base;
 using SysJudo.Application.Dto.GruposDeAcesso;
 using SysJudo.Application.Notifications;
 using SysJudo.Core.Extension;
@@ -30,6 +31,12 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
         _httpContextAccessor = httpContextAccessor.Value;
     }
 
+    public async Task<PagedDto<GrupoAcessoDto>> Buscar(BuscarGrupoAcessoDto dto)
+    {
+        var grupoAcessos = await _grupoAcessoRepository.Buscar(dto);
+        return Mapper.Map<PagedDto<GrupoAcessoDto>>(grupoAcessos);
+    }
+    
     public async Task<GrupoAcessoDto?> ObterPorId(int id)
     {
         var grupoAcesso = await ObterGrupoAcesso(id);
