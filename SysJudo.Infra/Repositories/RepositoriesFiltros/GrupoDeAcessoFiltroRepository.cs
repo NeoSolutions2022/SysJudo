@@ -26,7 +26,7 @@ public class GrupoDeAcessoFiltroRepository : RepositoryFiltro<GrupoDeAcessoFiltr
 
     public async Task RemoverTodos()
     {
-        Context.AgremiacoesFiltro.RemoveRange(await Context.AgremiacoesFiltro.AsNoTracking().ToListAsync());
+        Context.GruposDeAcessoFiltro.RemoveRange(await Context.GruposDeAcessoFiltro.AsNoTracking().ToListAsync());
     }
 
     public async Task<List<GrupoDeAcessoFiltro>> Pesquisar(string valor)
