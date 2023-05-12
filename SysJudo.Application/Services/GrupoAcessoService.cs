@@ -100,8 +100,7 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
             AdministradorId = null,
             FuncaoMenuId = null
         });
-
-        await RegistroDeEventos.UnitOfWork.Commit();
+        
         return await CommitChanges() ? Mapper.Map<GrupoAcessoDto>(grupoAcesso) : null;
     }
 
@@ -589,8 +588,6 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
                 FuncaoMenuId = 97
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
-
             if (await _filtroRepository.UnitOfWork.Commit())
             {
                 return Mapper.Map<List<GrupoDeAcessoFiltroDto>>(
@@ -660,8 +657,6 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
             AdministradorId = null,
             FuncaoMenuId = 97
         });
-
-        await RegistroDeEventos.UnitOfWork.Commit();
 
         if (await _filtroRepository.UnitOfWork.Commit())
         {
