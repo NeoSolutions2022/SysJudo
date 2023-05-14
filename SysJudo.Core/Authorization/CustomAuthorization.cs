@@ -12,8 +12,7 @@ public static class CustomAuthorization
 {
     public static bool ValidateUserClaims(HttpContext context, string claimName, string claimValue)
     {
-        return context.User.Identity!.IsAuthenticated &&
-               context.User.Permissoes().Any(c => c.Nome == claimName && c.Tipo.Contains(claimValue));
+        return context.User.Identity!.IsAuthenticated && context.User.VerificarPermissao(claimName, claimValue);
     }
 
     public static bool ValidateUserType(HttpContext context, string claimName, string claimValue)

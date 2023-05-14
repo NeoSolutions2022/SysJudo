@@ -100,7 +100,7 @@ public class AuthService : BaseService, IAuthService
         var grupos = await _grupoAcessoRepository.ObterTodos();
         var gruposFiltrados = grupos.Where(c => gruposIds.Contains(c.Id));
 
-        var permissoes = MapPermissoes(grupos.SelectMany(c => c.Permissoes)).Select(p => p.ToString());
+        var permissoes = MapPermissoes(gruposFiltrados.SelectMany(c => c.Permissoes)).Select(p => p.ToString());
         claimsIdentity.AddClaim(new Claim("permissoes", JsonConvert.SerializeObject(permissoes), JsonClaimValueTypes.JsonArray)); 
     }
 
@@ -112,8 +112,7 @@ public class AuthService : BaseService, IAuthService
             {
                 var tipos = grupo
                     .SelectMany(gap => gap.Tipo.ToCharArray().Select(c => c.ToString()))
-                    .Distinct()
-                    .OrderBy(Enum.Parse<EPermissaoNivel>);
+                    .Distinct();
                 
                 return new PermissaoClaim
                 {
