@@ -36,7 +36,7 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
         var grupoAcessos = await _grupoAcessoRepository.Buscar(dto);
         return Mapper.Map<PagedDto<GrupoAcessoDto>>(grupoAcessos);
     }
-    
+
     public async Task<GrupoAcessoDto?> ObterPorId(int id)
     {
         var grupoAcesso = await ObterGrupoAcesso(id);
@@ -65,7 +65,6 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
             FuncaoMenuId = null
         });
 
-        await RegistroDeEventos.UnitOfWork.Commit();
         return await CommitChanges() ? Mapper.Map<GrupoAcessoDto>(grupoAcesso) : null;
     }
 
@@ -101,8 +100,7 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
             AdministradorId = null,
             FuncaoMenuId = null
         });
-
-        await RegistroDeEventos.UnitOfWork.Commit();
+        
         return await CommitChanges() ? Mapper.Map<GrupoAcessoDto>(grupoAcesso) : null;
     }
 
@@ -590,8 +588,6 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
                 FuncaoMenuId = 97
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
-
             if (await _filtroRepository.UnitOfWork.Commit())
             {
                 return Mapper.Map<List<GrupoDeAcessoFiltroDto>>(
@@ -661,8 +657,6 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
             AdministradorId = null,
             FuncaoMenuId = 97
         });
-
-        await RegistroDeEventos.UnitOfWork.Commit();
 
         if (await _filtroRepository.UnitOfWork.Commit())
         {
@@ -735,11 +729,7 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
 
     private async Task<bool> CommitChanges()
     {
-        if (await _grupoAcessoRepository.UnitOfWork.Commit())
-        {
-            return true;
-        }
-
+        if (await _grupoAcessoRepository.UnitOfWork.Commit()) return true;
         Notificator.Handle("Não foi possível salvar alterações!");
         return false;
     }
