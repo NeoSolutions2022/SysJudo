@@ -4799,6 +4799,21 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return null;
         }
 
+        RegistroDeEventos.Adicionar(new RegistroDeEvento
+        {
+            DataHoraEvento = DateTime.Now,
+            ComputadorId = ObterIp(),
+            Descricao =
+                $"Alterar agremiacao. Valores iniciais - Sigla = {agremiacao.Sigla}, Nome = {agremiacao.Nome}, Fantasia = {agremiacao.Fantasia}, Responsavel = {agremiacao.Responsavel},Representante = {agremiacao.Representante}, DataFiliacao = {agremiacao.DataFiliacao}, DataNascimento = {agremiacao.DataNascimento}, Cep = {agremiacao.Cep}, Endereco = {agremiacao.Endereco}, Bairro = {agremiacao.Bairro}, Complemento = {agremiacao.Complemento}, Cidade = {agremiacao.Cidade}, Estado = {agremiacao.Estado}, Pais = {agremiacao.Pais}, Telefone = {agremiacao.Telefone}, Email = {agremiacao.Email}, Cnpj = {agremiacao.Cnpj}, InscricaoMunicipal = {agremiacao.InscricaoMunicipal}, InscricaoEstadual = {agremiacao.InscricaoEstadual}, DataCnpj = {agremiacao.DataCnpj}, DataAta = {agremiacao.DataAta}, Foto = {agremiacao.Foto} AlvaraLocacao = {agremiacao.AlvaraLocacao}, Estatuto = {agremiacao.Estatuto}, ContratoSocial = {agremiacao.ContratoSocial}, DocumentacaoAtualizada = {agremiacao.DocumentacaoAtualizada}, IdRegiao = {agremiacao.IdRegiao}, Anotacoes = {agremiacao.Anotacoes}",
+            ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
+            TipoOperacaoId = 5,
+            UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+            AdministradorId = null,
+            FuncaoMenuId = null
+        });
+
+        await RegistroDeEventos.UnitOfWork.Commit();
+
         Mapper.Map(dto, agremiacao);
         if (!await Validar(agremiacao))
         {
