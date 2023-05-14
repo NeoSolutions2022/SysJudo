@@ -766,6 +766,21 @@ namespace SysJudo.Infra.Migrations
                     b.ToTable("GrupoAcessoPermissao");
                 });
 
+            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcessoUsuario", b =>
+                {
+                    b.Property<int>("GrupoAcessoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GrupoAcessoId", "UsuarioId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("GrupoAcessoUsuario");
+                });
+
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
                 {
                     b.Property<int>("Id")
@@ -1269,6 +1284,25 @@ namespace SysJudo.Infra.Migrations
                     b.Navigation("Permissao");
                 });
 
+            modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcessoUsuario", b =>
+                {
+                    b.HasOne("SysJudo.Domain.Entities.GrupoAcesso", "GrupoAcesso")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("GrupoAcessoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SysJudo.Domain.Entities.Usuario", "Usuario")
+                        .WithMany("GrupoAcessos")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GrupoAcesso");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
                 {
                     b.HasOne("SysJudo.Domain.Entities.Cliente", "Cliente")
@@ -1416,6 +1450,8 @@ namespace SysJudo.Infra.Migrations
             modelBuilder.Entity("SysJudo.Domain.Entities.GrupoAcesso", b =>
                 {
                     b.Navigation("Permissoes");
+
+                    b.Navigation("Usuarios");
                 });
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Nacionalidade", b =>
@@ -1457,6 +1493,8 @@ namespace SysJudo.Infra.Migrations
 
             modelBuilder.Entity("SysJudo.Domain.Entities.Usuario", b =>
                 {
+                    b.Navigation("GrupoAcessos");
+
                     b.Navigation("RegistroDeEventos");
                 });
 #pragma warning restore 612, 618

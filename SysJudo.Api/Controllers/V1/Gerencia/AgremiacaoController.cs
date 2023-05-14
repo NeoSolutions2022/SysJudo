@@ -4,6 +4,7 @@ using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Agremiacao;
 using SysJudo.Application.Dto.Base;
 using SysJudo.Application.Notifications;
+using SysJudo.Core.Authorization;
 
 namespace SysJudo.Api.Controllers.V1.Gerencia;
 
@@ -86,6 +87,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpPost]
+    [ClaimsAuthorize("add-agremiacao", "R")]
     [SwaggerOperation(Summary = "Cadastrar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(AgremiacaoDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -97,6 +99,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpPut("{id}")]
+    [ClaimsAuthorize("put-agremiacao", "admi")]
     [SwaggerOperation(Summary = "Atualizar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(AgremiacaoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -108,6 +111,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpPatch("{id}")]
+    [ClaimsAuthorize("anotar", "admi")]
     [SwaggerOperation(Summary = "Anotações Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -141,6 +145,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpDelete("{id}")]
+    [ClaimsAuthorize("remove-agremiacao", "admi")]
     [SwaggerOperation(Summary = "Remover Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]

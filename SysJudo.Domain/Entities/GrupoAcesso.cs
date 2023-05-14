@@ -11,6 +11,7 @@ public class GrupoAcesso : Entity, ITenant, IAggregateRoot
     public int ClienteId { get; set; }
     public virtual Cliente Cliente { get; set; } = null!;
     public virtual List<GrupoAcessoPermissao> Permissoes { get; set; } = new();
+    public virtual List<GrupoAcessoUsuario> Usuarios { get; set; } = new();
 
     // public override bool Validar(out ValidationResult validationResult)
     // {

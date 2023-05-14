@@ -30,7 +30,9 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
 
     public async Task<Usuario?> ObterPorEmail(string email)
     {
-        return await Context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+        return await Context.Usuarios
+            .Include(u => u.GrupoAcessos)
+            .FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public async Task<IResultadoPaginado<Usuario>> Buscar(IBuscaPaginada<Usuario> filtro)

@@ -88,12 +88,6 @@ public class RequirementClaimFilter : IAuthorizationFilter
     }
 }
 
-public class PermissaoClaim
-{
-    public string Nome { get; set; } = null!;
-    public string Tipo { get; set; } = null!;
-}
-
 public enum EPermissaoTipo
 {
     [Description("R")]
@@ -118,7 +112,7 @@ public enum EPermissaoTipo
     Full = 7
 }
 
-public enum EPemissaoNivel
+public enum EPermissaoNivel
 {
     R = 1,
     W = 2,
