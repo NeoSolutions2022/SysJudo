@@ -46,6 +46,20 @@ public class AuthService : BaseService, IAuthService
         {
             usuario.UltimoLogin = DateTime.Now;
             await _usuarioRepository.UnitOfWork.Commit();
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Login",
+                ClienteId = null,
+                TipoOperacaoId = 1,
+                UsuarioNome = null,
+                AdministradorNome = null,
+                UsuarioId = null,
+                AdministradorId = null,
+                FuncaoMenuId = null
+            });
+            await RegistroDeEventos.UnitOfWork.Commit();
             return new UsuarioAutenticadoDto
             {
                 Id = usuario.Id,

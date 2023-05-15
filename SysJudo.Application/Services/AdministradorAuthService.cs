@@ -45,6 +45,20 @@ public class AdministradorAuthService : BaseService, IAdministradorAuthService
             return null;
         }
 
+        RegistroDeEventos.Adicionar(new RegistroDeEvento
+        {
+            DataHoraEvento = DateTime.Now,
+            ComputadorId = null,
+            Descricao = "Login",
+            ClienteId = null,
+            TipoOperacaoId = 1,
+            UsuarioNome = null,
+            AdministradorNome = null,
+            UsuarioId = null,
+            AdministradorId = null,
+            FuncaoMenuId = null
+        });
+        await RegistroDeEventos.UnitOfWork.Commit();
         return new UsuarioAutenticadoDto
         {
             Id = administrador.Id,
