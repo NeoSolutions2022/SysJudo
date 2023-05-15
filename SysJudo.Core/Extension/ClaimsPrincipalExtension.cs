@@ -6,17 +6,17 @@ namespace SysJudo.Core.Extension;
 
 public static class ClaimsPrincipalExtension
 {
-    public static List<PermissaoClaim> Permissoes(this ClaimsPrincipal? user)
+    public static bool VerificarPermissao(this ClaimsPrincipal? user, string claimName, string claimValue)
     {
         if (user is null)
         {
-            return new List<PermissaoClaim>();
+            return false;
         }
         
-        return user.Claims
-            .Where(c => c.Type == "permissoes")
-            .SelectMany(c => JsonConvert.DeserializeObject<List<PermissaoClaim>>(c.Value)!)
-            .ToList();
+        return user
+            .Claims
+            .Where(p => p.Type == "permissoes")
+            .Any(p => PermissaoClaim.Verificar(p.Value, claimName, claimValue));
     }
 
     public static bool UsuarioAutenticado(this ClaimsPrincipal? principal)
@@ -32,6 +32,9 @@ public static class ClaimsPrincipalExtension
     
     public static string? ObterUsuarioId(this ClaimsPrincipal? principal) 
         => GetClaim(principal, ClaimTypes.NameIdentifier);
+    
+    public static string? ObterNome(this ClaimsPrincipal? principal) 
+        => GetClaim(principal, ClaimTypes.Name);
 
     public static string? ObterClienteId(this ClaimsPrincipal? principal) 
         => GetClaim(principal, "ClienteId");

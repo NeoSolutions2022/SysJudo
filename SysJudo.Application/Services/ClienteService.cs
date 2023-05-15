@@ -17,7 +17,8 @@ public class ClienteService : BaseService, IClienteService
     private readonly IClienteRepository _clienteRepository;
 
     public ClienteService(IMapper mapper, INotificator notificator, IClienteRepository clienteRepository,
-        IRegistroDeEventoRepository registroDeEventoRepository, IOptions<HttpContextAccessor> httpContextAccessor) : base(mapper, notificator, registroDeEventoRepository)
+        IRegistroDeEventoRepository registroDeEventoRepository, IOptions<HttpContextAccessor> httpContextAccessor) :
+        base(mapper, notificator, registroDeEventoRepository)
     {
         _clienteRepository = clienteRepository;
         _httpContextAccessor = httpContextAccessor.Value;
@@ -42,11 +43,12 @@ public class ClienteService : BaseService, IClienteService
                 ClienteId = null,
                 TipoOperacaoId = 4,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = 99
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<ClienteDto>(cliente);
         }
 
@@ -86,11 +88,12 @@ public class ClienteService : BaseService, IClienteService
                 ClienteId = null,
                 TipoOperacaoId = 5,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = null
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<ClienteDto>(cliente);
         }
 
@@ -117,11 +120,13 @@ public class ClienteService : BaseService, IClienteService
                 ClienteId = null,
                 TipoOperacaoId = 7,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = null
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
+            await _clienteRepository.UnitOfWork.Commit();
             return Mapper.Map<ClienteDto>(cliente);
         }
 
@@ -139,24 +144,26 @@ public class ClienteService : BaseService, IClienteService
         }
 
         _clienteRepository.Remover(cliente);
-        if (!await _clienteRepository.UnitOfWork.Commit())
+        if (await _clienteRepository.UnitOfWork.Commit())
         {
-            Notificator.Handle("Não foi possível remover o cliete");
-        }
-        
-        RegistroDeEventos.Adicionar(new RegistroDeEvento
-        {
-            DataHoraEvento = DateTime.Now,
-            ComputadorId = ObterIp(),
-            Descricao = "Remover cliente",
-            ClienteId = null,
-            TipoOperacaoId = 6,
-            UsuarioId = null,
-            AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
-            FuncaoMenuId = null
-        });
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = ObterIp(),
+                Descricao = "Remover cliente",
+                ClienteId = null,
+                TipoOperacaoId = 6,
+                UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
 
-        await RegistroDeEventos.UnitOfWork.Commit();
+            return;
+        }
+
+        Notificator.Handle("Não foi possível remover o cliete");
     }
 
     private async Task<bool> Validar(Cliente cliente)
