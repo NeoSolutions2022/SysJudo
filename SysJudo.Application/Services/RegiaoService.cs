@@ -42,12 +42,13 @@ public class RegiaoService : BaseService, IRegiaoService
                 Descricao = "Adicionar regiao",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 4,
+                UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorNome = null,
                 UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 AdministradorId = null,
                 FuncaoMenuId = 8
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<RegiaoDto>(regiao);
         }
 
@@ -86,12 +87,13 @@ public class RegiaoService : BaseService, IRegiaoService
                 Descricao = "Alterar regiao",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 5,
+                UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorNome = null,
                 UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 AdministradorId = null,
                 FuncaoMenuId = 8
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<RegiaoDto>(regiao);
         }
 
@@ -117,12 +119,14 @@ public class RegiaoService : BaseService, IRegiaoService
                 Descricao = "Visualizar regiao",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 7,
+                UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorNome = null,
                 UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 AdministradorId = null,
                 FuncaoMenuId = 8
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
+            await _regiaoRepository.UnitOfWork.Commit();
             return Mapper.Map<RegiaoDto>(regiao);
         }
 
@@ -140,24 +144,26 @@ public class RegiaoService : BaseService, IRegiaoService
         }
 
         _regiaoRepository.Remover(regiao);
-        if (!await _regiaoRepository.UnitOfWork.Commit())
+        if (await _regiaoRepository.UnitOfWork.Commit())
         {
-            Notificator.Handle("Não foi possível remover a região");
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = ObterIp(),
+                Descricao = "Remover regiao",
+                ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
+                TipoOperacaoId = 6,
+                UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorNome = null,
+                UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                AdministradorId = null,
+                FuncaoMenuId = 8
+            });
+
+            return;
         }
 
-        RegistroDeEventos.Adicionar(new RegistroDeEvento
-        {
-            DataHoraEvento = DateTime.Now,
-            ComputadorId = ObterIp(),
-            Descricao = "Remover regiao",
-            ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
-            TipoOperacaoId = 6,
-            UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
-            AdministradorId = null,
-            FuncaoMenuId = 8
-        });
-
-        await RegistroDeEventos.UnitOfWork.Commit();
+        Notificator.Handle("Não foi possível remover a região");
     }
 
     private async Task<bool> Validar(Regiao regiao)

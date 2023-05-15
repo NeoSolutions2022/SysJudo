@@ -46,12 +46,13 @@ public class AdministradorService : BaseService, IAdministradorService
                 Descricao = "Adicionar administrador",
                 ClienteId = null,
                 TipoOperacaoId = 4,
+                UsuarioNome = null,
                 UsuarioId = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = null
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<AdministradorDto>(administrador);
         }
 
@@ -91,12 +92,13 @@ public class AdministradorService : BaseService, IAdministradorService
                 Descricao = "Alterar administrador",
                 ClienteId = null,
                 TipoOperacaoId = 5,
+                UsuarioNome = null,
                 UsuarioId = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = null
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<AdministradorDto>(administrador);
         }
 
@@ -118,6 +120,8 @@ public class AdministradorService : BaseService, IAdministradorService
                 ClienteId = null,
                 TipoOperacaoId = 7,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = null
             });
@@ -143,6 +147,8 @@ public class AdministradorService : BaseService, IAdministradorService
                 ClienteId = null,
                 TipoOperacaoId = 7,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = null
             });
@@ -165,25 +171,25 @@ public class AdministradorService : BaseService, IAdministradorService
         }
 
         _administradorRepository.Remover(administrador);
-        if (!await _administradorRepository.UnitOfWork.Commit())
+        if (await _administradorRepository.UnitOfWork.Commit())
         {
-            Notificator.Handle("Não foi possível remover o administrador");
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = ObterIp(),
+                Descricao = "Remover administrador",
+                ClienteId = null,
+                TipoOperacaoId = 6,
+                UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
             return;
         }
-        
-        RegistroDeEventos.Adicionar(new RegistroDeEvento
-        {
-            DataHoraEvento = DateTime.Now,
-            ComputadorId = ObterIp(),
-            Descricao = "Remover administrador",
-            ClienteId = null,
-            TipoOperacaoId = 6,
-            UsuarioId = null,
-            AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
-            FuncaoMenuId = null
-        });
 
-        await RegistroDeEventos.UnitOfWork.Commit();
+        Notificator.Handle("Não foi possível remover o administrador");
     }
 
     private async Task<bool> Validar(Administrador administrador)

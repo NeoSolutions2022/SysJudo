@@ -60,6 +60,8 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
             Descricao = "Adicionar registro de evento",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 4,
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+            AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
             FuncaoMenuId = null
@@ -96,12 +98,13 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
             Descricao = "Alterar registro de evento",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 5,
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+            AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
             FuncaoMenuId = null
         });
 
-        await RegistroDeEventos.UnitOfWork.Commit();
         return await CommitChanges() ? Mapper.Map<GrupoAcessoDto>(grupoAcesso) : null;
     }
 
@@ -584,12 +587,12 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
                 Descricao = "Filtrar grupo de acesso",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 13,
+                UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorNome = null,
                 UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 AdministradorId = null,
                 FuncaoMenuId = 97
             });
-
-            await RegistroDeEventos.UnitOfWork.Commit();
 
             if (await _filtroRepository.UnitOfWork.Commit())
             {
@@ -656,12 +659,12 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
             Descricao = "Pesquisar grupo de acesso",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 14,
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+            AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
             FuncaoMenuId = 97
         });
-
-        await RegistroDeEventos.UnitOfWork.Commit();
 
         if (await _filtroRepository.UnitOfWork.Commit())
         {
@@ -734,7 +737,11 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
 
     private async Task<bool> CommitChanges()
     {
-        if (await _grupoAcessoRepository.UnitOfWork.Commit()) return true;
+        if (await _grupoAcessoRepository.UnitOfWork.Commit())
+        {
+            return true;
+        }
+
         Notificator.Handle("Não foi possível salvar alterações!");
         return false;
     }
