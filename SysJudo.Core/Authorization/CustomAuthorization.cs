@@ -12,8 +12,7 @@ public static class CustomAuthorization
 {
     public static bool ValidateUserClaims(HttpContext context, string claimName, string claimValue)
     {
-        return context.User.Identity!.IsAuthenticated &&
-               context.User.Permissoes().Any(c => c.Nome == claimName && c.Tipo.Contains(claimValue));
+        return context.User.Identity!.IsAuthenticated && context.User.VerificarPermissao(claimName, claimValue);
     }
 
     public static bool ValidateUserType(HttpContext context, string claimName, string claimValue)
@@ -88,12 +87,6 @@ public class RequirementClaimFilter : IAuthorizationFilter
     }
 }
 
-public class PermissaoClaim
-{
-    public string Nome { get; set; } = null!;
-    public string Tipo { get; set; } = null!;
-}
-
 public enum EPermissaoTipo
 {
     [Description("R")]
@@ -118,7 +111,7 @@ public enum EPermissaoTipo
     Full = 7
 }
 
-public enum EPemissaoNivel
+public enum EPermissaoNivel
 {
     R = 1,
     W = 2,

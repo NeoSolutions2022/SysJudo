@@ -147,6 +147,7 @@ public class AutoMapperProfile : Profile
 
         CreateMap<GrupoAcesso, Dto.GruposDeAcesso.GrupoAcessoDto>().ReverseMap();
         CreateMap<GrupoAcesso, Dto.GruposDeAcesso.CadastrarGrupoAcessoDto>().ReverseMap();
+        CreateMap<GrupoAcessoUsuario, Dto.Usuario.GrupoAcessoUsuarioDto>().ReverseMap();
         CreateMap<GrupoAcesso, Dto.GruposDeAcesso.AlterarGrupoAcessoDto>().ReverseMap();
         CreateMap<ResultadoPaginado<GrupoAcesso>, PagedDto<Dto.GruposDeAcesso.GrupoAcessoDto>>().ReverseMap();
         

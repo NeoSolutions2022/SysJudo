@@ -19,10 +19,20 @@ public class GrupoAcessoRepository : Repository<GrupoAcesso>, IGrupoAcessoReposi
             .ThenInclude(gap => gap.Permissao)
             .FirstOrDefaultAsync(c => c.Id == id);
     }
+    
+    public async Task<List<GrupoAcesso>> ObterPorIds(List<int> ids)
+    {
+        return await Context.GruposAcesso
+            .Include(ga => ga.Permissoes)
+            .ThenInclude(gap => gap.Permissao)
+            .Where(c => ids.Equals(c.Id)).ToListAsync();
+    }
 
     public async Task<List<GrupoAcesso>> ObterTodos()
     {
         return await Context.GruposAcesso
+            .Include(ga => ga.Permissoes)
+            .ThenInclude(gap => gap.Permissao)
             .AsNoTracking()
             .ToListAsync();
     }

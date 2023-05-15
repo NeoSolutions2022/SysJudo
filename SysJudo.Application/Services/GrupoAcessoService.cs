@@ -737,11 +737,7 @@ public class GrupoAcessoService : BaseService, IGrupoAcessoService
 
     private async Task<bool> CommitChanges()
     {
-        if (await _grupoAcessoRepository.UnitOfWork.Commit())
-        {
-            return true;
-        }
-
+        if (await _grupoAcessoRepository.UnitOfWork.Commit()) return true;
         Notificator.Handle("Não foi possível salvar alterações!");
         return false;
     }
