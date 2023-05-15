@@ -83,6 +83,7 @@ public class AuthService : BaseService, IAuthService
         claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, usuario.Nome));
         claimsIdentity.AddClaim(new Claim("ClienteId", usuario.ClienteId.ToString()));
         claimsIdentity.AddClaim(new Claim("TipoUsuario", ETipoUsuario.Comum.ToDescriptionString()));
+        claimsIdentity.AddClaim(new Claim("GrupoAcesso", "GrupoAcesso"));
         
         await AdicionarPermissoes(usuario, claimsIdentity);
         
