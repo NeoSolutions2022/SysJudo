@@ -44,11 +44,12 @@ public class SistemaService : BaseService, ISistemaService
                 ClienteId = null,
                 TipoOperacaoId = 4,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = 98
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<SistemaDto>(sistema);
         }
 
@@ -88,11 +89,12 @@ public class SistemaService : BaseService, ISistemaService
                 ClienteId = null,
                 TipoOperacaoId = 5,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = null
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<SistemaDto>(sistema);
         }
 
@@ -119,11 +121,13 @@ public class SistemaService : BaseService, ISistemaService
                 ClienteId = null,
                 TipoOperacaoId = 7,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = null
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
+            await _sistemaRepository.UnitOfWork.Commit();
             return Mapper.Map<SistemaDto>(sistema);
         }
 
@@ -141,24 +145,26 @@ public class SistemaService : BaseService, ISistemaService
         }
 
         _sistemaRepository.Remover(sistema);
-        if (!await _sistemaRepository.UnitOfWork.Commit())
+        if (await _sistemaRepository.UnitOfWork.Commit())
         {
-            Notificator.Handle("Não foi possível remover o sistema");
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = ObterIp(),
+                Descricao = "Remover sistema",
+                ClienteId = null,
+                TipoOperacaoId = 6,
+                UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
+
+            return;
         }
 
-        RegistroDeEventos.Adicionar(new RegistroDeEvento
-        {
-            DataHoraEvento = DateTime.Now,
-            ComputadorId = ObterIp(),
-            Descricao = "Remover sistema",
-            ClienteId = null,
-            TipoOperacaoId = 6,
-            UsuarioId = null,
-            AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
-            FuncaoMenuId = null
-        });
-
-        await RegistroDeEventos.UnitOfWork.Commit();
+        Notificator.Handle("Não foi possível remover o sistema");
     }
 
     private async Task<bool> Validar(Sistema sistema)

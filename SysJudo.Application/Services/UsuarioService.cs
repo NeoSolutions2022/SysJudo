@@ -50,11 +50,12 @@ public class UsuarioService : BaseService, IUsuarioService
                 ClienteId = null,
                 TipoOperacaoId = 4,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = 91
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<UsuarioDto>(usuario);
         }
 
@@ -95,11 +96,12 @@ public class UsuarioService : BaseService, IUsuarioService
                 ClienteId = null,
                 TipoOperacaoId = 5,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = null
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<UsuarioDto>(usuario);
         }
 
@@ -126,11 +128,12 @@ public class UsuarioService : BaseService, IUsuarioService
                 ClienteId = null,
                 TipoOperacaoId = 7,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = null
             });
-
-            await RegistroDeEventos.UnitOfWork.Commit();
+            await _usuarioRepository.UnitOfWork.Commit();
             return Mapper.Map<UsuarioDto>(usuario);
         }
 
@@ -151,11 +154,13 @@ public class UsuarioService : BaseService, IUsuarioService
                 ClienteId = null,
                 TipoOperacaoId = 7,
                 UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 FuncaoMenuId = null
             });
 
-            await RegistroDeEventos.UnitOfWork.Commit();
+            await _usuarioRepository.UnitOfWork.Commit();
             return Mapper.Map<UsuarioDto>(usuario);
         }
 
@@ -173,24 +178,26 @@ public class UsuarioService : BaseService, IUsuarioService
         }
 
         _usuarioRepository.Remover(usuario);
-        if (!await _usuarioRepository.UnitOfWork.Commit())
+        if (await _usuarioRepository.UnitOfWork.Commit())
         {
-            Notificator.Handle("Não foi possível remover o usuario");
-        }
-        
-        RegistroDeEventos.Adicionar(new RegistroDeEvento
-        {
-            DataHoraEvento = DateTime.Now,
-            ComputadorId = ObterIp(),
-            Descricao = "Remover usuario",
-            ClienteId = null,
-            TipoOperacaoId = 6,
-            UsuarioId = null,
-            AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
-            FuncaoMenuId = null
-        });
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = ObterIp(),
+                Descricao = "Remover usuario",
+                ClienteId = null,
+                TipoOperacaoId = 6,
+                UsuarioId = null,
+                UsuarioNome = null,
+                AdministradorNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                FuncaoMenuId = null
+            });
 
-        await RegistroDeEventos.UnitOfWork.Commit();
+            return;
+        }
+
+        Notificator.Handle("Não foi possível remover o usuario");
     }
 
     private async Task<bool> Validar(Usuario usuario)

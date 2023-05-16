@@ -46,6 +46,20 @@ public class AuthService : BaseService, IAuthService
         {
             usuario.UltimoLogin = DateTime.Now;
             await _usuarioRepository.UnitOfWork.Commit();
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = null,
+                Descricao = "Login",
+                ClienteId = null,
+                TipoOperacaoId = 1,
+                UsuarioNome = null,
+                AdministradorNome = null,
+                UsuarioId = null,
+                AdministradorId = null,
+                FuncaoMenuId = null
+            });
+            await RegistroDeEventos.UnitOfWork.Commit();
             return new UsuarioAutenticadoDto
             {
                 Id = usuario.Id,
@@ -69,6 +83,7 @@ public class AuthService : BaseService, IAuthService
         claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, usuario.Nome));
         claimsIdentity.AddClaim(new Claim("ClienteId", usuario.ClienteId.ToString()));
         claimsIdentity.AddClaim(new Claim("TipoUsuario", ETipoUsuario.Comum.ToDescriptionString()));
+        claimsIdentity.AddClaim(new Claim("GrupoAcesso", "GrupoAcesso"));
         
         await AdicionarPermissoes(usuario, claimsIdentity);
         

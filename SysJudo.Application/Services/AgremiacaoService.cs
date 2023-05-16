@@ -3,6 +3,7 @@ using AutoMapper;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Agremiacao;
 using SysJudo.Application.Dto.Base;
@@ -4711,12 +4712,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             Descricao = "Filtrar agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 13,
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+            AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
             FuncaoMenuId = null
         });
-
-        await RegistroDeEventos.UnitOfWork.Commit();
 
         if (await _filtroRepository.UnitOfWork.Commit())
         {
@@ -4771,11 +4772,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                 Descricao = "Adicionar agremiacao",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 4,
+                UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorNome = null,
                 UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 AdministradorId = null,
                 FuncaoMenuId = 2
             });
-
             await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<AgremiacaoDto>(agremiacao);
         }
@@ -4799,6 +4801,23 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return null;
         }
 
+        RegistroDeEventos.Adicionar(new RegistroDeEvento
+        {
+            DataHoraEvento = DateTime.Now,
+            ComputadorId = ObterIp(),
+            Descricao =
+                $"Alterar agremiacao. Valores iniciais - Sigla = {agremiacao.Sigla}, Nome = {agremiacao.Nome}, Fantasia = {agremiacao.Fantasia}, Responsavel = {agremiacao.Responsavel},Representante = {agremiacao.Representante}, DataFiliacao = {agremiacao.DataFiliacao}, DataNascimento = {agremiacao.DataNascimento}, Cep = {agremiacao.Cep}, Endereco = {agremiacao.Endereco}, Bairro = {agremiacao.Bairro}, Complemento = {agremiacao.Complemento}, Cidade = {agremiacao.Cidade}, Estado = {agremiacao.Estado}, Pais = {agremiacao.Pais}, Telefone = {agremiacao.Telefone}, Email = {agremiacao.Email}, Cnpj = {agremiacao.Cnpj}, InscricaoMunicipal = {agremiacao.InscricaoMunicipal}, InscricaoEstadual = {agremiacao.InscricaoEstadual}, DataCnpj = {agremiacao.DataCnpj}, DataAta = {agremiacao.DataAta}, Foto = {agremiacao.Foto} AlvaraLocacao = {agremiacao.AlvaraLocacao}, Estatuto = {agremiacao.Estatuto}, ContratoSocial = {agremiacao.ContratoSocial}, DocumentacaoAtualizada = {agremiacao.DocumentacaoAtualizada}, IdRegiao = {agremiacao.IdRegiao}, Anotacoes = {agremiacao.Anotacoes}",
+            ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
+            TipoOperacaoId = 5,
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+            AdministradorNome = null,
+            UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+            AdministradorId = null,
+            FuncaoMenuId = null
+        });
+
+        await _agremiacaoRepository.UnitOfWork.Commit();
+
         Mapper.Map(dto, agremiacao);
         if (!await Validar(agremiacao))
         {
@@ -4818,15 +4837,18 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 DataHoraEvento = DateTime.Now,
                 ComputadorId = ObterIp(),
-                Descricao = "Alterar agremiacao",
+                Descricao =
+                    $"Alterar agremiacao. Valores atualizados - Sigla = {agremiacao.Sigla}, Nome = {agremiacao.Nome}, Fantasia = {agremiacao.Fantasia}, Responsavel = {agremiacao.Responsavel},Representante = {agremiacao.Representante}, DataFiliacao = {agremiacao.DataFiliacao}, DataNascimento = {agremiacao.DataNascimento}, Cep = {agremiacao.Cep}, Endereco = {agremiacao.Endereco}, Bairro = {agremiacao.Bairro}, Complemento = {agremiacao.Complemento}, Cidade = {agremiacao.Cidade}, Estado = {agremiacao.Estado}, Pais = {agremiacao.Pais}, Telefone = {agremiacao.Telefone}, Email = {agremiacao.Email}, Cnpj = {agremiacao.Cnpj}, InscricaoMunicipal = {agremiacao.InscricaoMunicipal}, InscricaoEstadual = {agremiacao.InscricaoEstadual}, DataCnpj = {agremiacao.DataCnpj}, DataAta = {agremiacao.DataAta}, Foto = {agremiacao.Foto} AlvaraLocacao = {agremiacao.AlvaraLocacao}, Estatuto = {agremiacao.Estatuto}, ContratoSocial = {agremiacao.ContratoSocial}, DocumentacaoAtualizada = {agremiacao.DocumentacaoAtualizada}, IdRegiao = {agremiacao.IdRegiao}, Anotacoes = {agremiacao.Anotacoes}",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 5,
+                UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorNome = null,
                 UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 AdministradorId = null,
                 FuncaoMenuId = null
             });
+            await _agremiacaoRepository.UnitOfWork.Commit();
 
-            await RegistroDeEventos.UnitOfWork.Commit();
             return Mapper.Map<AgremiacaoDto>(agremiacao);
         }
 
@@ -5003,6 +5025,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             Descricao = "Visualizar agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 7,
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+            AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
             FuncaoMenuId = null
@@ -5034,12 +5058,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             Descricao = "Pesquisar agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 14,
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+            AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
             FuncaoMenuId = null
         });
-
-        await RegistroDeEventos.UnitOfWork.Commit();
 
         if (await _filtroRepository.UnitOfWork.Commit())
         {
@@ -5068,6 +5092,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             Descricao = "Visualizar agremiacao",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 7,
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+            AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
             FuncaoMenuId = 8
@@ -5111,32 +5137,33 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
     public async Task Deletar(int id)
     {
-        var cliente = await _agremiacaoRepository.Obter(id);
-        if (cliente == null)
+        var agremiacao = await _agremiacaoRepository.Obter(id);
+        if (agremiacao == null)
         {
             Notificator.HandleNotFoundResource();
             return;
-        }
-
-        _agremiacaoRepository.Deletar(cliente);
-        if (!await _agremiacaoRepository.UnitOfWork.Commit())
-        {
-            Notificator.Handle("Não foi possível remover a agremiação");
         }
 
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
             ComputadorId = ObterIp(),
-            Descricao = "Remover agremiacao",
+            Descricao =
+                $"Remover agremiacao. Valores iniciais - Sigla = {agremiacao.Sigla}, Nome = {agremiacao.Nome}, Fantasia = {agremiacao.Fantasia}, Responsavel = {agremiacao.Responsavel},Representante = {agremiacao.Representante}, DataFiliacao = {agremiacao.DataFiliacao}, DataNascimento = {agremiacao.DataNascimento}, Cep = {agremiacao.Cep}, Endereco = {agremiacao.Endereco}, Bairro = {agremiacao.Bairro}, Complemento = {agremiacao.Complemento}, Cidade = {agremiacao.Cidade}, Estado = {agremiacao.Estado}, Pais = {agremiacao.Pais}, Telefone = {agremiacao.Telefone}, Email = {agremiacao.Email}, Cnpj = {agremiacao.Cnpj}, InscricaoMunicipal = {agremiacao.InscricaoMunicipal}, InscricaoEstadual = {agremiacao.InscricaoEstadual}, DataCnpj = {agremiacao.DataCnpj}, DataAta = {agremiacao.DataAta}, Foto = {agremiacao.Foto} AlvaraLocacao = {agremiacao.AlvaraLocacao}, Estatuto = {agremiacao.Estatuto}, ContratoSocial = {agremiacao.ContratoSocial}, DocumentacaoAtualizada = {agremiacao.DocumentacaoAtualizada}, IdRegiao = {agremiacao.IdRegiao}, Anotacoes = {agremiacao.Anotacoes}",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 6,
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+            AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
             FuncaoMenuId = null
         });
-
         await RegistroDeEventos.UnitOfWork.Commit();
+        _agremiacaoRepository.Deletar(agremiacao);
+        if (!await _agremiacaoRepository.UnitOfWork.Commit())
+        {
+            Notificator.Handle("Não foi possível remover a agremiação");
+        }
     }
 
     public async Task Anotar(int id, AnotarAgremiacaoDto dto)
@@ -5150,7 +5177,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
         agremiacao.Anotacoes = dto.Anotacoes;
         _agremiacaoRepository.Alterar(agremiacao);
-        if (!await _agremiacaoRepository.UnitOfWork.Commit())
+        if (await _agremiacaoRepository.UnitOfWork.Commit())
         {
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
@@ -5159,14 +5186,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                 Descricao = "Adicionar anotacoes em agremiacao",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 11,
+                UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                            AdministradorNome = null,
                 UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 AdministradorId = null,
                 FuncaoMenuId = null
             });
-
             await RegistroDeEventos.UnitOfWork.Commit();
-            Notificator.Handle("Não foi possível alterar anotação");
+            return;
         }
+
+        Notificator.Handle("Não foi possível alterar anotação");
     }
 
     public async Task EnviarDocumentos(int id, EnviarDocumentosDto dto)
@@ -5178,6 +5208,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return;
         }
 
+        var nome = new StringBuilder();
+        nome.Append("Documento anexado = ");
         StringBuilder links = new StringBuilder();
         foreach (var documento in dto.Documentos)
         {
@@ -5185,29 +5217,33 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 links.Append("&" +
                              await _fileService.Upload(documento, EUploadPath.FotosAgremiacao));
+                nome.Append($"{documento.FileName}; ");
             }
         }
 
         agremiacao.DocumentosUri += links.ToString();
         _agremiacaoRepository.Alterar(agremiacao);
-        if (!await _agremiacaoRepository.UnitOfWork.Commit())
+        if (await _agremiacaoRepository.UnitOfWork.Commit())
         {
-            Notificator.Handle("Não foi possível enviar documentos.");
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                Descricao = nome.ToString(),
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = ObterIp(),
+                ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
+                TipoOperacaoId = 8,
+                UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorNome = null,
+                UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                AdministradorId = null,
+                FuncaoMenuId = null
+            });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
+            return;
         }
 
-        RegistroDeEventos.Adicionar(new RegistroDeEvento
-        {
-            DataHoraEvento = DateTime.Now,
-            ComputadorId = ObterIp(),
-            Descricao = "Alterar agremiacao",
-            ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
-            TipoOperacaoId = 8,
-            UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
-            AdministradorId = null,
-            FuncaoMenuId = null
-        });
-
-        await RegistroDeEventos.UnitOfWork.Commit();
+        Notificator.Handle("Não foi possível enviar documentos.");
     }
 
     public async Task DeletarDocumento(int id, int documentoId)
@@ -5227,8 +5263,11 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             return;
         }
 
+        var nome = new StringBuilder();
+        nome.Append("Documento desanexado: ");
         var documentos = agremiacao.DocumentosUri.Split('&').ToList();
         var remover = documentos[documentoId];
+        nome.Append($"{remover}");
         documentos.Remove(remover);
         remover = documentos[0];
         documentos.Remove(remover);
@@ -5240,24 +5279,25 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
         agremiacao.DocumentosUri = links.ToString();
         _agremiacaoRepository.Alterar(agremiacao);
-        if (!await _agremiacaoRepository.UnitOfWork.Commit())
+        if (await _agremiacaoRepository.UnitOfWork.Commit())
         {
-            Notificator.Handle("Não foi possível remover documentos.");
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = ObterIp(),
+                Descricao = $"{nome}",
+                ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
+                TipoOperacaoId = 6,
+                UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+                AdministradorId = null,
+                UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+                AdministradorNome = null,
+                FuncaoMenuId = null
+            });
+            return;
         }
 
-        RegistroDeEventos.Adicionar(new RegistroDeEvento
-        {
-            DataHoraEvento = DateTime.Now,
-            ComputadorId = ObterIp(),
-            Descricao = "Remover documento em agremiacao",
-            ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
-            TipoOperacaoId = 6,
-            UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
-            AdministradorId = null,
-            FuncaoMenuId = null
-        });
-
-        await RegistroDeEventos.UnitOfWork.Commit();
+        Notificator.Handle("Não foi possível remover documentos.");
     }
 
     private async Task<List<Agremiacao>> PossuiAgremiacao(string nomeParametro, List<Agremiacao>? agremiacoes = null)

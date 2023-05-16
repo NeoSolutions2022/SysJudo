@@ -10,7 +10,9 @@ public class RegistroDeEvento : Entity, IAggregateRoot
     public int? ClienteId { get; set; }
     public int? TipoOperacaoId { get; set; }
     public int? UsuarioId { get; set; }
+    public string? UsuarioNome { get; set; }
     public int? AdministradorId { get; set; }
+    public string? AdministradorNome { get; set; }
     public int? FuncaoMenuId{ get; set; }
 
     public Cliente? Cliente { get; set; }
