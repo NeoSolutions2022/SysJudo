@@ -19,7 +19,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpGet]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesListar, EPermissaoTipo.Read)]
+    //[ClaimsAuthorize(PermissoesBackend.AgremiacoesListar, EPermissaoTipo.Read)]
     [SwaggerOperation(Summary = "Listar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(PagedDto<AgremiacaoDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -31,7 +31,7 @@ public class AgremiacaoController : MainController
     }
     
     [HttpGet("pesquisar-{valor}")]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesPesquisar, EPermissaoTipo.Read)]
+    //[ClaimsAuthorize(PermissoesBackend.AgremiacoesPesquisar, EPermissaoTipo.Read)]
     [SwaggerOperation(Summary = "Pesquisar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(List<AgremiacaoDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -43,7 +43,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpPost("filtrar/agremiacao")]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesFiltrar, EPermissaoTipo.Read)]
+    //[ClaimsAuthorize(PermissoesBackend.AgremiacoesFiltrar, EPermissaoTipo.Read)]
     [SwaggerOperation(Summary = "Filtrar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(List<AgremiacaoDto>), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -55,7 +55,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpPost("limpar-filtro")]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesLimparFiltro, EPermissaoTipo.Read)]
+    //[ClaimsAuthorize(PermissoesBackend.AgremiacoesLimparFiltro, EPermissaoTipo.Read)]
     [SwaggerOperation(Summary = "Limpar filtro.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(List<AgremiacaoDto>), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -67,7 +67,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpGet("{id}")]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesVer, EPermissaoTipo.Read)]
+    //[ClaimsAuthorize(PermissoesBackend.AgremiacoesVer, EPermissaoTipo.Read)]
     [SwaggerOperation(Summary = "Obter Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(AgremiacaoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -80,7 +80,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpGet("exportar")]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesExportar, EPermissaoTipo.Read)]
+    //[ClaimsAuthorize(PermissoesBackend.AgremiacoesExportar, EPermissaoTipo.Read)]
     [SwaggerOperation(Summary = "Exportar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -93,7 +93,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpPost]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesAdicionar, EPermissaoTipo.Write)]
+    //[ClaimsAuthorize(PermissoesBackend.AgremiacoesAdicionar, EPermissaoTipo.Write)]
     [SwaggerOperation(Summary = "Cadastrar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(AgremiacaoDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -105,8 +105,8 @@ public class AgremiacaoController : MainController
     }
 
     [HttpPut("{id}")]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesAlterar, EPermissaoTipo.Write)]
-    [ClaimsAuthorize("put-agremiacao", "admi")]
+    //[ClaimsAuthorize(PermissoesBackend.AgremiacoesAlterar, EPermissaoTipo.Write)]
+    //[ClaimsAuthorize("put-agremiacao", "admi")]
     [SwaggerOperation(Summary = "Atualizar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(AgremiacaoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -118,7 +118,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpPatch("{id}")]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesAnotar, EPermissaoTipo.Write)]
+    //[ClaimsAuthorize(PermissoesBackend.AgremiacoesAnotar, EPermissaoTipo.Write)]
     [SwaggerOperation(Summary = "Anotações Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -130,7 +130,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpPatch("{id}/removerdocumentos")]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesRemoverDocs, EPermissaoTipo.Delete)]
+    //[ClaimsAuthorize(PermissoesBackend.AgremiacoesRemoverDocs, EPermissaoTipo.Delete)]
     [SwaggerOperation(Summary = "Anexos Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -142,7 +142,7 @@ public class AgremiacaoController : MainController
     }
     
     [HttpPatch("{id}/EnviarDocumentos")]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesEnviarDocs, EPermissaoTipo.Write)]
+   // [ClaimsAuthorize(PermissoesBackend.AgremiacoesEnviarDocs, EPermissaoTipo.Write)]
     [SwaggerOperation(Summary = "Enviar documentos Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -154,8 +154,8 @@ public class AgremiacaoController : MainController
     }
 
     [HttpDelete("{id}")]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesRemover, EPermissaoTipo.Delete)]
-    [ClaimsAuthorize("remove-agremiacao", "admi")]
+   // [ClaimsAuthorize(PermissoesBackend.AgremiacoesRemover, EPermissaoTipo.Delete)]
+  //  [ClaimsAuthorize("remove-agremiacao", "admi")]
     [SwaggerOperation(Summary = "Remover Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
