@@ -90,7 +90,7 @@ public class FileService : IFileService
 
     private static string GenerateNewFileName(string fileName)
     {
-        var newFileName = $"{Guid.NewGuid()}_{fileName}".ToLower();
+        var newFileName = $"{Guid.NewGuid()}_{fileName}";
         newFileName = newFileName.Replace("-", "");
 
         return newFileName;
