@@ -5003,7 +5003,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         var linha = 2;
         var agremiacoes = await _filtroRepository.Listar();
         var workbook = new XLWorkbook();
-        var ws = workbook.Worksheets.Add("planilhaAgremiacoes");
+        var ws = workbook.Worksheets.Add("CADAGRE" + DateTime.Now.ToString("yyyy/MM/DD HH:mm:ss"));
 
         foreach (var agremiacao in agremiacoes)
         {
@@ -5052,7 +5052,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 descricao.Append("DataFiliacao;");
                 ws.Cell(1, contador).Value = "DataFiliacao";
-                ws.Cell(linha, contador).Value = agremiacao.DataFiliacao.ToString();
+                ws.Cell(linha, contador).Value = agremiacao.DataFiliacao.ToString("DD/MM/YYY");
                 contador++;
             }
 
@@ -5060,7 +5060,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 descricao.Append("DataNascimento;");
                 ws.Cell(1, contador).Value = "DataNascimento";
-                ws.Cell(linha, contador).Value = agremiacao.DataNascimento.ToString();
+                ws.Cell(linha, contador).Value = agremiacao.DataNascimento.ToString("DD/MM/YYY");
                 contador++;
             }
 
