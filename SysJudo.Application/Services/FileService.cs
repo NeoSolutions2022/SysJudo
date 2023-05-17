@@ -60,7 +60,7 @@ public class FileService : IFileService
         var connectionString = "DefaultEndpointsProtocol=https;AccountName=judofiles;AccountKey=lPNcfeFM2OjfrMGokU0tfs1ZjLEHcichRvjP0OC8loJzMiDMoY48tYwhJOjm49OCa4QrcpKx+6Pt+AStNHomjw==;EndpointSuffix=core.windows.net";
         using var ms = new MemoryStream();
         arquivo.SaveAs(ms);
-        var fileName = GenerateNewFileName("AgremiacaoPlanilha.xlsx");
+        var fileName = GenerateNewFileName("CADAGRE" + DateTime.Now.ToString("yyyy/MM/DD HH:mm:ss") + ".xlsx");
         BlobContainerClient container = new BlobContainerClient(connectionString, "agremicoes");
         BlobClient blob = container.GetBlobClient(fileName);
         var blobHttpHeader = new BlobHttpHeaders();
