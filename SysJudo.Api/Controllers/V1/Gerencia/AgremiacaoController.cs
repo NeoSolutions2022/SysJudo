@@ -67,7 +67,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpGet("{id}")]
-    [ClaimsAuthorize(PermissoesBackend.AgremiacoesVer, EPermissaoTipo.Read)]
+    [ClaimsAuthorize(PermissoesBackend.AgremiacoesListar, EPermissaoTipo.Write)]
     [SwaggerOperation(Summary = "Obter Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(AgremiacaoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
