@@ -5178,20 +5178,6 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
     public async Task<PagedDto<AgremiacaoDto>> Buscar(BuscarAgremiacaoDto dto)
     {
         var agremiacao = await _agremiacaoRepository.Buscar(dto);
-        RegistroDeEventos.Adicionar(new RegistroDeEvento
-        {
-            DataHoraEvento = DateTime.Now,
-            ComputadorId = ObterIp(),
-            Descricao = "Visualizar agremiacao",
-            ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
-            TipoOperacaoId = 7,
-            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
-            AdministradorNome = null,
-            UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
-            AdministradorId = null,
-            FuncaoMenuId = null
-        });
-
         await RegistroDeEventos.UnitOfWork.Commit();
         return Mapper.Map<PagedDto<AgremiacaoDto>>(agremiacao);
     }
