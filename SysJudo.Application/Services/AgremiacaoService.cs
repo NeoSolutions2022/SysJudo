@@ -4949,35 +4949,16 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             Notificator.HandleNotFoundResource();
             return null;
         }
-
+        
         var regiaoInicial = await _regiaoRepository.ObterPorId(agremiacao.IdRegiao);
-        var agremiacaoInicial = agremiacao;
-        await _agremiacaoRepository.UnitOfWork.Commit();
-
-        Mapper.Map(dto, agremiacao);
-        if (!await Validar(agremiacao))
-        {
-            return null;
-        }
-
-        var regiao = await _regiaoRepository.ObterPorId(agremiacao.IdRegiao);
-
-        if (dto.Foto is { Length: > 0 } && !await ManterFoto(dto.Foto, agremiacao))
-        {
-            return null;
-        }
-
-        _agremiacaoRepository.Alterar(agremiacao);
-
-        if (await _agremiacaoRepository.UnitOfWork.Commit())
-        {
-            RegistroDeEventos.Adicionar(new RegistroDeEvento
+        var regiao = await _regiaoRepository.ObterPorId(dto.IdRegiao);
+        RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
                 ComputadorId = ObterIp(),
                 Descricao =
-                    $"Sigla={agremiacaoInicial.Sigla};Nome={agremiacaoInicial.Nome};Fantasia={agremiacaoInicial.Fantasia};Responsavel={agremiacaoInicial.Responsavel};Representante={agremiacaoInicial.Representante};DataFiliacao={agremiacaoInicial.DataFiliacao};DataNascimento={agremiacaoInicial.DataNascimento};Cep={agremiacaoInicial.Cep};Endereco={agremiacaoInicial.Endereco};Bairro={agremiacaoInicial.Bairro};Complemento={agremiacaoInicial.Complemento};Cidade={agremiacaoInicial.Cidade};Estado={agremiacaoInicial.Estado};Pais={agremiacaoInicial.Pais};Telefone={agremiacaoInicial.Telefone};Email={agremiacaoInicial.Email};Cnpj={agremiacaoInicial.Cnpj};InscricaoMunicipal={agremiacaoInicial.InscricaoMunicipal};InscricaoEstadual={agremiacaoInicial.InscricaoEstadual};DataCnpj={agremiacaoInicial.DataCnpj};DataAta={agremiacaoInicial.DataAta};Foto={agremiacaoInicial.Foto};AlvaraLocacao={agremiacaoInicial.AlvaraLocacao};Estatuto={agremiacaoInicial.Estatuto};ContratoSocial={agremiacaoInicial.ContratoSocial};DocumentacaoAtualizada={agremiacaoInicial.DocumentacaoAtualizada};Regiao={regiaoInicial?.Descricao};Anotacoes={agremiacaoInicial.Anotacoes}<br>"+
-                    $"Sigla={agremiacao.Sigla};Nome={agremiacao.Nome};Fantasia={agremiacao.Fantasia};Responsavel={agremiacao.Responsavel};Representante={agremiacao.Representante};DataFiliacao={agremiacao.DataFiliacao};DataNascimento={agremiacao.DataNascimento};Cep={agremiacao.Cep};Endereco={agremiacao.Endereco};Bairro={agremiacao.Bairro};Complemento={agremiacao.Complemento};Cidade={agremiacao.Cidade};Estado={agremiacao.Estado};Pais={agremiacao.Pais};Telefone={agremiacao.Telefone};Email={agremiacao.Email};Cnpj={agremiacao.Cnpj};InscricaoMunicipal={agremiacao.InscricaoMunicipal};InscricaoEstadual={agremiacao.InscricaoEstadual};DataCnpj={agremiacao.DataCnpj};DataAta={agremiacao.DataAta};Foto={agremiacao.Foto};AlvaraLocacao={agremiacao.AlvaraLocacao};Estatuto={agremiacao.Estatuto};ContratoSocial={agremiacao.ContratoSocial};DocumentacaoAtualizada={agremiacao.DocumentacaoAtualizada};Regiao={regiao?.Descricao};Anotacoes={agremiacao.Anotacoes};",
+                    $"Sigla={agremiacao.Sigla};Nome={agremiacao.Nome};Fantasia={agremiacao.Fantasia};Responsavel={agremiacao.Responsavel};Representante={agremiacao.Representante};DataFiliacao={agremiacao.DataFiliacao};DataNascimento={agremiacao.DataNascimento};Cep={agremiacao.Cep};Endereco={agremiacao.Endereco};Bairro={agremiacao.Bairro};Complemento={agremiacao.Complemento};Cidade={agremiacao.Cidade};Estado={agremiacao.Estado};Pais={agremiacao.Pais};Telefone={agremiacao.Telefone};Email={agremiacao.Email};Cnpj={agremiacao.Cnpj};InscricaoMunicipal={agremiacao.InscricaoMunicipal};InscricaoEstadual={agremiacao.InscricaoEstadual};DataCnpj={agremiacao.DataCnpj};DataAta={agremiacao.DataAta};Foto={agremiacao.Foto};AlvaraLocacao={agremiacao.AlvaraLocacao};Estatuto={agremiacao.Estatuto};ContratoSocial={agremiacao.ContratoSocial};DocumentacaoAtualizada={agremiacao.DocumentacaoAtualizada};Regiao={regiaoInicial?.Descricao};Anotacoes={agremiacao.Anotacoes};<br>" +
+                    $"Sigla={dto.Sigla};Nome={dto.Nome};Fantasia={dto.Fantasia};Responsavel={dto.Responsavel};Representante={dto.Representante};DataFiliacao={dto.DataFiliacao};DataNascimento={dto.DataNascimento};Cep={dto.Cep};Endereco={dto.Endereco};Bairro={dto.Bairro};Complemento={dto.Complemento};Cidade={dto.Cidade};Estado={dto.Estado};Pais={dto.Pais};Telefone={dto.Telefone};Email={dto.Email};Cnpj={dto.Cnpj};InscricaoMunicipal={dto.InscricaoMunicipal};InscricaoEstadual={dto.InscricaoEstadual};DataCnpj={dto.DataCnpj};DataAta={dto.DataAta};Foto={dto.Foto};AlvaraLocacao={dto.AlvaraLocacao};Estatuto={dto.Estatuto};ContratoSocial={dto.ContratoSocial};DocumentacaoAtualizada={dto.DocumentacaoAtualizada};Regiao={regiao?.Descricao};Anotacoes={dto.Anotacoes}",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 5,
                 UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
@@ -4988,6 +4969,21 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             });
             await _agremiacaoRepository.UnitOfWork.Commit();
 
+        Mapper.Map(dto, agremiacao);
+        if (!await Validar(agremiacao))
+        {
+            return null;
+        }
+
+        if (dto.Foto is { Length: > 0 } && !await ManterFoto(dto.Foto, agremiacao))
+        {
+            return null;
+        }
+
+        _agremiacaoRepository.Alterar(agremiacao);
+
+        if (await _agremiacaoRepository.UnitOfWork.Commit())
+        {
             return Mapper.Map<AgremiacaoDto>(agremiacao);
         }
 
