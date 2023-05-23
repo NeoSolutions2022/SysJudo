@@ -49,13 +49,13 @@ public class AuthService : BaseService, IAuthService
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
-                ComputadorId = null,
+                ComputadorId = ObterIp(),
                 Descricao = "Login",
-                ClienteId = null,
+                ClienteId = usuario.ClienteId,
                 TipoOperacaoId = 1,
-                UsuarioNome = null,
+                UsuarioNome = usuario.Nome,
                 AdministradorNome = null,
-                UsuarioId = null,
+                UsuarioId = usuario.Id,
                 AdministradorId = null,
                 FuncaoMenuId = null
             });

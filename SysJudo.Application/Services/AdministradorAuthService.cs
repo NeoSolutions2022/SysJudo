@@ -48,14 +48,14 @@ public class AdministradorAuthService : BaseService, IAdministradorAuthService
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
-            ComputadorId = null,
+            ComputadorId = ObterIp(),
             Descricao = "Login",
             ClienteId = null,
             TipoOperacaoId = 1,
             UsuarioNome = null,
-            AdministradorNome = null,
+            AdministradorNome = administrador.Nome,
             UsuarioId = null,
-            AdministradorId = null,
+            AdministradorId = administrador.Id,
             FuncaoMenuId = null
         });
         await RegistroDeEventos.UnitOfWork.Commit();

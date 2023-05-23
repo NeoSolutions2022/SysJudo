@@ -20,8 +20,8 @@ public abstract class BaseService
     
     protected static string ObterIp()
     {
-        string nomeMaquina = Dns.GetHostName();
-        IPAddress[] ipLocal = Dns.GetHostAddresses(nomeMaquina);
+        var nomeMaquina = Dns.GetHostName();
+        var ipLocal = Dns.GetHostAddresses(nomeMaquina);
         return ipLocal[1].ToString();
     }
 }
