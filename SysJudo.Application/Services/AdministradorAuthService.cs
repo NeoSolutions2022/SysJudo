@@ -41,6 +41,21 @@ public class AdministradorAuthService : BaseService, IAdministradorAuthService
         var result = _passwordHasher.VerifyHashedPassword(administrador, administrador.Senha, loginDto.Senha);
         if (result == PasswordVerificationResult.Failed)
         {
+            RegistroDeEventos.Adicionar(new RegistroDeEvento
+            {
+                DataHoraEvento = DateTime.Now,
+                ComputadorId = ObterIp(),
+                Descricao = $"Usuário {administrador.Email} tentou acessar com uma senha inválida.",
+                ClienteId = null,
+                TipoOperacaoId = 1,
+                UsuarioNome = null,
+                AdministradorNome = administrador.Nome,
+                UsuarioId = null,
+                AdministradorId = administrador.Id,
+                FuncaoMenuId = null
+            });
+            await RegistroDeEventos.UnitOfWork.Commit();
+            
             Notificator.Handle("Combinação de email e senha incorreta");
             return null;
         }

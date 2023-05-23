@@ -69,6 +69,20 @@ public class AuthService : BaseService, IAuthService
             };
         }
         
+        RegistroDeEventos.Adicionar(new RegistroDeEvento
+        {
+            DataHoraEvento = DateTime.Now,
+            ComputadorId = ObterIp(),
+            Descricao = $"Usuário {usuario.Email} tentou acessar com senha inválida.",
+            ClienteId = usuario.ClienteId,
+            TipoOperacaoId = 1,
+            UsuarioNome = usuario.Nome,
+            AdministradorNome = null,
+            UsuarioId = usuario.Id,
+            AdministradorId = null,
+            FuncaoMenuId = null
+        });
+        await RegistroDeEventos.UnitOfWork.Commit();
         Notificator.Handle("Combinação de email e senha incorreta");
         return null;
     }
