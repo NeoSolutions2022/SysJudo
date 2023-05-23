@@ -20,11 +20,11 @@ public class AgremiacaoMapping : IEntityTypeConfiguration<Agremiacao>
 
         builder.Property(e => e.Cep)
             .IsRequired()
-            .HasMaxLength(8);
+            .HasMaxLength(9);
 
         builder.Property(e => e.Cnpj)
             .IsRequired()
-            .HasMaxLength(14);
+            .HasMaxLength(18);
 
         builder.Property(e => e.Complemento)
             .IsRequired(false)

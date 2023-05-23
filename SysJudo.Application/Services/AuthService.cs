@@ -7,7 +7,6 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SysJudo.Application.Contracts;
 using SysJudo.Application.Dto.Auth;
-using SysJudo.Application.Dto.Usuario;
 using SysJudo.Application.Notifications;
 using SysJudo.Core.Authorization;
 using SysJudo.Core.Enums;
