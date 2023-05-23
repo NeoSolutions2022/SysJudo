@@ -31,6 +31,7 @@ public class RegistroDeEventosRepository : Repository<RegistroDeEvento>,IRegistr
     public async Task<List<RegistroDeEvento>?> ObterTodos()
     {
         return await Context.RegistroDeEventos
+            .OrderByDescending(c => c.DataHoraEvento)
             .AsNoTracking()
             .ToListAsync();
     }
