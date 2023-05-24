@@ -43,7 +43,7 @@ public class AgremiacaoController : MainController
     }
 
     [HttpPost("filtrar/agremiacao")]
-    //[ClaimsAuthorize(PermissoesBackend.AgremiacoesFiltrar, EPermissaoTipo.Write)]
+    [ClaimsAuthorize(PermissoesBackend.AgremiacoesFiltrar, EPermissaoTipo.Write)]
     [SwaggerOperation(Summary = "Filtrar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(List<AgremiacaoDto>), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
