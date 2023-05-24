@@ -106,7 +106,6 @@ public class AgremiacaoController : MainController
 
     [HttpPut("{id}")]
     [ClaimsAuthorize(PermissoesBackend.AgremiacoesAlterar, EPermissaoTipo.Write)]
-    [ClaimsAuthorize("put-agremiacao", "admi")]
     [SwaggerOperation(Summary = "Atualizar Agremiação.", Tags = new[] { "Gerencia - Agremiação" })]
     [ProducesResponseType(typeof(AgremiacaoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
