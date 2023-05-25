@@ -4860,7 +4860,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
-            FuncaoMenuId = null
+            FuncaoMenuId = 2
         });
 
         if (await _filtroRepository.UnitOfWork.Commit())
@@ -4965,7 +4965,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                 AdministradorNome = null,
                 UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 AdministradorId = null,
-                FuncaoMenuId = null
+                FuncaoMenuId = 2
             });
             await _agremiacaoRepository.UnitOfWork.Commit();
 
@@ -5162,7 +5162,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             TipoOperacaoId = 10,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
-            FuncaoMenuId = null
+            FuncaoMenuId = 2
         });
 
         await RegistroDeEventos.UnitOfWork.Commit();
@@ -5204,7 +5204,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
-            FuncaoMenuId = null
+            FuncaoMenuId = 2
         });
 
         if (await _filtroRepository.UnitOfWork.Commit())
@@ -5238,7 +5238,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
-            FuncaoMenuId = 8
+            FuncaoMenuId = 2
         });
 
         await RegistroDeEventos.UnitOfWork.Commit();
@@ -5299,7 +5299,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             AdministradorNome = null,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
             AdministradorId = null,
-            FuncaoMenuId = null
+            FuncaoMenuId = 2
         });
         await RegistroDeEventos.UnitOfWork.Commit();
         _agremiacaoRepository.Deletar(agremiacao);
@@ -5333,7 +5333,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                 AdministradorNome = null,
                 UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 AdministradorId = null,
-                FuncaoMenuId = null
+                FuncaoMenuId = 2
             });
             await RegistroDeEventos.UnitOfWork.Commit();
             return;
@@ -5379,7 +5379,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                 AdministradorNome = null,
                 UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
                 AdministradorId = null,
-                FuncaoMenuId = null
+                FuncaoMenuId = 2
             });
 
             await RegistroDeEventos.UnitOfWork.Commit();
@@ -5435,7 +5435,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                 AdministradorId = null,
                 UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
                 AdministradorNome = null,
-                FuncaoMenuId = null
+                FuncaoMenuId = 2
             });
             return;
         }
