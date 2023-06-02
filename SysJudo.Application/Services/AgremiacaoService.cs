@@ -5691,7 +5691,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 DataHoraEvento = DateTime.Now,
                 ComputadorId = ObterIp(),
-                Descricao = "Adicionar anotacoes em agremiacao",
+                Descricao = $"Adicionar anotacoes em agremiacao: {agremiacao.Anotacoes}",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 11,
                 UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
