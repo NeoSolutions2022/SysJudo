@@ -1,4 +1,5 @@
-﻿namespace SysJudo.Application.Dto.Agremiacao;
+﻿
+namespace SysJudo.Application.Dto.Agremiacao;
 
 public class ExportarAgremiacaoDto
 {
@@ -20,4 +21,12 @@ public class ExportarAgremiacaoDto
     public bool Telefone { get; set; }
     public bool Email { get; set; }
     public bool Cnpj { get; set; }
+    public SortByExportarDto? Ordenacao { get; set; }
 }
+
+public class SortByExportarDto
+{
+    public string Propriedade { get; set; }
+    public bool Ascendente { get; set; }
+}
+
