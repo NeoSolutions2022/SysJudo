@@ -1,7 +1,21 @@
 ﻿using AutoMapper;
+using SysJudo.Application.Dto.Administrador;
+using SysJudo.Application.Dto.Agremiacao;
+using SysJudo.Application.Dto.Atleta;
 using SysJudo.Application.Dto.Base;
-using SysJudo.Domain.Entities;
+using SysJudo.Application.Dto.Cliente;
+using SysJudo.Application.Dto.EmissoresIdentidade;
+using SysJudo.Application.Dto.Faixa;
+using SysJudo.Application.Dto.GruposDeAcesso;
+using SysJudo.Application.Dto.Nacionalidade;
+using SysJudo.Application.Dto.Permissoes;
+using SysJudo.Application.Dto.Profissao;
+using SysJudo.Application.Dto.Regiao;
+using SysJudo.Application.Dto.RegistroDeEvento;
+using SysJudo.Application.Dto.Sistema;
+using SysJudo.Application.Dto.Usuario;
 using SysJudo.Core.Extension;
+using SysJudo.Domain.Entities;
 using SysJudo.Domain.Entities.EntitiesFiltros;
 using SysJudo.Domain.Paginacao;
 
@@ -13,153 +27,156 @@ public class AutoMapperProfile : Profile
     {
         #region Sistema
 
-        CreateMap<Sistema, SysJudo.Application.Dto.Sistema.SistemaDto>().ReverseMap();
-        CreateMap<Sistema, SysJudo.Application.Dto.Sistema.CreateSistemaDto>().ReverseMap();
-        CreateMap<Sistema, SysJudo.Application.Dto.Sistema.UpdateSistemaDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Sistema>, PagedDto<SysJudo.Application.Dto.Sistema.SistemaDto>>().ReverseMap();
+        CreateMap<Sistema, SistemaDto>().ReverseMap();
+        CreateMap<Sistema, CreateSistemaDto>().ReverseMap();
+        CreateMap<Sistema, UpdateSistemaDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<Sistema>, PagedDto<SistemaDto>>().ReverseMap();
 
         #endregion
 
         #region Cliente
 
-        CreateMap<Cliente, SysJudo.Application.Dto.Cliente.ClienteDto>().ReverseMap();
-        CreateMap<Cliente, SysJudo.Application.Dto.Cliente.CreateClienteDto>().ReverseMap();
-        CreateMap<Cliente, SysJudo.Application.Dto.Cliente.UpdateClienteDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Cliente>, PagedDto<SysJudo.Application.Dto.Cliente.ClienteDto>>().ReverseMap();
+        CreateMap<Cliente, ClienteDto>().ReverseMap();
+        CreateMap<Cliente, CreateClienteDto>().ReverseMap();
+        CreateMap<Cliente, UpdateClienteDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<Cliente>, PagedDto<ClienteDto>>().ReverseMap();
 
         #endregion
 
         #region Faixa
 
-        CreateMap<Faixa, SysJudo.Application.Dto.Faixa.FaixaDto>().ReverseMap();
-        CreateMap<Faixa, SysJudo.Application.Dto.Faixa.CreateFaixaDto>().ReverseMap();
-        CreateMap<Faixa, SysJudo.Application.Dto.Faixa.UpdateFaixaDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Faixa>, PagedDto<SysJudo.Application.Dto.Faixa.FaixaDto>>().ReverseMap();
+        CreateMap<Faixa, FaixaDto>().ReverseMap();
+        CreateMap<Faixa, CreateFaixaDto>().ReverseMap();
+        CreateMap<Faixa, UpdateFaixaDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<Faixa>, PagedDto<FaixaDto>>().ReverseMap();
 
         #endregion
 
         #region Usuario
 
-        CreateMap<Usuario, SysJudo.Application.Dto.Usuario.UsuarioDto>().ReverseMap();
-        CreateMap<Usuario, SysJudo.Application.Dto.Usuario.CreateUsuarioDto>().ReverseMap();
-        CreateMap<Usuario, SysJudo.Application.Dto.Usuario.UpdateUsuarioDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Usuario>, PagedDto<SysJudo.Application.Dto.Usuario.UsuarioDto>>().ReverseMap();
+        CreateMap<Usuario, UsuarioDto>().ReverseMap();
+        CreateMap<Usuario, CreateUsuarioDto>().ReverseMap();
+        CreateMap<Usuario, UpdateUsuarioDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<Usuario>, PagedDto<UsuarioDto>>().ReverseMap();
 
         #endregion
 
         #region Adiministrador
 
-        CreateMap<Administrador, SysJudo.Application.Dto.Administrador.AdministradorDto>().ReverseMap();
-        CreateMap<Administrador, SysJudo.Application.Dto.Administrador.CreateAdministradorDto>().ReverseMap();
-        CreateMap<Administrador, SysJudo.Application.Dto.Administrador.UpdateAdministradorDto>().ReverseMap();
+        CreateMap<Administrador, AdministradorDto>().ReverseMap();
+        CreateMap<Administrador, CreateAdministradorDto>().ReverseMap();
+        CreateMap<Administrador, UpdateAdministradorDto>().ReverseMap();
 
         #endregion
 
         #region Regiao
 
-        CreateMap<Regiao, SysJudo.Application.Dto.Regiao.RegiaoDto>()
-            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
+        CreateMap<Regiao, RegiaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros()!)
             .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
             .ReverseMap();
-        CreateMap<Regiao, SysJudo.Application.Dto.Regiao.CreateRegiaoDto>()
-            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
+        CreateMap<Regiao, CreateRegiaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros()!)
             .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
             .ReverseMap();
-        CreateMap<Regiao, SysJudo.Application.Dto.Regiao.UpdateRegiaoDto>()
-            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
+        CreateMap<Regiao, UpdateRegiaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros()!)
             .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
             .ReverseMap();
-        CreateMap<ResultadoPaginado<Regiao>, PagedDto<SysJudo.Application.Dto.Regiao.RegiaoDto>>().ReverseMap();
+        CreateMap<ResultadoPaginado<Regiao>, PagedDto<RegiaoDto>>().ReverseMap();
 
         #endregion
 
         #region Agremiacao
 
-        CreateMap<Agremiacao, SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>()
-            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
-            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
+        CreateMap<Agremiacao, AgremiacaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros()!)
+            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros()!)
+            .AfterMap((_, dest) => dest.Cnpj = dest.Cnpj.SomenteNumeros()!)
             .ReverseMap();
-        CreateMap<Agremiacao, SysJudo.Application.Dto.Agremiacao.CadastrarAgremiacaoDto>()
-            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
-            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
+        CreateMap<Agremiacao, CadastrarAgremiacaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros()!)
+            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros()!)
+            .AfterMap((_, dest) => dest.Cnpj = dest.Cnpj.SomenteNumeros()!)
             .ReverseMap();
-        CreateMap<Agremiacao, SysJudo.Application.Dto.Agremiacao.AlterarAgremiacaoDto>()
-            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros())
-            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros())
+        CreateMap<Agremiacao, AlterarAgremiacaoDto>()
+            .AfterMap((_, dest) => dest.Cep = dest.Cep.SomenteNumeros()!)
+            .AfterMap((_, dest) => dest.Telefone = dest.Telefone.SomenteNumeros()!)
+            .AfterMap((_, dest) => dest.Cnpj = dest.Cnpj.SomenteNumeros()!)
             .ReverseMap();
-        CreateMap<ResultadoPaginado<Agremiacao>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>>()
+        CreateMap<ResultadoPaginado<Agremiacao>, PagedDto<AgremiacaoDto>>()
             .ReverseMap();
 
         #endregion
 
         #region Atleta
 
-        CreateMap<Atleta, SysJudo.Application.Dto.Atleta.AtletaDto>().ReverseMap();
-        CreateMap<Atleta, SysJudo.Application.Dto.Atleta.CreateAtletaDto>().ReverseMap();
-        CreateMap<Atleta, SysJudo.Application.Dto.Atleta.UpdateAtletaDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Atleta>, PagedDto<SysJudo.Application.Dto.Atleta.AtletaDto>>().ReverseMap();
+        CreateMap<Atleta, AtletaDto>().ReverseMap();
+        CreateMap<Atleta, CreateAtletaDto>().ReverseMap();
+        CreateMap<Atleta, UpdateAtletaDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<Atleta>, PagedDto<AtletaDto>>().ReverseMap();
 
         #endregion
 
         #region EmissoresIdentidade
 
-        CreateMap<EmissoresIdentidade, SysJudo.Application.Dto.EmissoresIdentidade.EmissoresIdentidadeDto>()
+        CreateMap<EmissoresIdentidade, EmissoresIdentidadeDto>()
             .ReverseMap();
-        CreateMap<EmissoresIdentidade, SysJudo.Application.Dto.EmissoresIdentidade.CreateEmissoresIdentidadeDto>()
+        CreateMap<EmissoresIdentidade, CreateEmissoresIdentidadeDto>()
             .ReverseMap();
-        CreateMap<EmissoresIdentidade, SysJudo.Application.Dto.EmissoresIdentidade.UpdateEmissoresIdentidadeDto>()
+        CreateMap<EmissoresIdentidade, UpdateEmissoresIdentidadeDto>()
             .ReverseMap();
         CreateMap<ResultadoPaginado<EmissoresIdentidade>,
-            PagedDto<SysJudo.Application.Dto.EmissoresIdentidade.EmissoresIdentidadeDto>>().ReverseMap();
+            PagedDto<EmissoresIdentidadeDto>>().ReverseMap();
 
         #endregion
 
         #region Nacionalidade
 
-        CreateMap<Nacionalidade, SysJudo.Application.Dto.Nacionalidade.NacionalidadeDto>().ReverseMap();
-        CreateMap<Nacionalidade, SysJudo.Application.Dto.Nacionalidade.CreateNacionalidadeDto>().ReverseMap();
-        CreateMap<Nacionalidade, SysJudo.Application.Dto.Nacionalidade.UpdateNacionalidadeDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Nacionalidade>, PagedDto<SysJudo.Application.Dto.Nacionalidade.NacionalidadeDto>>()
+        CreateMap<Nacionalidade, NacionalidadeDto>().ReverseMap();
+        CreateMap<Nacionalidade, CreateNacionalidadeDto>().ReverseMap();
+        CreateMap<Nacionalidade, UpdateNacionalidadeDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<Nacionalidade>, PagedDto<NacionalidadeDto>>()
             .ReverseMap();
 
         #endregion
 
         #region Profissao
 
-        CreateMap<Profissao, SysJudo.Application.Dto.Profissao.ProfissaoDto>().ReverseMap();
-        CreateMap<Profissao, SysJudo.Application.Dto.Profissao.CreateProfissaoDto>().ReverseMap();
-        CreateMap<Profissao, SysJudo.Application.Dto.Profissao.UpdateProfissaoDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<Profissao>, PagedDto<SysJudo.Application.Dto.Profissao.ProfissaoDto>>()
+        CreateMap<Profissao, ProfissaoDto>().ReverseMap();
+        CreateMap<Profissao, CreateProfissaoDto>().ReverseMap();
+        CreateMap<Profissao, UpdateProfissaoDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<Profissao>, PagedDto<ProfissaoDto>>()
             .ReverseMap();
 
         #endregion
 
         #region RegistroDeEventos
 
-        CreateMap<RegistroDeEvento, SysJudo.Application.Dto.RegistroDeEvento.RegistroDeEventoDto>().ReverseMap();
-        CreateMap<RegistroDeEvento, SysJudo.Application.Dto.RegistroDeEvento.AdicionarRegistroDeEvento>().ReverseMap();
+        CreateMap<RegistroDeEvento, RegistroDeEventoDto>().ReverseMap();
+        CreateMap<RegistroDeEvento, AdicionarRegistroDeEvento>().ReverseMap();
         CreateMap<ResultadoPaginado<RegistroDeEvento>,
-            PagedDto<SysJudo.Application.Dto.RegistroDeEvento.RegistroDeEventoDto>>().ReverseMap();
+            PagedDto<RegistroDeEventoDto>>().ReverseMap();
 
         #endregion
 
         #region GrupoAcesso
 
-        CreateMap<GrupoAcesso, Dto.GruposDeAcesso.GrupoAcessoDto>().ReverseMap();
-        CreateMap<GrupoAcesso, Dto.GruposDeAcesso.CadastrarGrupoAcessoDto>().ReverseMap();
-        CreateMap<GrupoAcessoUsuario, Dto.Usuario.GrupoAcessoUsuarioDto>().ReverseMap();
-        CreateMap<GrupoAcesso, Dto.GruposDeAcesso.AlterarGrupoAcessoDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<GrupoAcesso>, PagedDto<Dto.GruposDeAcesso.GrupoAcessoDto>>().ReverseMap();
+        CreateMap<GrupoAcesso, GrupoAcessoDto>().ReverseMap();
+        CreateMap<GrupoAcesso, CadastrarGrupoAcessoDto>().ReverseMap();
+        CreateMap<GrupoAcessoUsuario, GrupoAcessoUsuarioDto>().ReverseMap();
+        CreateMap<GrupoAcesso, AlterarGrupoAcessoDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<GrupoAcesso>, PagedDto<GrupoAcessoDto>>().ReverseMap();
         
-        CreateMap<GrupoAcessoPermissao, Dto.GruposDeAcesso.GrupoAcessoPermissaoDto>().ReverseMap();
-        CreateMap<GrupoAcessoPermissao, Dto.GruposDeAcesso.ManterGrupoAcessoPermissaoDto>().ReverseMap();
-        CreateMap<PagedDto<Dto.GruposDeAcesso.PermissaoDto>, ResultadoPaginado<Permissao>>()
+        CreateMap<GrupoAcessoPermissao, GrupoAcessoPermissaoDto>().ReverseMap();
+        CreateMap<GrupoAcessoPermissao, ManterGrupoAcessoPermissaoDto>().ReverseMap();
+        CreateMap<PagedDto<PermissaoDto>, ResultadoPaginado<Permissao>>()
             .ReverseMap();
-        CreateMap<Dto.GruposDeAcesso.PermissaoDto, Permissao>()
+        CreateMap<PermissaoDto, Permissao>()
             .ReverseMap();
-        CreateMap<Dto.Permissoes.CadastrarPermissaoDto, Permissao>()
+        CreateMap<CadastrarPermissaoDto, Permissao>()
             .ReverseMap();
-        CreateMap<Dto.Permissoes.AlterarPermissaoDto, Permissao>()
+        CreateMap<AlterarPermissaoDto, Permissao>()
             .ReverseMap();
 
         #endregion
@@ -169,22 +186,22 @@ public class AutoMapperProfile : Profile
         #region Agremiacao
 
         CreateMap<Agremiacao, AgremiacaoFiltro>().ReverseMap();
-        CreateMap<AgremiacaoFiltro, SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>().ReverseMap();
-        CreateMap<AgremiacaoFiltro, SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<AgremiacaoFiltro>, PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoDto>>()
+        CreateMap<AgremiacaoFiltro, AgremiacaoDto>().ReverseMap();
+        CreateMap<AgremiacaoFiltro, AgremiacaoFiltroDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<AgremiacaoFiltro>, PagedDto<AgremiacaoDto>>()
             .ReverseMap();
         CreateMap<ResultadoPaginado<AgremiacaoFiltro>,
-            PagedDto<SysJudo.Application.Dto.Agremiacao.AgremiacaoFiltroDto>>().ReverseMap();
+            PagedDto<AgremiacaoFiltroDto>>().ReverseMap();
 
         #endregion
 
         #region GrupoAcesso
 
         CreateMap<GrupoAcesso, GrupoDeAcessoFiltro>().ReverseMap();
-        CreateMap<GrupoDeAcessoFiltro, SysJudo.Application.Dto.GruposDeAcesso.GrupoAcessoDto>().ReverseMap();
-        CreateMap<GrupoDeAcessoFiltro, SysJudo.Application.Dto.GruposDeAcesso.GrupoDeAcessoFiltroDto>().ReverseMap();
-        CreateMap<ResultadoPaginado<GrupoDeAcessoFiltro>, PagedDto<SysJudo.Application.Dto.GruposDeAcesso.GrupoAcessoDto>>().ReverseMap();
-        CreateMap<ResultadoPaginado<GrupoDeAcessoFiltro>, PagedDto<SysJudo.Application.Dto.GruposDeAcesso.GrupoDeAcessoFiltroDto>>().ReverseMap();
+        CreateMap<GrupoDeAcessoFiltro, GrupoAcessoDto>().ReverseMap();
+        CreateMap<GrupoDeAcessoFiltro, GrupoDeAcessoFiltroDto>().ReverseMap();
+        CreateMap<ResultadoPaginado<GrupoDeAcessoFiltro>, PagedDto<GrupoAcessoDto>>().ReverseMap();
+        CreateMap<ResultadoPaginado<GrupoDeAcessoFiltro>, PagedDto<GrupoDeAcessoFiltroDto>>().ReverseMap();
 
         #endregion
     }

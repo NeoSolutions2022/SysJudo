@@ -4713,14 +4713,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         var operadorLogico = "";
         foreach (var pesquisa in dto)
         {
-            if (pesquisa.OperadorLogico is 1 or null)
-            {
-                operadorLogico = "E";
-            }
-            else
-            {
-                operadorLogico = "OU";
-            }
+            operadorLogico = pesquisa.OperadorLogico is 1 or null ? "E" : "OU";
 
             switch (pesquisa.OperacaoId)
             {
@@ -4732,7 +4725,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                     }
                     else if (pesquisa.DataFinal != null)
                     {
-                        valor = pesquisa.DataInicial.ToString();
+                        valor = pesquisa.DataInicial!.Value.ToString("yy-MM-dd");
                     }
 
                     descricao.Append(
@@ -4747,7 +4740,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                     }
                     else if (pesquisa.DataFinal != null)
                     {
-                        valor = pesquisa.DataInicial.ToString();
+                        valor = pesquisa.DataInicial!.Value.ToString("yy-MM-dd");
                     }
 
                     descricao.Append(
@@ -4762,7 +4755,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                     }
                     else if (pesquisa.DataFinal != null)
                     {
-                        valor = pesquisa.DataInicial.ToString();
+                        valor = pesquisa.DataInicial!.Value.ToString("yy-MM-dd");
                     }
 
                     descricao.Append(
@@ -4777,7 +4770,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                     }
                     else if (pesquisa.DataFinal != null)
                     {
-                        valor = pesquisa.DataInicial.ToString();
+                        valor = pesquisa.DataInicial!.Value.ToString("yy-MM-dd");
                     }
 
                     descricao.Append(
@@ -4792,7 +4785,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                     }
                     else if (pesquisa.DataFinal != null)
                     {
-                        valor = pesquisa.DataInicial.ToString();
+                        valor = pesquisa.DataInicial!.Value.ToString("yy-MM-dd");
                     }
 
                     descricao.Append(
@@ -4807,7 +4800,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                     }
                     else if (pesquisa.DataFinal != null)
                     {
-                        valor = pesquisa.DataInicial.ToString();
+                        valor = pesquisa.DataInicial!.Value.ToString("yy-MM-dd");
                     }
 
                     descricao.Append(
@@ -4822,7 +4815,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                     }
                     else if (pesquisa.DataFinal != null)
                     {
-                        valor = pesquisa.DataInicial.ToString();
+                        valor = pesquisa.DataInicial!.Value.ToString("yy-MM-dd");
                     }
 
                     descricao.Append(
@@ -4838,8 +4831,8 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                     }
                     else if (pesquisa.DataFinal != null)
                     {
-                        valor = pesquisa.DataInicial.ToString();
-                        valor2 = pesquisa.DataFinal.ToString();
+                        valor = pesquisa.DataInicial!.Value.ToString("yy-MM-dd");
+                        valor2 = pesquisa.DataFinal.Value.ToString("yy-MM-dd");
                     }
 
                     descricao.Append(
@@ -4913,12 +4906,23 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
         var regiao = await _regiaoRepository.ObterPorId(agremiacao.IdRegiao);
         if (await _agremiacaoRepository.UnitOfWork.Commit())
         {
+            var dataCnpj = "NULL";
+            if (agremiacao.DataCnpj != null)
+            {
+                dataCnpj = new DateTime(agremiacao.DataCnpj.Value.Year, agremiacao.DataCnpj.Value.Month, agremiacao.DataCnpj.Value.Day).ToString("dd/MM/yyyy");
+            }
+            
+            var dataAta = "NULL";
+            if (agremiacao.DataAta != null)
+            {
+                dataAta = new DateTime(agremiacao.DataAta.Value.Year, agremiacao.DataAta.Value.Month, agremiacao.DataAta.Value.Day).ToString("dd/MM/yyyy");
+            }
             RegistroDeEventos.Adicionar(new RegistroDeEvento
             {
                 DataHoraEvento = DateTime.Now,
                 ComputadorId = ObterIp(),
                 Descricao =
-                    $"Sigla={agremiacao.Sigla};Nome={agremiacao.Nome};Fantasia={agremiacao.Fantasia};Responsavel={agremiacao.Responsavel};Representante={agremiacao.Representante};DataFiliacao={agremiacao.DataFiliacao};DataNascimento={agremiacao.DataNascimento};Cep={agremiacao.Cep};Endereco={agremiacao.Endereco};Bairro={agremiacao.Bairro};Complemento={agremiacao.Complemento};Cidade={agremiacao.Cidade};Estado={agremiacao.Estado};Pais={agremiacao.Pais};Telefone={agremiacao.Telefone};Email={agremiacao.Email};Cnpj={agremiacao.Cnpj};InscricaoMunicipal={agremiacao.InscricaoMunicipal};InscricaoEstadual={agremiacao.InscricaoEstadual};DataCnpj={agremiacao.DataCnpj};DataAta={agremiacao.DataAta};Foto={agremiacao.Foto};AlvaraLocacao={agremiacao.AlvaraLocacao};Estatuto={agremiacao.Estatuto};ContratoSocial={agremiacao.ContratoSocial};DocumentacaoAtualizada={agremiacao.DocumentacaoAtualizada};Regiao={regiao?.Descricao};Anotacoes={agremiacao.Anotacoes};{nomeDoc};",
+                    $"Sigla={agremiacao.Sigla};Nome={agremiacao.Nome};Fantasia={agremiacao.Fantasia};Responsavel={agremiacao.Responsavel};Representante={agremiacao.Representante};Data de filiacao={new DateTime(agremiacao.DataFiliacao.Year,agremiacao.DataFiliacao.Month, agremiacao.DataFiliacao.Day):dd/MM/yyyy};Data de nascimento={new DateTime(agremiacao.DataNascimento.Year,agremiacao.DataNascimento.Month, agremiacao.DataNascimento.Day):dd/MM/yyyy};Cep={agremiacao.Cep};Endereco={agremiacao.Endereco};Bairro={agremiacao.Bairro};Complemento={agremiacao.Complemento};Cidade={agremiacao.Cidade};Estado={agremiacao.Estado};Pais={agremiacao.Pais};Telefone={agremiacao.Telefone};Email={agremiacao.Email};Cnpj={agremiacao.Cnpj};Inscricao municipal={agremiacao.InscricaoMunicipal};Inscricao estadual={agremiacao.InscricaoEstadual};Data Cnpj={dataCnpj};Data Ata={dataAta};Foto={agremiacao.Foto};Alvara de locacao={agremiacao.AlvaraLocacao};Estatuto={agremiacao.Estatuto};Contrato social={agremiacao.ContratoSocial};Documentacao atualizada={agremiacao.DocumentacaoAtualizada};Regiao={regiao?.Descricao};Anotacoes={agremiacao.Anotacoes};{nomeDoc};",
                 ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
                 TipoOperacaoId = 4,
                 UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
@@ -4949,25 +4953,25 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             Notificator.HandleNotFoundResource();
             return null;
         }
-        
+
         var regiaoInicial = await _regiaoRepository.ObterPorId(agremiacao.IdRegiao);
         var regiao = await _regiaoRepository.ObterPorId(dto.IdRegiao);
         RegistroDeEventos.Adicionar(new RegistroDeEvento
-            {
-                DataHoraEvento = DateTime.Now,
-                ComputadorId = ObterIp(),
-                Descricao =
-                    $"Sigla={agremiacao.Sigla};Nome={agremiacao.Nome};Fantasia={agremiacao.Fantasia};Responsavel={agremiacao.Responsavel};Representante={agremiacao.Representante};DataFiliacao={agremiacao.DataFiliacao};DataNascimento={agremiacao.DataNascimento};Cep={agremiacao.Cep};Endereco={agremiacao.Endereco};Bairro={agremiacao.Bairro};Complemento={agremiacao.Complemento};Cidade={agremiacao.Cidade};Estado={agremiacao.Estado};Pais={agremiacao.Pais};Telefone={agremiacao.Telefone};Email={agremiacao.Email};Cnpj={agremiacao.Cnpj};InscricaoMunicipal={agremiacao.InscricaoMunicipal};InscricaoEstadual={agremiacao.InscricaoEstadual};DataCnpj={agremiacao.DataCnpj};DataAta={agremiacao.DataAta};Foto={agremiacao.Foto};AlvaraLocacao={agremiacao.AlvaraLocacao};Estatuto={agremiacao.Estatuto};ContratoSocial={agremiacao.ContratoSocial};DocumentacaoAtualizada={agremiacao.DocumentacaoAtualizada};Regiao={regiaoInicial?.Descricao};Anotacoes={agremiacao.Anotacoes};<br>" +
-                    $"Sigla={dto.Sigla};Nome={dto.Nome};Fantasia={dto.Fantasia};Responsavel={dto.Responsavel};Representante={dto.Representante};DataFiliacao={dto.DataFiliacao};DataNascimento={dto.DataNascimento};Cep={dto.Cep};Endereco={dto.Endereco};Bairro={dto.Bairro};Complemento={dto.Complemento};Cidade={dto.Cidade};Estado={dto.Estado};Pais={dto.Pais};Telefone={dto.Telefone};Email={dto.Email};Cnpj={dto.Cnpj};InscricaoMunicipal={dto.InscricaoMunicipal};InscricaoEstadual={dto.InscricaoEstadual};DataCnpj={dto.DataCnpj};DataAta={dto.DataAta};Foto={dto.Foto};AlvaraLocacao={dto.AlvaraLocacao};Estatuto={dto.Estatuto};ContratoSocial={dto.ContratoSocial};DocumentacaoAtualizada={dto.DocumentacaoAtualizada};Regiao={regiao?.Descricao};Anotacoes={dto.Anotacoes}",
-                ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
-                TipoOperacaoId = 5,
-                UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
-                AdministradorNome = null,
-                UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
-                AdministradorId = null,
-                FuncaoMenuId = 2
-            });
-            await _agremiacaoRepository.UnitOfWork.Commit();
+        {
+            DataHoraEvento = DateTime.Now,
+            ComputadorId = ObterIp(),
+            Descricao =
+                $"Sigla={agremiacao.Sigla};Nome={agremiacao.Nome};Fantasia={agremiacao.Fantasia};Responsavel={agremiacao.Responsavel};Representante={agremiacao.Representante};DataFiliacao={agremiacao.DataFiliacao};DataNascimento={agremiacao.DataNascimento};Cep={agremiacao.Cep};Endereco={agremiacao.Endereco};Bairro={agremiacao.Bairro};Complemento={agremiacao.Complemento};Cidade={agremiacao.Cidade};Estado={agremiacao.Estado};Pais={agremiacao.Pais};Telefone={agremiacao.Telefone};Email={agremiacao.Email};Cnpj={agremiacao.Cnpj};InscricaoMunicipal={agremiacao.InscricaoMunicipal};InscricaoEstadual={agremiacao.InscricaoEstadual};DataCnpj={agremiacao.DataCnpj};DataAta={agremiacao.DataAta};Foto={agremiacao.Foto};AlvaraLocacao={agremiacao.AlvaraLocacao};Estatuto={agremiacao.Estatuto};ContratoSocial={agremiacao.ContratoSocial};DocumentacaoAtualizada={agremiacao.DocumentacaoAtualizada};Regiao={regiaoInicial?.Descricao};Anotacoes={agremiacao.Anotacoes};<br>" +
+                $"Sigla={dto.Sigla};Nome={dto.Nome};Fantasia={dto.Fantasia};Responsavel={dto.Responsavel};Representante={dto.Representante};DataFiliacao={dto.DataFiliacao};DataNascimento={dto.DataNascimento};Cep={dto.Cep};Endereco={dto.Endereco};Bairro={dto.Bairro};Complemento={dto.Complemento};Cidade={dto.Cidade};Estado={dto.Estado};Pais={dto.Pais};Telefone={dto.Telefone};Email={dto.Email};Cnpj={dto.Cnpj};InscricaoMunicipal={dto.InscricaoMunicipal};InscricaoEstadual={dto.InscricaoEstadual};DataCnpj={dto.DataCnpj};DataAta={dto.DataAta};Foto={dto.Foto};AlvaraLocacao={dto.AlvaraLocacao};Estatuto={dto.Estatuto};ContratoSocial={dto.ContratoSocial};DocumentacaoAtualizada={dto.DocumentacaoAtualizada};Regiao={regiao?.Descricao};Anotacoes={dto.Anotacoes}",
+            ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
+            TipoOperacaoId = 5,
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+            AdministradorNome = null,
+            UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+            AdministradorId = null,
+            FuncaoMenuId = 2
+        });
+        await _agremiacaoRepository.UnitOfWork.Commit();
 
         Mapper.Map(dto, agremiacao);
         if (!await Validar(agremiacao))
@@ -4996,11 +5000,11 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
     public async Task<string> Exportar(ExportarAgremiacaoDto dto)
     {
         var descricao = new StringBuilder();
-        descricao.Append("Colounas=");
+        descricao.Append("Colunas= ");
         var linha = 2;
         var agremiacoes = await _filtroRepository.Listar();
         var workbook = new XLWorkbook();
-        var ws = workbook.Worksheets.Add("CADAGRE" + DateTime.Now.ToString("yyyy-MM-DD HH-mm-ss"));
+        var ws = workbook.Worksheets.Add("CADAGRE" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
 
         foreach (var agremiacao in agremiacoes)
         {
@@ -5025,7 +5029,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 descricao.Append("Fantasia;");
                 ws.Cell(1, contador).Value = "Fantasia";
-                ws.Cell(linha, contador).Value = agremiacao.Fantasia;
+                ws.Cell(linha, contador).Value = agremiacao.Fantasia == null ? "NULL" : agremiacao.Fantasia;
                 contador++;
             }
 
@@ -5047,17 +5051,21 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.DataFiliacao)
             {
-                descricao.Append("DataFiliacao;");
-                ws.Cell(1, contador).Value = "DataFiliacao";
-                ws.Cell(linha, contador).Value = agremiacao.DataFiliacao.ToString("DD/MM/YYY");
+                descricao.Append("Data Filiacao;");
+                ws.Cell(1, contador).Value = "Data Filiacao";
+                ws.Cell(linha, contador).Value = new DateTime(agremiacao.DataFiliacao.Year,
+                    agremiacao.DataFiliacao.Month,
+                    agremiacao.DataFiliacao.Day).ToString("dd/MM/yyyy");
                 contador++;
             }
 
             if (dto.DataNascimento)
             {
-                descricao.Append("DataNascimento;");
-                ws.Cell(1, contador).Value = "DataNascimento";
-                ws.Cell(linha, contador).Value = agremiacao.DataNascimento.ToString("DD/MM/YYY");
+                descricao.Append("Data Nascimento;");
+                ws.Cell(1, contador).Value = "Data Nascimento";
+                ws.Cell(linha, contador).Value = new DateTime(agremiacao.DataNascimento.Year,
+                    agremiacao.DataNascimento.Month,
+                    agremiacao.DataNascimento.Day).ToString("dd/MM/yyyy");
                 contador++;
             }
 
@@ -5077,9 +5085,9 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                 contador++;
             }
 
-            if (dto.Endereco)
+            if (dto.Bairro)
             {
-                descricao.Append("Endereco;");
+                descricao.Append("Bairro;");
                 ws.Cell(1, contador).Value = "Bairro";
                 ws.Cell(linha, contador).Value = agremiacao.Endereco;
                 contador++;
@@ -5093,17 +5101,17 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                 contador++;
             }
 
-            if (dto.IdCidade)
+            if (dto.Cidade)
             {
-                descricao.Append("IdCidade;");
+                descricao.Append("Cidade;");
                 ws.Cell(1, contador).Value = "Cidade";
                 ws.Cell(linha, contador).Value = agremiacao.Cidade;
                 contador++;
             }
 
-            if (dto.IdEstado)
+            if (dto.Estado)
             {
-                descricao.Append("IdEstado;");
+                descricao.Append("Estado;");
                 ws.Cell(1, contador).Value = "Estado";
                 ws.Cell(linha, contador).Value = agremiacao.Estado;
                 contador++;
@@ -5111,15 +5119,15 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.IdRegiao)
             {
-                descricao.Append("IdRegiao;");
+                descricao.Append("Regiao;");
                 ws.Cell(1, contador).Value = "Regiao";
                 ws.Cell(linha, contador).Value = agremiacao.RegiaoNome;
                 contador++;
             }
 
-            if (dto.IdPais)
+            if (dto.Pais)
             {
-                descricao.Append("IdPais;");
+                descricao.Append("Pais;");
                 ws.Cell(1, contador).Value = "Pais";
                 ws.Cell(linha, contador).Value = agremiacao.Pais;
                 contador++;
@@ -5138,6 +5146,104 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
                 descricao.Append("Email;");
                 ws.Cell(1, contador).Value = "Email";
                 ws.Cell(linha, contador).Value = agremiacao.Email;
+                contador++;
+            }
+
+            if (dto.InscricaoMunicipal)
+            {
+                descricao.Append("Inscricao Municipal;");
+                ws.Cell(1, contador).Value = "Inscricao Municipal";
+                ws.Cell(linha, contador).Value =
+                    agremiacao.InscricaoMunicipal == null ? "NULL" : agremiacao.InscricaoMunicipal;
+                contador++;
+            }
+
+            if (dto.InscricaoEstadual)
+            {
+                descricao.Append("Inscricao Estadual;");
+                ws.Cell(1, contador).Value = "Inscricao Estadual";
+                ws.Cell(linha, contador).Value =
+                    agremiacao.InscricaoEstadual == null ? "NULL" : agremiacao.InscricaoEstadual;
+                contador++;
+            }
+
+            if (dto.Nome)
+            {
+                descricao.Append("Nome;");
+                ws.Cell(1, contador).Value = "Nome";
+                ws.Cell(linha, contador).Value = agremiacao.Nome;
+                contador++;
+            }
+
+            if (dto.DataCnpj)
+            {
+                descricao.Append("Data Cnpj;");
+                ws.Cell(1, contador).Value = "Data Cnpj";
+                ws.Cell(linha, contador).Value = agremiacao.DataCnpj == null
+                    ? "NULL"
+                    : new DateTime(agremiacao.DataCnpj.Value.Year,
+                        agremiacao.DataCnpj.Value.Month,
+                        agremiacao.DataCnpj.Value.Day).ToString("dd/MM/yyyy");
+                contador++;
+            }
+
+            if (dto.DataAta)
+            {
+                descricao.Append("Data Ata;");
+                ws.Cell(1, contador).Value = "Data Ata";
+                ws.Cell(linha, contador).Value = agremiacao.DataAta == null
+                    ? "NULL"
+                    : new DateTime(agremiacao.DataAta.Value.Year,
+                        agremiacao.DataAta.Value.Month,
+                        agremiacao.DataAta.Value.Day).ToString("dd/MM/yyyy");
+                contador++;
+            }
+
+            if (dto.Foto)
+            {
+                descricao.Append("Foto;");
+                ws.Cell(1, contador).Value = "Foto";
+                ws.Cell(linha, contador).Value = agremiacao.Foto == null ? "NULL" : agremiacao.Foto;
+                contador++;
+            }
+
+            if (dto.AlvaraLocacao)
+            {
+                descricao.Append("Alvara Locacao;");
+                ws.Cell(1, contador).Value = "Alvara Locacao";
+                ws.Cell(linha, contador).Value = agremiacao.AlvaraLocacao;
+                contador++;
+            }
+
+            if (dto.Estatuto)
+            {
+                descricao.Append("Estatuto;");
+                ws.Cell(1, contador).Value = "Estatuto";
+                ws.Cell(linha, contador).Value = agremiacao.Estatuto;
+                contador++;
+            }
+
+            if (dto.ContratoSocial)
+            {
+                descricao.Append("Contrato Social;");
+                ws.Cell(1, contador).Value = "Contrato Social";
+                ws.Cell(linha, contador).Value = agremiacao.ContratoSocial;
+                contador++;
+            }
+
+            if (dto.DocumentacaoAtualizada)
+            {
+                descricao.Append("Documentacao Atualizada;");
+                ws.Cell(1, contador).Value = "Documentacao Atualizada";
+                ws.Cell(linha, contador).Value = agremiacao.DocumentacaoAtualizada;
+                contador++;
+            }
+
+            if (dto.Anotacoes)
+            {
+                descricao.Append("Anotacoes;");
+                ws.Cell(1, contador).Value = "Anotacoes";
+                ws.Cell(linha, contador).Value = agremiacao.Anotacoes == null ? "NULL" : agremiacao.Anotacoes;
                 contador++;
             }
 
