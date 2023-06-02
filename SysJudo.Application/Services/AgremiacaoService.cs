@@ -5716,6 +5716,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
     public async Task EnviarDocumentos(int id, EnviarDocumentosDto dto)
     {
+        if (!dto.Documentos.Any())
+        {
+            Notificator.Handle("Nenhum arquivo foi informado");
+            return;
+        }
+        
         var agremiacao = await _agremiacaoRepository.Obter(id);
         if (agremiacao == null)
         {
