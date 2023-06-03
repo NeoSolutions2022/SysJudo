@@ -4869,7 +4869,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
     public async Task<AgremiacaoDto?> Cadastrar(CadastrarAgremiacaoDto dto)
     {
-        if (!ValidarAnexos(dto))
+        if (!ValidarFoto(dto))
         {
             return null;
         }
@@ -4968,13 +4968,39 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             caminhoFoto = await ManterFoto(dto.Foto);
         }
 
+        var dataCnpj = "NULL";
+        if (agremiacao.DataCnpj != null)
+        {
+            dataCnpj = new DateTime(agremiacao.DataCnpj.Value.Year, agremiacao.DataCnpj.Value.Month,
+                agremiacao.DataCnpj.Value.Day).ToString("dd/MM/yyyy");
+        }
+
+        var dataAta = "NULL";
+        if (agremiacao.DataAta != null)
+        {
+            dataAta = new DateTime(agremiacao.DataAta.Value.Year, agremiacao.DataAta.Value.Month,agremiacao.DataAta.Value.Day).ToString("dd/MM/yyyy");
+        }
+        
+        var dataCnpjInicial = "NULL";
+        if (agremiacaoInicial!.DataCnpj != null)
+        {
+            dataCnpj = new DateTime(agremiacaoInicial.DataCnpj.Value.Year, agremiacaoInicial.DataCnpj.Value.Month,
+                agremiacao.DataCnpj!.Value.Day).ToString("dd/MM/yyyy");
+        }
+
+        var dataAtaInicial = "NULL";
+        if (agremiacaoInicial.DataAta != null)
+        {
+            dataAta = new DateTime(agremiacaoInicial.DataAta.Value.Year, agremiacaoInicial.DataAta.Value.Month,agremiacaoInicial.DataAta.Value.Day).ToString("dd/MM/yyyy");
+        }
+        
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
             DataHoraEvento = DateTime.Now,
             ComputadorId = ObterIp(),
             Descricao =
-                $"Sigla={agremiacaoInicial!.Sigla};Nome={agremiacaoInicial.Nome};Fantasia={agremiacaoInicial.Fantasia};Responsavel={agremiacaoInicial.Responsavel};Representante={agremiacaoInicial.Representante};DataFiliacao={agremiacaoInicial.DataFiliacao};DataNascimento={agremiacaoInicial.DataNascimento};Cep={agremiacaoInicial.Cep};Endereco={agremiacaoInicial.Endereco};Bairro={agremiacaoInicial.Bairro};Complemento={agremiacaoInicial.Complemento};Cidade={agremiacaoInicial.Cidade};Estado={agremiacaoInicial.Estado};Pais={agremiacaoInicial.Pais};Telefone={agremiacaoInicial.Telefone};Email={agremiacaoInicial.Email};Cnpj={agremiacaoInicial.Cnpj};InscricaoMunicipal={agremiacaoInicial.InscricaoMunicipal};InscricaoEstadual={agremiacaoInicial.InscricaoEstadual};DataCnpj={agremiacaoInicial.DataCnpj};DataAta={agremiacaoInicial.DataAta};Foto={agremiacaoInicial.Foto};AlvaraLocacao={agremiacaoInicial.AlvaraLocacao};Estatuto={agremiacaoInicial.Estatuto};ContratoSocial={agremiacaoInicial.ContratoSocial};DocumentacaoAtualizada={agremiacaoInicial.DocumentacaoAtualizada};Regiao={regiaoInicial?.Descricao};Anotacoes={agremiacaoInicial.Anotacoes};<br>" +
-                $"Sigla={dto.Sigla};Nome={dto.Nome};Fantasia={dto.Fantasia};Responsavel={dto.Responsavel};Representante={dto.Representante};DataFiliacao={dto.DataFiliacao};DataNascimento={dto.DataNascimento};Cep={dto.Cep};Endereco={dto.Endereco};Bairro={dto.Bairro};Complemento={dto.Complemento};Cidade={dto.Cidade};Estado={dto.Estado};Pais={dto.Pais};Telefone={dto.Telefone};Email={dto.Email};Cnpj={dto.Cnpj};InscricaoMunicipal={dto.InscricaoMunicipal};InscricaoEstadual={dto.InscricaoEstadual};DataCnpj={dto.DataCnpj};DataAta={dto.DataAta};Foto={caminhoFoto};AlvaraLocacao={dto.AlvaraLocacao};Estatuto={dto.Estatuto};ContratoSocial={dto.ContratoSocial};DocumentacaoAtualizada={dto.DocumentacaoAtualizada};Regiao={regiao?.Descricao};Anotacoes={dto.Anotacoes}",
+                $"Sigla={agremiacaoInicial!.Sigla};Nome={agremiacaoInicial.Nome};Fantasia={agremiacaoInicial.Fantasia};Responsavel={agremiacaoInicial.Responsavel};Representante={agremiacaoInicial.Representante};DataFiliacao={new DateTime(agremiacao.DataFiliacao.Year, agremiacao.DataFiliacao.Month,agremiacao.DataFiliacao.Day).ToString("dd/MM/yyyy")};DataNascimento={new DateTime(agremiacao.DataNascimento.Year, agremiacao.DataNascimento.Month,agremiacao.DataNascimento.Day).ToString("dd/MM/yyyy")};Cep={agremiacaoInicial.Cep};Endereco={agremiacaoInicial.Endereco};Bairro={agremiacaoInicial.Bairro};Complemento={agremiacaoInicial.Complemento};Cidade={agremiacaoInicial.Cidade};Estado={agremiacaoInicial.Estado};Pais={agremiacaoInicial.Pais};Telefone={agremiacaoInicial.Telefone};Email={agremiacaoInicial.Email};Cnpj={agremiacaoInicial.Cnpj};InscricaoMunicipal={agremiacaoInicial.InscricaoMunicipal};InscricaoEstadual={agremiacaoInicial.InscricaoEstadual};DataCnpj={dataCnpjInicial};DataAta={dataAtaInicial};Foto={agremiacaoInicial.Foto};AlvaraLocacao={agremiacaoInicial.AlvaraLocacao};Estatuto={agremiacaoInicial.Estatuto};ContratoSocial={agremiacaoInicial.ContratoSocial};DocumentacaoAtualizada={agremiacaoInicial.DocumentacaoAtualizada};Regiao={regiaoInicial?.Descricao};Anotacoes={agremiacaoInicial.Anotacoes};<br>" +
+                $"Sigla={dto.Sigla};Nome={dto.Nome};Fantasia={dto.Fantasia};Responsavel={dto.Responsavel};Representante={dto.Representante};DataFiliacao={new DateTime(agremiacao.DataFiliacao.Year, agremiacao.DataFiliacao.Month,agremiacao.DataFiliacao.Day).ToString("dd/MM/yyyy")};DataNascimento={new DateTime(agremiacao.DataNascimento.Year, agremiacao.DataNascimento.Month,agremiacao.DataNascimento.Day).ToString("dd/MM/yyyy")};Cep={dto.Cep};Endereco={dto.Endereco};Bairro={dto.Bairro};Complemento={dto.Complemento};Cidade={dto.Cidade};Estado={dto.Estado};Pais={dto.Pais};Telefone={dto.Telefone};Email={dto.Email};Cnpj={dto.Cnpj};InscricaoMunicipal={dto.InscricaoMunicipal};InscricaoEstadual={dto.InscricaoEstadual};DataCnpj={dataCnpj};DataAta={dataAta};Foto={caminhoFoto};AlvaraLocacao={dto.AlvaraLocacao};Estatuto={dto.Estatuto};ContratoSocial={dto.ContratoSocial};DocumentacaoAtualizada={dto.DocumentacaoAtualizada};Regiao={regiao?.Descricao};Anotacoes={dto.Anotacoes}",
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 5,
             UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
@@ -5721,6 +5747,12 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
             Notificator.Handle("Nenhum arquivo foi informado");
             return;
         }
+
+        if (!ValidarAnexo(dto))
+        {
+            Notificator.Handle("Erro ao validar os documentos");
+            return;
+        }
         
         var agremiacao = await _agremiacaoRepository.Obter(id);
         if (agremiacao == null)
@@ -6257,7 +6289,7 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
     #endregion
 
-    private bool ValidarAnexos(CadastrarAgremiacaoDto dto)
+    private bool ValidarFoto(CadastrarAgremiacaoDto dto)
     {
         if (dto.Foto?.Length > 10000000)
         {
@@ -6273,4 +6305,22 @@ public class AgremiacaoService : BaseService, IAgremiacaoService
 
         return !Notificator.HasNotification;
     }
+    
+    private bool ValidarAnexo(EnviarDocumentosDto dto)
+        {
+            foreach (var documento in dto.Documentos)
+            {
+                if (documento.Length > 10000000)
+                {
+                    Notificator.Handle("Os documentos devem ter no máximo 10Mb");
+                }
+            
+                if (documento.FileName.Split(".").Last() != "pdf")
+                {
+                    Notificator.Handle("Aceito apenas documentos do tipo PDF");
+                }
+            }
+            
+            return !Notificator.HasNotification;
+        }
 }
