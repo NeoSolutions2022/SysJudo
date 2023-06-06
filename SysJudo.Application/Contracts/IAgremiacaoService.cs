@@ -1,16 +1,16 @@
 using SysJudo.Application.Dto.Agremiacao;
 using SysJudo.Application.Dto.Base;
-using SysJudo.Domain.Entities;
+using SysJudo.Domain.Entities.EntitiesFiltros;
 
 namespace SysJudo.Application.Contracts;
 
 public interface IAgremiacaoService
 {
-    Task<List<AgremiacaoFiltroDto>> Filtrar(List<FiltragemAgremiacaoDto> dto, List<Agremiacao>? agremiacoes = null, int tamanho = 0, int aux = 0);
+    Task<List<AgremiacaoFiltroDto>> Filtrar(List<FiltragemAgremiacaoDto> dto, List<AgremiacaoFiltro>? agremiacoes = null, int tamanho = 0, int aux = 0);
     Task<AgremiacaoDto?> Cadastrar(CadastrarAgremiacaoDto dto);
     Task<AgremiacaoDto?> Alterar(int id, AlterarAgremiacaoDto dto);
     Task<PagedDto<AgremiacaoDto>> Buscar(BuscarAgremiacaoDto dto);
-    Task<List<AgremiacaoFiltroDto>> Pesquisar(string valor);
+    Task<List<AgremiacaoFiltroDto>> Pesquisar(string valor, List<AgremiacaoFiltro>? agremiacoes = null);
     Task<AgremiacaoDto?> ObterPorId(int id);
     Task LimparFiltro();
     Task Deletar(int id);

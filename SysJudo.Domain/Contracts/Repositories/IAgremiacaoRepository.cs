@@ -11,4 +11,5 @@ public interface IAgremiacaoRepository : IRepository<Agremiacao>
     void Deletar(Agremiacao agremiacao);
     Task<IResultadoPaginado<Agremiacao>> Buscar(IBuscaPaginada<Agremiacao> filtro);
     Task<List<Agremiacao>> ObterTodos();
+    Task<List<Agremiacao>> Pesquisar(string valor);
 }

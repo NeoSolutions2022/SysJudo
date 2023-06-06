@@ -29,14 +29,6 @@ public class AgremiacaoFiltroRepository : RepositoryFiltro<AgremiacaoFiltro>, IA
             .ToListAsync();
     }
 
-    public void LimparFiltro()
-    {
-        if (Context.AgremiacoesFiltro.Any())
-        {
-            Context.AgremiacoesFiltro.RemoveRange(Context.AgremiacoesFiltro);
-        }
-    }
-
     public async Task RemoverTodos()
     {
         Context.AgremiacoesFiltro.RemoveRange(await Context.AgremiacoesFiltro.AsNoTracking().ToListAsync());
