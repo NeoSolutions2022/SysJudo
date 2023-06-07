@@ -4833,20 +4833,34 @@ public partial class AgremiacaoService
     private async Task<List<AgremiacaoFiltro>> PossuiAgremiacao(string nomeParametro,
         List<AgremiacaoFiltro>? agremiacoes = null)
     {
-        if (agremiacoes == null)
+        var agremiacoesFiltro = await _filtroRepository.Listar();
+        if (agremiacoesFiltro.Any())
+        {
+            agremiacoes = agremiacoesFiltro;
+        }
+        else
         {
             var agremiacoesN = await _agremiacaoRepository.ObterTodos();
-            agremiacoes = Mapper.Map<List<AgremiacaoFiltro>>(agremiacoesN);
-            foreach (var agremiacaoN in agremiacoesN)
+            if (agremiacoesN.Any())
             {
-                foreach (var agremiacaoF in agremiacoes.Where(agremiacaoF => agremiacaoN.Sigla == agremiacaoF.Sigla))
+                agremiacoes = Mapper.Map<List<AgremiacaoFiltro>>(agremiacoesN);
+                foreach (var agremiacaoN in agremiacoesN)
                 {
-                    agremiacaoF.RegiaoNome = agremiacaoN.Regiao.Descricao;
-                    agremiacaoF.Pais = agremiacaoN.Pais;
-                    agremiacaoF.Cidade = agremiacaoN.Cidade;
-                    agremiacaoF.Estado = agremiacaoN.Estado;
+                    foreach (var agremiacaoF in
+                             agremiacoes.Where(agremiacaoF => agremiacaoF.Sigla == agremiacaoN.Sigla))
+                    {
+                        agremiacaoF.RegiaoNome = agremiacaoN.Regiao.Descricao;
+                        agremiacaoF.Pais = agremiacaoN.Pais;
+                        agremiacaoF.Cidade = agremiacaoN.Cidade;
+                        agremiacaoF.Estado = agremiacaoN.Estado;
+                    }
                 }
             }
+        }
+
+        if (agremiacoes == null || agremiacoes.Count == 0)
+        {
+            return agremiacoes;
         }
 
         switch (nomeParametro)
