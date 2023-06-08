@@ -18,4 +18,5 @@ public interface IAgremiacaoService
     Task Anotar(int id, AnotarAgremiacaoDto anotacao);
     Task EnviarDocumentos(int id, EnviarDocumentosDto dto);
     Task DeletarDocumento(int id, int documentoId);
+    Task DownloadDocumento(DownloadDocumentoDto nomeDocumento);
 }

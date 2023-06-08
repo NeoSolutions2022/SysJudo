@@ -1041,6 +1041,24 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
         Notificator.Handle("Não foi possível remover documentos.");
     }
 
+    public async Task DownloadDocumento(DownloadDocumentoDto documento)
+    {
+        RegistroDeEventos.Adicionar(new RegistroDeEvento
+        {
+            Descricao = documento.Nome,
+            DataHoraEvento = DateTime.Now,
+            ComputadorId = ObterIp(),
+            ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
+            TipoOperacaoId = 8,
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
+            AdministradorNome = null,
+            UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+            AdministradorId = null,
+            FuncaoMenuId = 2
+        });
+
+        await RegistroDeEventos.UnitOfWork.Commit();
+    }
     private async Task<bool> Validar(Agremiacao agremiacao)
     {
         if (!agremiacao.Validar(out var validationResult))

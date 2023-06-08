@@ -151,6 +151,18 @@ public class AgremiacaoController : MainController
         await _service.EnviarDocumentos(id, dto);
         return NoContentResponse(); 
     }
+    
+    [HttpPatch("documentos/download")]
+    [ClaimsAuthorize(PermissoesBackend.AgremiacoesRemoverDocs, EPermissaoTipo.Write)]
+    [SwaggerOperation(Summary = "Registrar download de um documento.", Tags = new[] { "Gerencia - Agremiação" })]
+    [ProducesResponseType(typeof(List<AgremiacaoDto>), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> Filtragem([FromBody] DownloadDocumentoDto dto)
+    {
+        await _service.DownloadDocumento(dto);
+        return OkResponse();
+    }
 
     [HttpDelete("{id}")]
     [ClaimsAuthorize(PermissoesBackend.AgremiacoesRemover, EPermissaoTipo.Write)]
