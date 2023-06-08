@@ -860,6 +860,26 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
     {
         await _filtroRepository.RemoverTodos();
 
+        var agremiacoesN = await _agremiacaoRepository.ObterTodos();
+        
+        var agremiacoes = Mapper.Map<List<AgremiacaoFiltro>>(agremiacoesN);
+        foreach (var agremiacaoN in agremiacoesN)
+        {
+            foreach (var agremiacaoF in
+                     agremiacoes.Where(agremiacaoF => agremiacaoF.Sigla == agremiacaoN.Sigla))
+            {
+                agremiacaoF.RegiaoNome = agremiacaoN.Regiao.Descricao;
+                agremiacaoF.Pais = agremiacaoN.Pais;
+                agremiacaoF.Cidade = agremiacaoN.Cidade;
+                agremiacaoF.Estado = agremiacaoN.Estado;
+            }
+        }
+        
+        foreach (var agremiacao in agremiacoes.DistinctBy(c => c.Id))
+        {
+            _filtroRepository.Cadastrar(agremiacao);
+        }
+        
         if (!await _agremiacaoRepository.UnitOfWork.Commit())
         {
             Notificator.Handle("Não foi possível limpar o filtro");
