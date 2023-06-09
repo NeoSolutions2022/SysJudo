@@ -244,13 +244,11 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 if (dto.Ordenacao.Ascendente)
                 {
-                    agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Fantasia.ToLower(), obj2.Fantasia.ToLower(), StringComparison.Ordinal));
+                    agremiacoes = agremiacoes.OrderBy(c => c.Fantasia).ToList();
                 }
                 else
                 {
-                    agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Fantasia.ToLower(), obj1.Fantasia.ToLower(), StringComparison.Ordinal));
+                    agremiacoes = agremiacoes.OrderByDescending(c => c.Fantasia).ToList();
                 }
             }
 
@@ -286,13 +284,13 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 if (dto.Ordenacao.Ascendente)
                 {
-                    agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Foto.ToLower(), obj2.Foto.ToLower(), StringComparison.Ordinal));
+                    agremiacoes = agremiacoes.OrderBy(c => c.Foto).ToList();
+                    
                 }
                 else
                 {
-                    agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Foto.ToLower(), obj1.Foto.ToLower(), StringComparison.Ordinal));
+                    agremiacoes = agremiacoes.OrderByDescending(c => c.Foto).ToList();
+                    
                 }
             }
 
@@ -300,11 +298,11 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 if (dto.Ordenacao.Ascendente)
                 {
-                    agremiacoes.OrderBy(c => c.DataFiliacao);
+                    agremiacoes = agremiacoes.OrderBy(c => c.DataFiliacao).ToList();
                 }
                 else
                 {
-                    agremiacoes.OrderByDescending(c => c.DataFiliacao);
+                    agremiacoes = agremiacoes.OrderByDescending(c => c.DataFiliacao).ToList();
                 }
             }
             
@@ -312,11 +310,11 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 if (dto.Ordenacao.Ascendente)
                 {
-                    agremiacoes.OrderBy(c => c.DataAta);
+                    agremiacoes = agremiacoes.OrderBy(c => c.DataAta).ToList();
                 }
                 else
                 {
-                    agremiacoes.OrderByDescending(c => c.DataAta);
+                    agremiacoes = agremiacoes.OrderByDescending(c => c.DataAta).ToList();
                 }
             }
             
@@ -324,11 +322,11 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 if (dto.Ordenacao.Ascendente)
                 {
-                    agremiacoes.OrderBy(c => c.DataCnpj);
+                    agremiacoes = agremiacoes.OrderBy(c => c.DataCnpj).ToList();
                 }
                 else
                 {
-                    agremiacoes.OrderByDescending(c => c.DataCnpj);
+                    agremiacoes = agremiacoes.OrderByDescending(c => c.DataCnpj).ToList();
                 }
             }
 
@@ -336,11 +334,11 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 if (dto.Ordenacao.Ascendente)
                 {
-                    agremiacoes.OrderBy(c => c.DataNascimento);
+                    agremiacoes = agremiacoes.OrderBy(c => c.DataNascimento).ToList();
                 }
                 else
                 {
-                    agremiacoes.OrderByDescending(c => c.DataNascimento);
+                    agremiacoes = agremiacoes.OrderByDescending(c => c.DataNascimento).ToList();
                 }
             }
 
@@ -390,13 +388,13 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 if (dto.Ordenacao.Ascendente)
                 {
-                    agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Complemento.ToLower(), obj2.Complemento.ToLower(), StringComparison.Ordinal));
+                    agremiacoes = agremiacoes.OrderBy(c => c.Complemento).ToList();
+                    
                 }
                 else
                 {
-                    agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Complemento.ToLower(), obj1.Complemento.ToLower(), StringComparison.Ordinal));
+                    agremiacoes = agremiacoes.OrderByDescending(c => c.Complemento).ToList();
+                    
                 }
             }
 
