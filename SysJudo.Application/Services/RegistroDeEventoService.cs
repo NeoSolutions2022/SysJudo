@@ -31,4 +31,14 @@ public class RegistroDeEventoService : BaseService, IRegistroDeEventoService
         Notificator.HandleNotFoundResource();
         return null;
     }
+
+    public async Task RemoverTodos()
+    {
+        _repository.RemoverTodos();
+        
+        if (!await _repository.UnitOfWork.Commit())
+        {
+            Notificator.Handle("Não foi possível remover todos os registros");
+        }
+    }
 }

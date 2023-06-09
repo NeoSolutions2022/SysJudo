@@ -40,4 +40,17 @@ public class RegistroDeEventosController : BaseController
         var registroDeEvento = await _service.ObterTodos();
         return OkResponse(registroDeEvento);
     }
+    
+    [HttpDelete]
+    [ClaimsAuthorize("GrupoAcesso", "GrupoAcesso")]
+    [SwaggerOperation(Summary = "Deletar todos Registro de evento.", Tags = new [] { "Administrador - Registro de evento" })]
+    [ProducesResponseType(typeof(RegistroDeEventoDto), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RemoverTodos()
+    {
+        await _service.RemoverTodos();
+        return OkResponse();
+    }
 }

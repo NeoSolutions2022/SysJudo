@@ -23,6 +23,11 @@ public class RegistroDeEventosRepository : Repository<RegistroDeEvento>,IRegistr
         Context.RegistroDeEventos.Update(registroDeEvento);
     }
 
+    public void RemoverTodos()
+    {
+        Context.Database.ExecuteSqlRaw("DELETE FROM RegistroDeEventos");
+    }
+    
     public async Task<RegistroDeEvento?> ObterPorId(int id)
     {
         return await Context.RegistroDeEventos.FirstOrDefaultAsync(c => c.Id == id);

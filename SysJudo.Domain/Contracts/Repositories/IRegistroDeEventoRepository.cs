@@ -10,5 +10,6 @@ public interface IRegistroDeEventoRepository : IRepository<RegistroDeEvento>
     Task<RegistroDeEvento?> ObterPorId(int id);
     Task<List<RegistroDeEvento>?> ObterTodos();
     Task<IResultadoPaginado<RegistroDeEvento>> Buscar(IBuscaPaginada<RegistroDeEvento> filtro);
+    void RemoverTodos();
     void Remover(RegistroDeEvento registroDeEvento);
 }
