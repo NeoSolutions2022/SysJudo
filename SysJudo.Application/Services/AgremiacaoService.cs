@@ -217,12 +217,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Nome, obj2.Nome, StringComparison.Ordinal));
+                        String.Compare(obj1.Nome.ToLower(), obj2.Nome.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Nome, obj1.Nome, StringComparison.Ordinal));
+                        String.Compare(obj2.Nome.ToLower(), obj1.Nome.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -231,12 +231,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Sigla, obj2.Sigla, StringComparison.Ordinal));
+                        String.Compare(obj1.Sigla.ToLower(), obj2.Sigla.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Sigla, obj1.Sigla, StringComparison.Ordinal));
+                        String.Compare(obj2.Sigla.ToLower(), obj1.Sigla.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -245,12 +245,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Fantasia, obj2.Fantasia, StringComparison.Ordinal));
+                        String.Compare(obj1.Fantasia.ToLower(), obj2.Fantasia.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Fantasia, obj1.Fantasia, StringComparison.Ordinal));
+                        String.Compare(obj2.Fantasia.ToLower(), obj1.Fantasia.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -259,12 +259,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Responsavel, obj2.Responsavel, StringComparison.Ordinal));
+                        String.Compare(obj1.Responsavel.ToLower(), obj2.Responsavel.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Responsavel, obj1.Responsavel, StringComparison.Ordinal));
+                        String.Compare(obj2.Responsavel.ToLower(), obj1.Responsavel.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -273,12 +273,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Representante, obj2.Representante, StringComparison.Ordinal));
+                        String.Compare(obj1.Representante.ToLower(), obj2.Representante.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Representante, obj1.Representante, StringComparison.Ordinal));
+                        String.Compare(obj2.Representante.ToLower(), obj1.Representante.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -329,12 +329,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Endereco, obj2.Endereco, StringComparison.Ordinal));
+                        String.Compare(obj1.Endereco.ToLower(), obj2.Endereco.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Endereco, obj1.Endereco, StringComparison.Ordinal));
+                        String.Compare(obj2.Endereco.ToLower(), obj1.Endereco.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -343,12 +343,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Bairro, obj2.Bairro, StringComparison.Ordinal));
+                        String.Compare(obj1.Bairro.ToLower(), obj2.Bairro.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Bairro, obj1.Bairro, StringComparison.Ordinal));
+                        String.Compare(obj2.Bairro.ToLower(), obj1.Bairro.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -357,12 +357,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Complemento, obj2.Complemento, StringComparison.Ordinal));
+                        String.Compare(obj1.Complemento.ToLower(), obj2.Complemento.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Complemento, obj1.Complemento, StringComparison.Ordinal));
+                        String.Compare(obj2.Complemento.ToLower(), obj1.Complemento.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -371,12 +371,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Cidade, obj2.Cidade, StringComparison.Ordinal));
+                        String.Compare(obj1.Cidade.ToLower(), obj2.Cidade.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Cidade, obj1.Cidade, StringComparison.Ordinal));
+                        String.Compare(obj2.Cidade.ToLower(), obj1.Cidade.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -385,12 +385,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Estado, obj2.Estado, StringComparison.Ordinal));
+                        String.Compare(obj1.Estado.ToLower(), obj2.Estado.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Estado, obj1.Estado, StringComparison.Ordinal));
+                        String.Compare(obj2.Estado.ToLower(), obj1.Estado.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -399,12 +399,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.RegiaoNome, obj2.RegiaoNome, StringComparison.Ordinal));
+                        String.Compare(obj1.RegiaoNome.ToLower(), obj2.RegiaoNome.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.RegiaoNome, obj1.RegiaoNome, StringComparison.Ordinal));
+                        String.Compare(obj2.RegiaoNome.ToLower(), obj1.RegiaoNome.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -413,12 +413,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Pais, obj2.Pais, StringComparison.Ordinal));
+                        String.Compare(obj1.Pais.ToLower(), obj2.Pais.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Pais, obj1.Pais, StringComparison.Ordinal));
+                        String.Compare(obj2.Pais.ToLower(), obj1.Pais.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -441,12 +441,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Email, obj2.Email, StringComparison.Ordinal));
+                        String.Compare(obj1.Email.ToLower(), obj2.Email.ToLower(), StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Email, obj1.Email, StringComparison.Ordinal));
+                        String.Compare(obj2.Email.ToLower(), obj1.Email.ToLower(), StringComparison.Ordinal));
                 }
             }
 
@@ -498,19 +498,19 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
         foreach (var agremiacao in agremiacoes)
         {
             var contador = 1;
-            if (dto.Nome)
-            {
-                descricao.Append("Nome;");
-                ws.Cell(1, contador).Value = "Nome";
-                ws.Cell(linha, contador).Value = agremiacao.Nome;
-                contador++;
-            }
-
             if (dto.Sigla)
             {
                 descricao.Append("Sigla;");
                 ws.Cell(1, contador).Value = "Sigla";
                 ws.Cell(linha, contador).Value = agremiacao.Sigla;
+                contador++;
+            }
+            
+            if (dto.Nome)
+            {
+                descricao.Append("Nome;");
+                ws.Cell(1, contador).Value = "Nome";
+                ws.Cell(linha, contador).Value = agremiacao.Nome;
                 contador++;
             }
 
@@ -606,14 +606,6 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 contador++;
             }
 
-            if (dto.IdRegiao)
-            {
-                descricao.Append("Regiao;");
-                ws.Cell(1, contador).Value = "Regiao";
-                ws.Cell(linha, contador).Value = agremiacao.RegiaoNome;
-                contador++;
-            }
-
             if (dto.Pais)
             {
                 descricao.Append("Pais;");
@@ -638,6 +630,13 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 contador++;
             }
 
+            if (dto.Cnpj)
+            {
+                descricao.Append("Cnpj;");
+                ws.Cell(1, contador).Value = "Cnpj";
+                ws.Cell(linha, contador).Value = agremiacao.Cnpj;
+            }
+            
             if (dto.InscricaoMunicipal)
             {
                 descricao.Append("Inscricao Municipal;");
@@ -719,20 +718,21 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 ws.Cell(linha, contador).Value = agremiacao.DocumentacaoAtualizada;
                 contador++;
             }
-
+            
+            if (dto.IdRegiao)
+            {
+                descricao.Append("Regiao;");
+                ws.Cell(1, contador).Value = "Regiao";
+                ws.Cell(linha, contador).Value = agremiacao.RegiaoNome;
+                contador++;
+            }
+            
             if (dto.Anotacoes)
             {
                 descricao.Append("Anotacoes;");
                 ws.Cell(1, contador).Value = "Anotacoes";
                 ws.Cell(linha, contador).Value = agremiacao.Anotacoes;
                 contador++;
-            }
-
-            if (dto.Cnpj)
-            {
-                descricao.Append("Cnpj;");
-                ws.Cell(1, contador).Value = "Cnpj";
-                ws.Cell(linha, contador).Value = agremiacao.Cnpj;
             }
 
             linha++;
