@@ -281,18 +281,54 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                         String.Compare(obj2.Representante.ToLower(), obj1.Representante.ToLower(), StringComparison.Ordinal));
                 }
             }
+            
+            if (dto.Ordenacao.Propriedade == "Foto")
+            {
+                if (dto.Ordenacao.Ascendente)
+                {
+                    agremiacoes.Sort((obj1, obj2) =>
+                        String.Compare(obj1.Foto.ToLower(), obj2.Foto.ToLower(), StringComparison.Ordinal));
+                }
+                else
+                {
+                    agremiacoes.Sort((obj1, obj2) =>
+                        String.Compare(obj2.Foto.ToLower(), obj1.Foto.ToLower(), StringComparison.Ordinal));
+                }
+            }
 
             if (dto.Ordenacao.Propriedade == "DataFiliacao")
             {
                 if (dto.Ordenacao.Ascendente)
                 {
-                    agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.DataFiliacao.ToString(), obj2.Nome, StringComparison.Ordinal));
+                    agremiacoes.OrderBy(c => c.DataFiliacao);
                 }
                 else
                 {
-                    agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.DataFiliacao.ToString(), obj1.DataFiliacao.ToString(), StringComparison.Ordinal));
+                    agremiacoes.OrderByDescending(c => c.DataFiliacao);
+                }
+            }
+            
+            if (dto.Ordenacao.Propriedade == "DataAta")
+            {
+                if (dto.Ordenacao.Ascendente)
+                {
+                    agremiacoes.OrderBy(c => c.DataAta);
+                }
+                else
+                {
+                    agremiacoes.OrderByDescending(c => c.DataAta);
+                }
+            }
+            
+            if (dto.Ordenacao.Propriedade == "DataCnpj")
+            {
+                if (dto.Ordenacao.Ascendente)
+                {
+                    agremiacoes.OrderBy(c => c.DataCnpj);
+                }
+                else
+                {
+                    agremiacoes.OrderByDescending(c => c.DataCnpj);
                 }
             }
 
@@ -300,13 +336,11 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             {
                 if (dto.Ordenacao.Ascendente)
                 {
-                    agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.DataNascimento.ToString(), obj2.DataNascimento.ToString(), StringComparison.Ordinal));
+                    agremiacoes.OrderBy(c => c.DataNascimento);
                 }
                 else
                 {
-                    agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.DataNascimento.ToString(), obj1.DataNascimento.ToString(), StringComparison.Ordinal));
+                    agremiacoes.OrderByDescending(c => c.DataNascimento);
                 }
             }
 
