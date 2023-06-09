@@ -1065,7 +1065,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
     {
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
-            Descricao = documento.Nome,
+            Descricao = $"Documento baixado: {documento.Nome};",
             DataHoraEvento = DateTime.Now,
             ComputadorId = ObterIp(),
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
