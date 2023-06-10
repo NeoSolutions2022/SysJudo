@@ -257,12 +257,14 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Responsavel.ToLower(), obj2.Responsavel.ToLower(), StringComparison.Ordinal));
+                        String.Compare(obj1.Responsavel.ToLower(), obj2.Responsavel.ToLower(),
+                            StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Responsavel.ToLower(), obj1.Responsavel.ToLower(), StringComparison.Ordinal));
+                        String.Compare(obj2.Responsavel.ToLower(), obj1.Responsavel.ToLower(),
+                            StringComparison.Ordinal));
                 }
             }
 
@@ -271,26 +273,26 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.Representante.ToLower(), obj2.Representante.ToLower(), StringComparison.Ordinal));
+                        String.Compare(obj1.Representante.ToLower(), obj2.Representante.ToLower(),
+                            StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.Representante.ToLower(), obj1.Representante.ToLower(), StringComparison.Ordinal));
+                        String.Compare(obj2.Representante.ToLower(), obj1.Representante.ToLower(),
+                            StringComparison.Ordinal));
                 }
             }
-            
+
             if (dto.Ordenacao.Propriedade == "Foto")
             {
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes = agremiacoes.OrderBy(c => c.Foto).ToList();
-                    
                 }
                 else
                 {
                     agremiacoes = agremiacoes.OrderByDescending(c => c.Foto).ToList();
-                    
                 }
             }
 
@@ -305,7 +307,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                     agremiacoes = agremiacoes.OrderByDescending(c => c.DataFiliacao).ToList();
                 }
             }
-            
+
             if (dto.Ordenacao.Propriedade == "DataAta")
             {
                 if (dto.Ordenacao.Ascendente)
@@ -317,7 +319,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                     agremiacoes = agremiacoes.OrderByDescending(c => c.DataAta).ToList();
                 }
             }
-            
+
             if (dto.Ordenacao.Propriedade == "DataCnpj")
             {
                 if (dto.Ordenacao.Ascendente)
@@ -389,12 +391,10 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes = agremiacoes.OrderBy(c => c.Complemento).ToList();
-                    
                 }
                 else
                 {
                     agremiacoes = agremiacoes.OrderByDescending(c => c.Complemento).ToList();
-                    
                 }
             }
 
@@ -495,32 +495,36 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                         String.Compare(obj2.Cnpj.ToString(), obj1.Cnpj.ToString(), StringComparison.Ordinal));
                 }
             }
-            
+
             if (dto.Ordenacao.Propriedade == "InscricaoMunicipal")
             {
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.InscricaoMunicipal?.ToString(), obj2.InscricaoMunicipal?.ToString(), StringComparison.Ordinal));
+                        String.Compare(obj1.InscricaoMunicipal?.ToString(), obj2.InscricaoMunicipal?.ToString(),
+                            StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.InscricaoMunicipal?.ToString(), obj1.InscricaoMunicipal?.ToString(), StringComparison.Ordinal));
+                        String.Compare(obj2.InscricaoMunicipal?.ToString(), obj1.InscricaoMunicipal?.ToString(),
+                            StringComparison.Ordinal));
                 }
             }
-            
+
             if (dto.Ordenacao.Propriedade == "InscricaoEstadual")
             {
                 if (dto.Ordenacao.Ascendente)
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj1.InscricaoEstadual?.ToString(), obj2.InscricaoEstadual?.ToString(), StringComparison.Ordinal));
+                        String.Compare(obj1.InscricaoEstadual?.ToString(), obj2.InscricaoEstadual?.ToString(),
+                            StringComparison.Ordinal));
                 }
                 else
                 {
                     agremiacoes.Sort((obj1, obj2) =>
-                        String.Compare(obj2.InscricaoEstadual?.ToString(), obj1.InscricaoEstadual?.ToString(), StringComparison.Ordinal));
+                        String.Compare(obj2.InscricaoEstadual?.ToString(), obj1.InscricaoEstadual?.ToString(),
+                            StringComparison.Ordinal));
                 }
             }
         }
@@ -532,16 +536,16 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             var contador = 1;
             if (dto.Sigla)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Sigla;");
                 ws.Cell(1, contador).Value = "Sigla";
                 ws.Cell(linha, contador).Value = agremiacao.Sigla;
                 contador++;
             }
-            
+
             if (dto.Nome)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Nome;");
                 ws.Cell(1, contador).Value = "Nome";
                 ws.Cell(linha, contador).Value = agremiacao.Nome;
@@ -550,7 +554,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Fantasia)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Fantasia;");
                 ws.Cell(1, contador).Value = "Fantasia";
                 ws.Cell(linha, contador).Value = agremiacao.Fantasia == null ? "NULL" : agremiacao.Fantasia;
@@ -559,7 +563,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Responsavel)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Responsavel;");
                 ws.Cell(1, contador).Value = "Responsavel";
                 ws.Cell(linha, contador).Value = agremiacao.Responsavel;
@@ -568,7 +572,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Representante)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Representante;");
                 ws.Cell(1, contador).Value = "Representante";
                 ws.Cell(linha, contador).Value = agremiacao.Representante;
@@ -577,7 +581,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.DataFiliacao)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Data Filiacao;");
                 ws.Cell(1, contador).Value = "Data Filiacao";
                 ws.Cell(linha, contador).Value = new DateTime(agremiacao.DataFiliacao.Year,
@@ -588,7 +592,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.DataNascimento)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Data Nascimento;");
                 ws.Cell(1, contador).Value = "Data Nascimento";
                 ws.Cell(linha, contador).Value = new DateTime(agremiacao.DataNascimento.Year,
@@ -599,7 +603,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Cep)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Cep;");
                 ws.Cell(1, contador).Value = "Cep";
                 ws.Cell(linha, contador).Value = agremiacao.Cep;
@@ -608,7 +612,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Endereco)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Endereco;");
                 ws.Cell(1, contador).Value = "Endereco";
                 ws.Cell(linha, contador).Value = agremiacao.Endereco;
@@ -617,7 +621,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Bairro)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Bairro;");
                 ws.Cell(1, contador).Value = "Bairro";
                 ws.Cell(linha, contador).Value = agremiacao.Endereco;
@@ -626,7 +630,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Complemento)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Complemento;");
                 ws.Cell(1, contador).Value = "Complemento";
                 ws.Cell(linha, contador).Value = agremiacao.Complemento;
@@ -635,7 +639,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Cidade)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Cidade;");
                 ws.Cell(1, contador).Value = "Cidade";
                 ws.Cell(linha, contador).Value = agremiacao.Cidade;
@@ -644,7 +648,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Estado)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Estado;");
                 ws.Cell(1, contador).Value = "Estado";
                 ws.Cell(linha, contador).Value = agremiacao.Estado;
@@ -653,7 +657,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Pais)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Pais;");
                 ws.Cell(1, contador).Value = "Pais";
                 ws.Cell(linha, contador).Value = agremiacao.Pais;
@@ -662,7 +666,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Telefone)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Telefone;");
                 ws.Cell(1, contador).Value = "Telefone";
                 ws.Cell(linha, contador).Value = agremiacao.Telefone;
@@ -671,7 +675,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Email)
             {
-                if(linha == 2) 
+                if (linha == 2)
                     descricao.Append("Email;");
                 ws.Cell(1, contador).Value = "Email";
                 ws.Cell(linha, contador).Value = agremiacao.Email;
@@ -680,15 +684,15 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Cnpj)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Cnpj;");
                 ws.Cell(1, contador).Value = "Cnpj";
                 ws.Cell(linha, contador).Value = agremiacao.Cnpj;
             }
-            
+
             if (dto.InscricaoMunicipal)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Inscricao Municipal;");
                 ws.Cell(1, contador).Value = "Inscricao Municipal";
                 ws.Cell(linha, contador).Value =
@@ -698,7 +702,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.InscricaoEstadual)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Inscricao Estadual;");
                 ws.Cell(1, contador).Value = "Inscricao Estadual";
                 ws.Cell(linha, contador).Value =
@@ -708,7 +712,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.DataCnpj)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Data Cnpj;");
                 ws.Cell(1, contador).Value = "Data Cnpj";
                 ws.Cell(linha, contador).Value = agremiacao.DataCnpj == null
@@ -721,7 +725,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.DataAta)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Data Ata;");
                 ws.Cell(1, contador).Value = "Data Ata";
                 ws.Cell(linha, contador).Value = agremiacao.DataAta == null
@@ -734,7 +738,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Foto)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Foto;");
                 ws.Cell(1, contador).Value = "Foto";
                 ws.Cell(linha, contador).Value = agremiacao.Foto == null ? "NULL" : agremiacao.Foto;
@@ -743,7 +747,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.AlvaraLocacao)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Alvara Locacao;");
                 ws.Cell(1, contador).Value = "Alvara Locacao";
                 ws.Cell(linha, contador).Value = agremiacao.AlvaraLocacao;
@@ -752,7 +756,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Estatuto)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Estatuto;");
                 ws.Cell(1, contador).Value = "Estatuto";
                 ws.Cell(linha, contador).Value = agremiacao.Estatuto;
@@ -761,7 +765,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.ContratoSocial)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Contrato Social;");
                 ws.Cell(1, contador).Value = "Contrato Social";
                 ws.Cell(linha, contador).Value = agremiacao.ContratoSocial;
@@ -770,29 +774,28 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.DocumentacaoAtualizada)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Documentacao Atualizada;");
                 ws.Cell(1, contador).Value = "Documentacao Atualizada";
                 ws.Cell(linha, contador).Value = agremiacao.DocumentacaoAtualizada;
                 contador++;
             }
-            
+
             if (dto.IdRegiao)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Regiao;");
                 ws.Cell(1, contador).Value = "Regiao";
                 ws.Cell(linha, contador).Value = agremiacao.RegiaoNome;
                 contador++;
             }
-            
+
             if (dto.Anotacoes)
             {
-                if(linha == 2)
+                if (linha == 2)
                     descricao.Append("Anotacoes;");
                 ws.Cell(1, contador).Value = "Anotacoes";
                 ws.Cell(linha, contador).Value = agremiacao.Anotacoes;
-                contador++;
             }
 
             linha++;
@@ -808,6 +811,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
             TipoOperacaoId = 10,
             UsuarioId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterUsuarioId()),
+            UsuarioNome = _httpContextAccessor.HttpContext?.User.ObterNome(),
             AdministradorId = null,
             FuncaoMenuId = 2
         });
@@ -921,7 +925,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
         await _filtroRepository.RemoverTodos();
 
         var agremiacoesN = await _agremiacaoRepository.ObterTodos();
-        
+
         var agremiacoes = Mapper.Map<List<AgremiacaoFiltro>>(agremiacoesN);
         foreach (var agremiacaoN in agremiacoesN)
         {
@@ -934,12 +938,12 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 agremiacaoF.Estado = agremiacaoN.Estado;
             }
         }
-        
+
         foreach (var agremiacao in agremiacoes.DistinctBy(c => c.Id))
         {
             _filtroRepository.Cadastrar(agremiacao);
         }
-        
+
         if (!await _agremiacaoRepository.UnitOfWork.Commit())
         {
             Notificator.Handle("Não foi possível limpar o filtro");
@@ -1123,11 +1127,11 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
         Notificator.Handle("Não foi possível remover documentos.");
     }
 
-    public async Task DownloadDocumento(DownloadDocumentoDto documento)
+    public async Task DownloadDocumento(DownloadDocumentoDto nomeDocumento)
     {
         RegistroDeEventos.Adicionar(new RegistroDeEvento
         {
-            Descricao = $"Documento baixado: {documento.Nome};",
+            Descricao = $"Documento baixado: {nomeDocumento.Nome};",
             DataHoraEvento = DateTime.Now,
             ComputadorId = ObterIp(),
             ClienteId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.ObterClienteId()),
@@ -1141,6 +1145,7 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
         await RegistroDeEventos.UnitOfWork.Commit();
     }
+
     private async Task<bool> Validar(Agremiacao agremiacao)
     {
         if (!agremiacao.Validar(out var validationResult))
