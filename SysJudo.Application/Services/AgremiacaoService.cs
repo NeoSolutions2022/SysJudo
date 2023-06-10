@@ -532,7 +532,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             var contador = 1;
             if (dto.Sigla)
             {
-                descricao.Append("Sigla;");
+                if(linha == 2)
+                    descricao.Append("Sigla;");
                 ws.Cell(1, contador).Value = "Sigla";
                 ws.Cell(linha, contador).Value = agremiacao.Sigla;
                 contador++;
@@ -540,7 +541,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             
             if (dto.Nome)
             {
-                descricao.Append("Nome;");
+                if(linha == 2)
+                    descricao.Append("Nome;");
                 ws.Cell(1, contador).Value = "Nome";
                 ws.Cell(linha, contador).Value = agremiacao.Nome;
                 contador++;
@@ -548,7 +550,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Fantasia)
             {
-                descricao.Append("Fantasia;");
+                if(linha == 2)
+                    descricao.Append("Fantasia;");
                 ws.Cell(1, contador).Value = "Fantasia";
                 ws.Cell(linha, contador).Value = agremiacao.Fantasia == null ? "NULL" : agremiacao.Fantasia;
                 contador++;
@@ -556,7 +559,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Responsavel)
             {
-                descricao.Append("Responsavel;");
+                if(linha == 2)
+                    descricao.Append("Responsavel;");
                 ws.Cell(1, contador).Value = "Responsavel";
                 ws.Cell(linha, contador).Value = agremiacao.Responsavel;
                 contador++;
@@ -564,7 +568,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Representante)
             {
-                descricao.Append("Representante;");
+                if(linha == 2)
+                    descricao.Append("Representante;");
                 ws.Cell(1, contador).Value = "Representante";
                 ws.Cell(linha, contador).Value = agremiacao.Representante;
                 contador++;
@@ -572,7 +577,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.DataFiliacao)
             {
-                descricao.Append("Data Filiacao;");
+                if(linha == 2)
+                    descricao.Append("Data Filiacao;");
                 ws.Cell(1, contador).Value = "Data Filiacao";
                 ws.Cell(linha, contador).Value = new DateTime(agremiacao.DataFiliacao.Year,
                     agremiacao.DataFiliacao.Month,
@@ -582,7 +588,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.DataNascimento)
             {
-                descricao.Append("Data Nascimento;");
+                if(linha == 2)
+                    descricao.Append("Data Nascimento;");
                 ws.Cell(1, contador).Value = "Data Nascimento";
                 ws.Cell(linha, contador).Value = new DateTime(agremiacao.DataNascimento.Year,
                     agremiacao.DataNascimento.Month,
@@ -592,7 +599,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Cep)
             {
-                descricao.Append("Cep;");
+                if(linha == 2)
+                    descricao.Append("Cep;");
                 ws.Cell(1, contador).Value = "Cep";
                 ws.Cell(linha, contador).Value = agremiacao.Cep;
                 contador++;
@@ -600,7 +608,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Endereco)
             {
-                descricao.Append("Endereco;");
+                if(linha == 2)
+                    descricao.Append("Endereco;");
                 ws.Cell(1, contador).Value = "Endereco";
                 ws.Cell(linha, contador).Value = agremiacao.Endereco;
                 contador++;
@@ -608,7 +617,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Bairro)
             {
-                descricao.Append("Bairro;");
+                if(linha == 2)
+                    descricao.Append("Bairro;");
                 ws.Cell(1, contador).Value = "Bairro";
                 ws.Cell(linha, contador).Value = agremiacao.Endereco;
                 contador++;
@@ -616,7 +626,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Complemento)
             {
-                descricao.Append("Complemento;");
+                if(linha == 2)
+                    descricao.Append("Complemento;");
                 ws.Cell(1, contador).Value = "Complemento";
                 ws.Cell(linha, contador).Value = agremiacao.Complemento;
                 contador++;
@@ -624,7 +635,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Cidade)
             {
-                descricao.Append("Cidade;");
+                if(linha == 2)
+                    descricao.Append("Cidade;");
                 ws.Cell(1, contador).Value = "Cidade";
                 ws.Cell(linha, contador).Value = agremiacao.Cidade;
                 contador++;
@@ -632,7 +644,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Estado)
             {
-                descricao.Append("Estado;");
+                if(linha == 2)
+                    descricao.Append("Estado;");
                 ws.Cell(1, contador).Value = "Estado";
                 ws.Cell(linha, contador).Value = agremiacao.Estado;
                 contador++;
@@ -640,7 +653,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Pais)
             {
-                descricao.Append("Pais;");
+                if(linha == 2)
+                    descricao.Append("Pais;");
                 ws.Cell(1, contador).Value = "Pais";
                 ws.Cell(linha, contador).Value = agremiacao.Pais;
                 contador++;
@@ -648,7 +662,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Telefone)
             {
-                descricao.Append("Telefone;");
+                if(linha == 2)
+                    descricao.Append("Telefone;");
                 ws.Cell(1, contador).Value = "Telefone";
                 ws.Cell(linha, contador).Value = agremiacao.Telefone;
                 contador++;
@@ -656,7 +671,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Email)
             {
-                descricao.Append("Email;");
+                if(linha == 2) 
+                    descricao.Append("Email;");
                 ws.Cell(1, contador).Value = "Email";
                 ws.Cell(linha, contador).Value = agremiacao.Email;
                 contador++;
@@ -664,14 +680,16 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Cnpj)
             {
-                descricao.Append("Cnpj;");
+                if(linha == 2)
+                    descricao.Append("Cnpj;");
                 ws.Cell(1, contador).Value = "Cnpj";
                 ws.Cell(linha, contador).Value = agremiacao.Cnpj;
             }
             
             if (dto.InscricaoMunicipal)
             {
-                descricao.Append("Inscricao Municipal;");
+                if(linha == 2)
+                    descricao.Append("Inscricao Municipal;");
                 ws.Cell(1, contador).Value = "Inscricao Municipal";
                 ws.Cell(linha, contador).Value =
                     agremiacao.InscricaoMunicipal == null ? "NULL" : agremiacao.InscricaoMunicipal;
@@ -680,7 +698,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.InscricaoEstadual)
             {
-                descricao.Append("Inscricao Estadual;");
+                if(linha == 2)
+                    descricao.Append("Inscricao Estadual;");
                 ws.Cell(1, contador).Value = "Inscricao Estadual";
                 ws.Cell(linha, contador).Value =
                     agremiacao.InscricaoEstadual == null ? "NULL" : agremiacao.InscricaoEstadual;
@@ -689,7 +708,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.DataCnpj)
             {
-                descricao.Append("Data Cnpj;");
+                if(linha == 2)
+                    descricao.Append("Data Cnpj;");
                 ws.Cell(1, contador).Value = "Data Cnpj";
                 ws.Cell(linha, contador).Value = agremiacao.DataCnpj == null
                     ? "NULL"
@@ -701,7 +721,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.DataAta)
             {
-                descricao.Append("Data Ata;");
+                if(linha == 2)
+                    descricao.Append("Data Ata;");
                 ws.Cell(1, contador).Value = "Data Ata";
                 ws.Cell(linha, contador).Value = agremiacao.DataAta == null
                     ? "NULL"
@@ -713,7 +734,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Foto)
             {
-                descricao.Append("Foto;");
+                if(linha == 2)
+                    descricao.Append("Foto;");
                 ws.Cell(1, contador).Value = "Foto";
                 ws.Cell(linha, contador).Value = agremiacao.Foto == null ? "NULL" : agremiacao.Foto;
                 contador++;
@@ -721,7 +743,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.AlvaraLocacao)
             {
-                descricao.Append("Alvara Locacao;");
+                if(linha == 2)
+                    descricao.Append("Alvara Locacao;");
                 ws.Cell(1, contador).Value = "Alvara Locacao";
                 ws.Cell(linha, contador).Value = agremiacao.AlvaraLocacao;
                 contador++;
@@ -729,7 +752,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.Estatuto)
             {
-                descricao.Append("Estatuto;");
+                if(linha == 2)
+                    descricao.Append("Estatuto;");
                 ws.Cell(1, contador).Value = "Estatuto";
                 ws.Cell(linha, contador).Value = agremiacao.Estatuto;
                 contador++;
@@ -737,7 +761,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.ContratoSocial)
             {
-                descricao.Append("Contrato Social;");
+                if(linha == 2)
+                    descricao.Append("Contrato Social;");
                 ws.Cell(1, contador).Value = "Contrato Social";
                 ws.Cell(linha, contador).Value = agremiacao.ContratoSocial;
                 contador++;
@@ -745,7 +770,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
 
             if (dto.DocumentacaoAtualizada)
             {
-                descricao.Append("Documentacao Atualizada;");
+                if(linha == 2)
+                    descricao.Append("Documentacao Atualizada;");
                 ws.Cell(1, contador).Value = "Documentacao Atualizada";
                 ws.Cell(linha, contador).Value = agremiacao.DocumentacaoAtualizada;
                 contador++;
@@ -753,7 +779,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             
             if (dto.IdRegiao)
             {
-                descricao.Append("Regiao;");
+                if(linha == 2)
+                    descricao.Append("Regiao;");
                 ws.Cell(1, contador).Value = "Regiao";
                 ws.Cell(linha, contador).Value = agremiacao.RegiaoNome;
                 contador++;
@@ -761,7 +788,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
             
             if (dto.Anotacoes)
             {
-                descricao.Append("Anotacoes;");
+                if(linha == 2)
+                    descricao.Append("Anotacoes;");
                 ws.Cell(1, contador).Value = "Anotacoes";
                 ws.Cell(linha, contador).Value = agremiacao.Anotacoes;
                 contador++;
