@@ -1087,6 +1087,8 @@ public partial class AgremiacaoService : BaseService, IAgremiacaoService
                 AdministradorNome = null,
                 FuncaoMenuId = 2
             });
+
+            await RegistroDeEventos.UnitOfWork.Commit();
             return;
         }
 
